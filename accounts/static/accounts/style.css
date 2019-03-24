@@ -1,6 +1,6 @@
 
 /* @import url("https://fonts.googleapis.com/css?family=Sniglet"); */
-@import url("https://fonts.googleapis.com/css?family=Patrick+Hand");
+@import url("https://fonts.googleapis.com/css?family=Hind+Vadodara");
 
 html,body{
     background-color: mediumturquoise;
@@ -8,7 +8,7 @@ html,body{
     background-repeat: no-repeat;
     height: 100%;
     /*font-family: "Haley Fiege", sniglet;*/
-    font-family: "Patrick Wagesreiter", patrick hand;
+    font-family: "Hind Vadodara", indian type foundry;
 }
 
 .container{
@@ -57,7 +57,7 @@ margin-right: 5px;
 .login_btn{
 color: aliceblue;
 background-color: mediumpurple;
-width: 100px;
+width: 115px;
 }
 
 .login_btn:hover{
