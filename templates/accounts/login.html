@@ -26,19 +26,20 @@
 				<h1>Iniciar sesión</h1>
 			</div>
 			<div class="card-body">
-				<form>
+				<form method="POST" onsubmit="">
+                    {% csrf_token %}
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="usuario">
+						<input type="text" class="form-control" placeholder="usuario" name="username"/>
 
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="contraseña">
+						<input type="password" class="form-control" placeholder="contraseña" name="password">
 					</div>
 					<div class="row align-items-center remember">
 						<input type="checkbox">Recordar
@@ -48,6 +49,7 @@
 					</div>
 				</form>
 			</div>
+            <div class="error-text">{{ error }}</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center">
 					<a href="#">Ha olvidado su contraseña?</a>

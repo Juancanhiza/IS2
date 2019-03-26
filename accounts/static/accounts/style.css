@@ -72,3 +72,8 @@ color: white;
 .links a{
 margin-left: 4px;
 }
+
+.error-text{
+    color: red;
+    text-align: center;
+}
