@@ -32,3 +32,17 @@
     </ul>
   </div>
 </nav>
+
+<div class="container">
+    <h1 class="jumbotron" align="center"> Modificar Proyecto </h1>
+    <br><br>
+    <div align="center">
+        <form method="POST">{% csrf_token %}
+            <table>
+                {{ form }}
+            </table>
+            <button type="submit" class="save btn btn-default">Save</button>
+            <button class="cancel-link btn btn-default" onclick="location.href='{% url 'proyectos:listar-proyectos' %}'">Cancelar</button>
+        </form>
+    </div>
+</div>
