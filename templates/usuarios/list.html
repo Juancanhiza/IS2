@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Poliproyectos</title>
+    <meta charset="utf-8">
+    <!--Estilo Customizado-->
+	<link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-polip">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/index/">Poliproyectos</a>
+    </div>
+    <ul class="nav navbar-nav">
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Administración<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+                <li><a href="/usuarios/">Usuarios</a></li>
+                <li><a href="#">Proyectos</a></li>
+            </ul>
+        </li>
+        <li><a href="/proyecto/">Proyectos</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="../accounts/logout/"><span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+    <h1 class="jumbotron" align="center"> Administracion de Usuarios </h1>
+    <br><br>
+    <a href="{% url 'usuarios:add' %}" class="btn btn-default">Agregar Usuario</a>
+    {% if lista %}
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Estado</th>
+            <th>Descripcion</th>
+            <th>Opciones</th>
+        </tr>
+        {% for item in lista %}
+        <tr>
+            <td>{{ item.id_usuario }}</td>
+            <td>{{ item.nombre_usuario }}</td>
+            <td>{{ item.apellido_usuario }}</td>
+            <td>{{ item.estado_usuario }}</td>
+            <td>{{ item.descripcion_usuario }}</td>
+            <td>
+                <a href="{% url 'usuarios:modify' item.id_usuario %}">Modificar</a>
+                <a href="{% url 'usuarios:query' item.id_usuario %}">Consultar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
+</body>
+</html>

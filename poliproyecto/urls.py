@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^index/', views.index),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^proyecto/', include('proyecto.urls')),
+    url(r'^usuarios/', include('usuarios.urls')),
     url(r'^$', views.home),
 ]
