@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Poliproyectos</title>
+    <meta charset="utf-8">
+    <!--Estilo Customizado-->
+	<link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-polip">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/index/">Poliproyectos</a>
+    </div>
+    <ul class="nav navbar-nav">
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Administración<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+                <li><a href="#">Usuarios</a></li>
+                <li><a href="#">Proyectos</a></li>
+                <li><a href="/clientes/">Clientes</a> </li>
+            </ul>
+        </li>
+        <li><a href="/proyecto/">Proyectos</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="../accounts/logout/"><span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+    <h1 class="jumbotron" align="center">Datos del Cliente</h1>
+    <br>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item"><b>Nombre y Apellido:</b>  {{ cliente.nombre_cliente }}</li>
+            <li class="list-group-item"><b>RUC:</b>  {{ cliente.ruc_cliente }}</li>
+            <li class="list-group-item"><b>Dirección:</b>  {{ cliente.direccion_cliente }}</li>
+            <li class="list-group-item"><b>Teléfono:</b>  {{ cliente.telefono_cliente }}</li>
+            <li class="list-group-item"><b>Descripción</b>  {{ cliente.descripcion_cliente }}</li>
+        </ul>
+         <button class="cancel-link btn btn-default" onclick="location.href='{% url 'clientes:ListarCliente'%}'">Volver</button>
+    </div>
+</div>
+</body>
+</html>

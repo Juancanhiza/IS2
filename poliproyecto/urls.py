@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^proyecto/', include('proyecto.urls')),
     url(r'^usuarios/', include('usuarios.urls')),
     url(r'^$', views.home),
+    url(r'^clientes/',include('clientes.urls')),
 ]
