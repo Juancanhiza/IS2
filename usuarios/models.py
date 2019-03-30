@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Usuario(models.Model):
-    id_usuario = models.AutoField(primary_key=True)
+    id_usuario = models.AutoField
     nombre_usuario = models.CharField(max_length=100)
     apellido_usuario = models.CharField(max_length=100)
     contraseña_usuario = models.CharField(max_length=100)

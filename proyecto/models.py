@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 
 class Proyecto(models.Model):
-    id_proyecto = models.AutoField(primary_key=True)
+    id_proyecto = models.AutoField
     nombre_proyecto = models.CharField(max_length=20)
     fecha_inicio_proyecto = models.DateField('Fecha de Inicio Proyecto')
     fecha_fin_proyecto = models.DateField('Fecha de Fin Proyecto')
