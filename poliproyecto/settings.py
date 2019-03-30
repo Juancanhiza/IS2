@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'poliproyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db',
+        'NAME': 'dbdev',
         'USER': 'postgres',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
@@ -112,3 +112,5 @@ CSRF_FAILURE_VIEW = 'accounts.views.home'
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTH_USER_MODEL = 'usuarios.Usuario'

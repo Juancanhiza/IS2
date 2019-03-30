@@ -1,38 +1,50 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Usuario
-from .forms import UsuarioForm
+from .forms import *
+from django.views.generic import ListView, CreateView, UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 
-def list(request):
-    lista = Usuario.objects.order_by('id_usuario')[:10]
-    context = {'lista': lista}
-    return render(request, '../templates/usuarios/list.html', context)
 
-def add(request):
-    if request.method == "POST":
-        form = UsuarioForm(request.POST)
-        if form.is_valid():
-            Usuario= form.save(commit=False)
-            Usuario.save()
-            return redirect('usuarios:list')
-    else:
-        form = UsuarioForm()
-    context = {'form': form}
-    return render(request, '../templates/usuarios/add.html', context)
+@method_decorator(login_required, name='dispatch')
+class UserListView(LoginRequiredMixin, ListView):
+    template_name = 'usuarios/list.html'
+    model = Usuario
+    queryset = Usuario.objects.all()
 
-def modify(request, id_usuario):
-    usuario = get_object_or_404(Usuario, pk=id_usuario)
-    if request.method == "POST":
-        form = UsuarioForm(request.POST, instance=usuario)
-        if form.is_valid():
-            usuario = form.save(commit=False)
-            usuario.save()
-            return redirect('usuarios:list')
-    else:
-        form = UsuarioForm(instance=usuario)
-    context = {'form': form}
-    return render(request, '../templates/usuarios/modify.html', context)
 
-def query(request, id_usuario):
-    usuario = get_object_or_404(Usuario, pk=id_usuario)
-    context = {'usuario': usuario}
-    return render(request, '../templates/usuarios/query.html', context)
+@method_decorator(login_required, name='dispatch')
+class CreateUserView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    template_name = 'usuarios/user.html'
+    model = Usuario
+    success_url = './'
+    form_class = CreateUserForm
+    success_message = 'Se ha creado el usuario'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Crear Usuario"
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    template_name = 'usuarios/user.html'
+    model = Usuario
+    form_class = UpdateUserForm
+    success_url = './'
+    success_message = 'Los cambios se guardaron correctamente'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Modificar Usuario"
+        return context
+
+    def get_object(self, queryset=None):
+        return Usuario.objects.get(pk=self.kwargs['pk'])
+
+    def get_absolute_url(self):
+        return reverse('update_user', kwargs={'pk': self.kwargs['pk']})

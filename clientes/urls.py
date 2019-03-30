@@ -4,9 +4,9 @@ from . import views
 # from django.contrib.auth.views import login
 
 """
-URL para el login, y para cuando se loguea
+Definicion de URLs contenidas en clientes
 """
-app_name = 'clientes'
+
 urlpatterns = [
 	url(r'^$', views.ListarClientes, name='ListarCliente'),
 	url(r'^AgregarCliente', views.AgregarCliente, name='AgregarCliente'),

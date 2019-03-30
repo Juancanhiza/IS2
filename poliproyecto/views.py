@@ -18,13 +18,14 @@ Se definen vistas para la vista home
 
 def home(request):
     """
-    Vista de la pagina de inicio
+    Vista de la pagina de inicio, si el usuario ya se encuentra autenticado,
+    se muestra el indice
     :param request:
     """
     context = {}
     if request.user.is_authenticated:
         template_name = 'accounts/index.html'
-        context['username'] = request.user.username
+        context['nombre'] = request.user.first_name
     else:
         template_name = 'accounts/home.html'
     return TemplateResponse(request, template_name, context)
@@ -36,6 +37,6 @@ def index(request):
     :param request:
     """
     context = {
-        'username': request.user,
+        'nombre': request.user.first_name,
     }
     return render(request, '../templates/accounts/index.html',context)

@@ -2,67 +2,90 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Poliproyectos</title>
+    <title>Usuarios</title>
     <meta charset="utf-8">
-    <!--Estilo Customizado-->
-	<link rel="stylesheet" type="text/css" href="{% static 'home/style.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Hojas de estilo-->
+	<link rel="stylesheet" type="text/css" href="{% static 'usuarios/style.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <!-- js bootstrap y ajax -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- javascript -->
+    <script type="text/javascript">
+        $(document).ready(function($) {
+            $(".table-row").click(function() {
+                window.document.location = $(this).data("href");
+            });
+        });
+    </script>
 </head>
 <body>
 
 <nav class="navbar navbar-polip">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/index/">Poliproyectos</a>
-    </div>
-    <ul class="nav navbar-nav">
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Administración<span class="caret"></span></a>
-        <ul class="dropdown-menu">
-                <li><a href="/usuarios/">Usuarios</a></li>
-                <li><a href="/proyecto/">Proyectos</a></li>
-                <li><a href="/clientes/">Clientes</a></li>
-            </ul>
-        </li>
-        <li><a href="/proyecto/">Proyectos</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="../"><span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión</a></li>
-    </ul>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/index/">Poliproyectos</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Administración<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/usuarios/">Usuarios</a></li>
+                    <li><a href="/roles/">Roles</a></li>
+                    <li><a href="/proyectos/">Proyectos</a></li>
+                    <li><a href="/clientes/">Clientes</a></li>
+                </ul>
+            </li>
+            <li><a href="/proyecto/">Proyectos</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/accounts/logout/"><span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión</a></li>
+        </ul>
   </div>
 </nav>
 
-<div class="container">
-    <h1 class="jumbotron" align="center"> Administracion de Usuarios </h1>
-    <br><br>
-    <a href="{% url 'usuarios:add' %}" class="btn btn-default">Agregar Usuario</a>
-    {% if lista %}
-    <table class="table">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Estado</th>
-            <th>Descripcion</th>
-            <th>Opciones</th>
-        </tr>
-        {% for item in object_list %}
-        <tr>
-            <td>{{ item.id_usuario }}</td>
-            <td>{{ item.nombre_usuario }}</td>
-            <td>{{ item.apellido_usuario }}</td>
-            <td>{{ item.estado_usuario }}</td>
-            <td>{{ item.descripcion_usuario }}</td>
-            <td>
-                <a href="{% url 'usuarios:modify' item.id_usuario %}">Modificar</a>
-                <a href="{% url 'usuarios:query' item.id_usuario %}">Consultar</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
-</div>
+    <div class="container">
+        <h1 class="jumbotron head" align="center"> Administracion de Usuarios </h1>
+        <hr>
+    </div>
+    <div class="container">
+        {% if object_list %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Estado</th>
+                        <th>Descripcion</th>
+                        <th>
+                            <div class="col-sm-9"></div>
+                            <div class="col-sm-3">
+                                <a href="/usuarios/create/">
+                                    <div class="btn new-btn-list">
+                                        <span class="glyphicon glyphicon-plus glyphicon-new"></span>
+                                    </div>
+                                </a>
+                            </div>
+                        </th>
+                    </tr>
+
+                </thead>
+                {% for usuario in object_list %}
+                    <tr class="table-row" data-href="{% url 'update_user' usuario.pk %}">
+                        <td>{{ usuario.pk }}</td>
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.first_name }}</td>
+                        <td>{{ usuario.last_name }}</td>
+                        <td>{{ usuario.estado }}</td>
+                        <td colspan="2">{{ usuario.descripcion }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
 </body>
 </html>

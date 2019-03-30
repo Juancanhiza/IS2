@@ -25,8 +25,8 @@ def ListarClientes(request):
     contex={'lista':lista}
     return render(request, 'clientes/ListarClientes.html', contex)
 
-def ModificarCliente(request, id_cliente):
-    cliente = get_object_or_404(Cliente, pk=id_cliente)
+def ModificarCliente(request, id):
+    cliente = get_object_or_404(Cliente, pk=id)
     if request.method == 'POST':
         form = ClienteForm(request.POST, instance=cliente)
         if form.is_valid():
@@ -40,7 +40,7 @@ def ModificarCliente(request, id_cliente):
     context = {'form': form}
     return render(request,'clientes/ModificarCliente.html', context)
 
-def VerCliente(request, id_cliente):
-    cliente = get_object_or_404(Cliente, pk=id_cliente)
+def VerCliente(request, id):
+    cliente = get_object_or_404(Cliente, pk=id)
     context = {'cliente': cliente}
     return render(request, 'clientes/VerCliente.html', context)
