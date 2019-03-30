@@ -11,11 +11,16 @@ html,body{
 
 .head{
     font-family: "Hind Vadodara", indian type foundry;
-    background-color: aliceblue;
+    background-color: mediumturquoise !important;;
     text-decoration-color: aliceblue;
     text-align: center;
     font-size: 30px;
-    margin-top: 20px;
+    margin-top: 0px;
+    height: 30px;
+}
+
+.container .jumbotron{
+    padding-top: 15px;
 }
 
 .navbar-polip {
@@ -82,20 +87,19 @@ html,body{
 }
 
 .submit-btn:hover{
-color: black;
-background-color: white;
+    color: black;
+    background-color: white;
 }
 
-.new-btn{
-    color:black!important;;
-    background-color: green !important;;
-    text-decoration-color: black !important;;
+.new-btn-list{
+    color: black;
+    background-color: green !important;
+    width: 37px !important;
 }
 
-.new-btn:hover{
-    color: aliceblue !important;;
+.new-btn-list:hover{
+    color: aliceblue !important;
     background-color: mediumpurple !important;;
-    alignment: right;
 }
 
 .form-container{
@@ -103,6 +107,11 @@ background-color: white;
 }
 
 .alert-success-foot{
-    margin-top: 210px;
+    margin-left: 150px;
     text-align: center;
+    width: 1000px;
+}
+
+.table-row:hover{
+    cursor: pointer !important;;
 }

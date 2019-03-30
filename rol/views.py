@@ -15,7 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 @method_decorator(login_required, name='dispatch')
 class RolListView(LoginRequiredMixin, ListView):
-    template_name = 'rol/rollist.html'
+    template_name = 'rol/list.html'
     model = Rol
     queryset = Rol.objects.all()
 
