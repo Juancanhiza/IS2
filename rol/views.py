@@ -24,7 +24,15 @@ class RolListView(LoginRequiredMixin, ListView):
 class CreateRolView(LoginRequiredMixin, CreateView):
     template_name = 'rol/rol.html'
     model = Rol
+    success_url = './'
     form_class = RolForm
+    success_message = 'Se ha creado el rol'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['title'] = "Crear Rol"
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -32,7 +40,14 @@ class UpdateRolView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'rol/rol.html'
     model = Rol
     fields = ['nombre','descripcion','permisos']
+    success_url = './'
     success_message = 'Los cambios se guardaron correctamente'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['title'] = "Modificar Rol"
+        return context
 
     def get_object(self, queryset=None):
         return Rol.objects.get(pk=self.kwargs['pk'])

@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+   <Directory /home/majogrance/Escritorio/1/poliprojectos/poliprojecto>
+       <Files wsgi.py>
+           Require all granted
+       </Files>
+   </Directory>
+
+   WSGIDaemonProcess myproject.com python-home=/home/majogrance/Escritorio/1/poliprojectos/poliprojecto/env python-path=/home/majogrance/Escritorio/1/poliprojectos/poliprojecto
+   WSGIProcessGroup myproject.com
+   WSGIScriptAlias / /home/majogrance/Escritorio/1/poliprojectos/poliprojecto/wsgi.py
+</VirtualHost>
+
+#vim: syntax=apache ts=4 sw=4 sts=4 sr noet
