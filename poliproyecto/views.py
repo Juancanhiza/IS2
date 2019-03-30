@@ -9,10 +9,11 @@ from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.template.response import TemplateResponse
 
 
 """
-Vista del Login
+Se definen vistas para la vista home
 """
 
 def home(request):
@@ -20,7 +21,13 @@ def home(request):
     Vista de la pagina de inicio
     :param request:
     """
-    return render(request, '../templates/accounts/home.html')
+    context = {}
+    if request.user.is_authenticated:
+        template_name = 'accounts/index.html'
+        context['username'] = request.user.username
+    else:
+        template_name = 'accounts/home.html'
+    return TemplateResponse(request, template_name, context)
 
 @login_required
 def index(request):

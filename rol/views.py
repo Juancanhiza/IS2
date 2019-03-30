@@ -21,7 +21,7 @@ class RolListView(LoginRequiredMixin, ListView):
 
 
 @method_decorator(login_required, name='dispatch')
-class CreateRolView(LoginRequiredMixin, CreateView):
+class CreateRolView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     template_name = 'rol/rol.html'
     model = Rol
     success_url = './'

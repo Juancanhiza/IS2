@@ -21,8 +21,8 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
+
 """
 Vista del Login
 """
@@ -123,4 +123,10 @@ def home(request):
     Vista de la pagina de inicio
     :param request:
     """
-    return render(request, '../templates/accounts/home.html')
+    context = {}
+    if request.user.is_authenticated:
+        template_name = '/accounts/home.html'
+    else:
+        template_name = '/accounts/index.html'
+    return TemplateResponse(request, template_name, context)
+    #return render(request, '../templates/accounts/home.html')
