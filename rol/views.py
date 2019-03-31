@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView
 from .models import Rol
 from django.contrib.auth.models import User
-from rol.forms import RolForm
+from rol.forms import *
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
@@ -25,7 +25,7 @@ class CreateRolView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     template_name = 'rol/rol.html'
     model = Rol
     success_url = './'
-    form_class = RolForm
+    form_class = CreateRolForm
     success_message = 'Se ha creado el rol'
 
     def get_context_data(self, **kwargs):
@@ -39,7 +39,7 @@ class CreateRolView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 class UpdateRolView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'rol/rol.html'
     model = Rol
-    fields = ['nombre','descripcion','permisos']
+    form_class = UpdateRolForm
     success_url = './'
     success_message = 'Los cambios se guardaron correctamente'
 
