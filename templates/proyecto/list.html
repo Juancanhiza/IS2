@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Roles</title>
+    <title>Proyectos</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Hojas de estilo-->
-	<link rel="stylesheet" type="text/css" href="{% static 'rol/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'proyecto/style.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <!-- js bootstrap y ajax -->
@@ -47,20 +47,23 @@
 </nav>
 
     <div class="container">
-        <h1 class="jumbotron head" align="center"> Administracion de Roles </h1>
+        <h1 class="jumbotron head" align="center"> Administracion de Proyectos </h1>
         <hr>
     </div>
     <div class="container">
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th width="10%">ID</th>
-                    <th width="20%">Nombre</th>
-                    <th width="62%">Descripcion</th>
+                    <th width="8%">ID</th>
+                    <th width="25%">Nombre</th>
+                    <th width="15%">Fecha Inicio</th>
+                    <th width="15%">Fecha Fin</th>
+                    <th width="9%">Estado</th>
+                    <th width="20%">Descripcion</th>
                     <th width="8%">
-                        <div class="col-sm-2" align="center"></div>
-                        <div class="col-sm-1" align="center">
-                            <a href="/roles/create/">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-1">
+                            <a href="/proyectos/create/">
                                 <div class="btn new-btn-list">
                                     <span class="glyphicon glyphicon-plus glyphicon-new"></span>
                                 </div>
@@ -70,11 +73,14 @@
                 </tr>
 
             </thead>
-            {% for rol in object_list %}
-                <tr class="table-row" data-href="{% url 'update_rol' rol.pk %}">
-                    <td>{{ rol.pk }}</td>
-                    <td>{{ rol.nombre }}</td>
-                    <td colspan="2">{{ rol.descripcion }}</td>
+            {% for project in object_list %}
+                <tr class="table-row" data-href="{% url 'update_project' project.pk %}">
+                    <td>{{ project.id }}</td>
+                    <td>{{ project.nombre }}</td>
+                    <td>{{ project.fecha_inicio }}</td>
+                    <td>{{ project.fecha_fin}}</td>
+                    <td>{{ project.estado }}</td>
+                    <td colspan="2">{{ project.descripcion }}</td>
                 </tr>
             {% endfor %}
         </table>

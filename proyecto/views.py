@@ -1,49 +1,56 @@
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import redirect
-from django.http import HttpResponseRedirect
-from django.contrib.auth import login, forms
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
-from django.contrib import messages
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-from django.urls import reverse
+from django.shortcuts import render
+from django.views.generic import ListView, CreateView, UpdateView
 from .models import Proyecto
-from .forms import ProyectoForm
+from proyecto.forms import CreateProjectForm, UpdateProjectForm
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.http import HttpResponseForbidden
+from django.urls import reverse
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 """
 Vista del Login
 """
-def listar_proyectos(request):
-    lista = Proyecto.objects.order_by('id')[:10]
-    context = {'lista': lista}
-    return render(request, '../templates/proyecto/listarProyecto.html', context)
 
-def crear_proyecto(request):
-    if request.method == "POST":
-        form = ProyectoForm(request.POST)
-        if form.is_valid():
-            Proyecto = form.save(commit=False)
-            Proyecto.save()
-            return redirect('proyectos:listar-proyectos')
-    else:
-        form = ProyectoForm()
-    context = {'form': form}
-    return render(request, '../templates/proyecto/crearProyecto.html', context)
+@method_decorator(login_required, name='dispatch')
+class ProjectListView(LoginRequiredMixin, ListView):
+    template_name = 'proyecto/list.html'
+    model = Proyecto
+    queryset = Proyecto.objects.all()
 
-def consultar_proyecto(request, id):
-    proyecto = get_object_or_404(Proyecto, pk=id)
-    context = {'proyecto': proyecto}
-    return render(request, '../templates/proyecto/consultarProyecto.html', context)
 
-def modificar_proyecto(request, id):
-    proyecto = get_object_or_404(Proyecto, pk=id)
-    if request.method == "POST":
-        form = ProyectoForm(request.POST, instance=proyecto)
-        if form.is_valid():
-            proyecto = form.save(commit=False)
-            proyecto.save()
-            return redirect('proyectos:listar-proyectos')
-    else:
-        form = ProyectoForm(instance=proyecto)
-    context = {'form': form}
-    return render(request, '../templates/proyecto/modificarProyecto.html', context)
+@method_decorator(login_required, name='dispatch')
+class CreateProjectView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    template_name = 'proyecto/proyecto.html'
+    model = Proyecto
+    success_url = './'
+    form_class = CreateProjectForm
+    success_message = 'Se ha creado el rol'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Crear Proyecto"
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class UpdateProjectView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    template_name = 'rol/rol.html'
+    model = Proyecto
+    form_class = UpdateProjectForm
+    success_url = './'
+    success_message = 'Los cambios se guardaron correctamente'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Modificar Proyecto"
+        return context
+
+    def get_object(self, queryset=None):
+        return Proyecto.objects.get(pk=self.kwargs['pk'])
+
+    def get_absolute_url(self):
+        return reverse('update_rol', kwargs={'pk': self.kwargs['pk']})
+

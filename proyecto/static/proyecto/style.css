@@ -9,6 +9,20 @@ html,body{
     font-family: "Hind Vadodara", indian type foundry;
 }
 
+.head{
+    font-family: "Hind Vadodara", indian type foundry;
+    background-color: mediumturquoise !important;;
+    text-decoration-color: aliceblue;
+    text-align: center;
+    font-size: 30px;
+    margin-top: 0px;
+    height: 30px;
+}
+
+.container .jumbotron{
+    padding-top: 15px;
+}
+
 .navbar-polip {
     background-color: aliceblue;
     text-decoration-color: aliceblue;
@@ -60,4 +74,44 @@ html,body{
     margin-top: 30px;
     font-size: 20px;
     text-align: center;
+}
+
+.p1-create{
+    margin-left: 60px !important;;
+}
+
+.submit-btn{
+    color: aliceblue;
+    background-color: mediumpurple !important;
+    width: 115px;
+}
+
+.submit-btn:hover{
+    color: black;
+    background-color: white;
+}
+
+.new-btn-list{
+    color: black;
+    background-color: green !important;
+    width: 37px !important;
+}
+
+.new-btn-list:hover{
+    color: aliceblue !important;
+    background-color: mediumpurple !important;;
+}
+
+.form-container{
+    margin-top: 30px;
+}
+
+.alert-success-foot{
+    margin-left: 150px;
+    text-align: center;
+    width: 1000px;
+}
+
+.table-row:hover{
+    cursor: pointer !important;;
 }
