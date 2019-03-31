@@ -27,7 +27,7 @@ class CreateProjectView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Proyecto
     success_url = './'
     form_class = CreateProjectForm
-    success_message = 'Se ha creado el rol'
+    success_message = 'Se ha creado el proyecto'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,7 +37,7 @@ class CreateProjectView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateProjectView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-    template_name = 'rol/rol.html'
+    template_name = 'proyecto/proyecto.html'
     model = Proyecto
     form_class = UpdateProjectForm
     success_url = './'

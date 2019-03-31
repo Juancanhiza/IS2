@@ -4,7 +4,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 class Cliente(models.Model):
-    id = models.AutoField
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
     direccion = models.CharField(max_length=200)

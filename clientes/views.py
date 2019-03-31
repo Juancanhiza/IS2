@@ -1,46 +1,54 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
+from django.shortcuts import render
+from django.views.generic import ListView, CreateView, UpdateView
 from .models import Cliente
-from .forms import ClienteForm
-# Create your views here.
+from clientes.forms import CreateClientForm, UpdateClientForm
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.http import HttpResponseForbidden
+from django.urls import reverse
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class ClientesView(ListView):
-    template_name = 'clientes/AdminCliente.html'
+
+@method_decorator(login_required, name='dispatch')
+class ClientListView(LoginRequiredMixin, ListView):
+    template_name = 'clientes/list.html'
     model = Cliente
+    queryset = Cliente.objects.all()
 
-def AgregarCliente(request):
-    if request.method == "POST":
-        form = ClienteForm(request.POST)
-        if form.is_valid():
-            Cliente = form.save(commit=False)
-            Cliente.save()
-            return redirect('clientes:ListarCliente')
-    else:
-        form = ClienteForm()
-    context = {'form': form}
-    return render(request, 'clientes/AgregarCliente.html', context)
 
-def ListarClientes(request):
-    lista = Cliente.objects.all()
-    contex={'lista':lista}
-    return render(request, 'clientes/ListarClientes.html', contex)
+@method_decorator(login_required, name='dispatch')
+class CreateClientView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    template_name = 'clientes/cliente.html'
+    model = Cliente
+    success_url = './'
+    form_class = CreateClientForm
+    success_message = 'Se ha creado el cliente'
 
-def ModificarCliente(request, id):
-    cliente = get_object_or_404(Cliente, pk=id)
-    if request.method == 'POST':
-        form = ClienteForm(request.POST, instance=cliente)
-        if form.is_valid():
-            cliente = form.save(commit=False)
-            cliente.save()
-            return redirect('clientes:ListarCliente')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Crear Cliente"
+        return context
 
-    else:
-        form = ClienteForm(instance=cliente)
 
-    context = {'form': form}
-    return render(request,'clientes/ModificarCliente.html', context)
+@method_decorator(login_required, name='dispatch')
+class UpdateClientView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    template_name = 'clientes/cliente.html'
+    model = Cliente
+    form_class = UpdateClientForm
+    success_url = './'
+    success_message = 'Los cambios se guardaron correctamente'
 
-def VerCliente(request, id):
-    cliente = get_object_or_404(Cliente, pk=id)
-    context = {'cliente': cliente}
-    return render(request, 'clientes/VerCliente.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Modificar Cliente"
+        return context
+
+    def get_object(self, queryset=None):
+        return Cliente.objects.get(pk=self.kwargs['pk'])
+
+    def get_absolute_url(self):
+        return reverse('update_client', kwargs={'pk': self.kwargs['pk']})
+

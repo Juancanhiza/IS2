@@ -8,8 +8,7 @@ Definicion de URLs contenidas en clientes
 """
 
 urlpatterns = [
-	url(r'^$', views.ListarClientes, name='ListarCliente'),
-	url(r'^AgregarCliente', views.AgregarCliente, name='AgregarCliente'),
-	path('<int:id_cliente>/ModificarCliente/',views.ModificarCliente,name='ModificarCliente'),
-	path('<int:id_cliente>/VerCliente/', views.VerCliente, name='VerCliente'),
+    url(r'^$', views.ClientListView.as_view(),name='client_list'),
+	url(r'^create/$', views.CreateClientView.as_view(), name='create_client'),
+	path(route='update_client/<int:pk>/', view=views.UpdateClientView.as_view(), name='update_client'),
 ]

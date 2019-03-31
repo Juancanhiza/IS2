@@ -2,20 +2,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Rol</title>
+    <title>Usuarios</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Hojas de estilo-->
-	<link rel="stylesheet" type="text/css" href="{% static 'rol/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'clientes/style.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <!-- js bootstrap y ajax -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- javascript -->
+    <script type="text/javascript">
+        $(document).ready(function($) {
+            $(".table-row").click(function() {
+                window.document.location = $(this).data("href");
+            });
+        });
+    </script>
 </head>
 <body>
-    <nav class="navbar navbar-polip">
+
+<nav class="navbar navbar-polip">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/index/">Poliproyectos</a>
@@ -40,25 +49,41 @@
             </ul>
         </div>
     </nav>
+
     <div class="container">
-        <h1 class="jumbotron head"> {{ title }}</h1>
+        <h1 class="jumbotron head" align="center"> Administracion de Clientes </h1>
         <hr>
     </div>
-    <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="col-sm-3">
-            <div class="container form-container">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p}}
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-1">
-                        <input type="submit" value="Guardar" class="btn submit-btn">
-                    </div>
-                </form>
-            </div>
-            <br><br><br>
-        </div>
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="8%">ID</th>
+                    <th width="25%">Razón Social</th>
+                    <th width="15%">RUC</th>
+                    <th width="44%">Descripcion</th>
+                    <th width="8%">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-1">
+                            <a href="/clientes/create/">
+                                <div class="btn new-btn-list">
+                                    <span class="glyphicon glyphicon-plus glyphicon-new"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+
+            </thead>
+            {% for cliente in object_list %}
+                <tr class="table-row" data-href="{% url 'update_client' cliente.pk %}">
+                    <td>{{ cliente.pk }}</td>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.ruc }}</td>
+                    <td colspan="2">{{ cliente.descripcion }}</td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 </body>
 </html>
