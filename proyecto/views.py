@@ -20,6 +20,11 @@ class ProjectListView(LoginRequiredMixin, ListView):
     model = Proyecto
     queryset = Proyecto.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Proyectos"
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class CreateProjectView(SuccessMessageMixin, LoginRequiredMixin, CreateView):

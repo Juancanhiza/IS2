@@ -18,6 +18,11 @@ class ClientListView(LoginRequiredMixin, ListView):
     model = Cliente
     queryset = Cliente.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Clientes"
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class CreateClientView(SuccessMessageMixin, LoginRequiredMixin, CreateView):

@@ -19,6 +19,11 @@ class RolListView(LoginRequiredMixin, ListView):
     model = Rol
     queryset = Rol.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Roles"
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class CreateRolView(SuccessMessageMixin, LoginRequiredMixin, CreateView):

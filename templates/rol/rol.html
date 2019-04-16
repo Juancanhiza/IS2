@@ -1,64 +1,21 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <title>Rol</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Hojas de estilo-->
-	<link rel="stylesheet" type="text/css" href="{% static 'rol/style.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <!-- js bootstrap y ajax -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-    <nav class="navbar navbar-polip">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/index/">Poliproyectos</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Administración<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/usuarios/">Usuarios</a></li>
-                        <li><a href="/roles/">Roles</a></li>
-                        <li><a href="/proyectos/">Proyectos</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Definiciones<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="/clientes/">Clientes</a></li>
-                </ul>
-            </li>
-                <li><a href="/proyectos/">Proyectos</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/accounts/logout/"><span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión</a></li>
-            </ul>
+{%include 'header_admin.html'%}
+<div class="container">
+    <h1 class="jumbotron head"> {{ title }}</h1>
+    <hr>
+</div>
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-3">
+        <div class="container form-container">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p}}
+                <div class="col-sm-2"></div>
+                <div class="col-sm-1">
+                    <input type="submit" value="Guardar" class="btn submit-btn">
+                </div>
+            </form>
         </div>
-    </nav>
-    <div class="container">
-        <h1 class="jumbotron head"> {{ title }}</h1>
-        <hr>
+        <br><br><br>
     </div>
-    <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="col-sm-3">
-            <div class="container form-container">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p}}
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-1">
-                        <input type="submit" value="Guardar" class="btn submit-btn">
-                    </div>
-                </form>
-            </div>
-            <br><br><br>
-        </div>
-    </div>
-</body>
-</html>
+</div>

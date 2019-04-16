@@ -15,6 +15,11 @@ class UserListView(LoginRequiredMixin, ListView):
     model = Usuario
     queryset = Usuario.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Usuarios"
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class CreateUserView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
