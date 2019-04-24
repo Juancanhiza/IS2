@@ -2,20 +2,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Usuario</title>
+    <title>User Story</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Hojas de estilo-->
-	<link rel="stylesheet" type="text/css" href="{% static 'clientes/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'userstory/style.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <!-- js bootstrap y ajax -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- javascript -->
+    <script type="text/javascript">
+        $(document).ready(function($) {
+            $(".table-row").click(function() {
+                window.document.location = $(this).data("href");
+            });
+        });
+    </script>
 </head>
 <body>
-    <nav class="navbar navbar-polip">
+
+<nav class="navbar navbar-polip">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/index/">Poliproyectos</a>
@@ -40,26 +49,33 @@
             </ul>
         </div>
     </nav>
+
     <div class="container">
-        <h1 class="jumbotron head"> {{ title }}</h1>
+        <h1 class="jumbotron head" align="center"> Product Backlog </h1>
         <hr>
     </div>
-    <div class="row">
-        <div class="col-sm-4"></div>
-        <div class="col-sm-3">
-            <div class="container form-container">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p}}
-                    <div class="col-sm-2">
-                        <input type="submit" value="Guardar" class="btn submit-btn" onclick="window.location='/clientes/';">
-                    </div>
-                    <div class="col-sm-1">
-                        <input type="button" value="Cancelar" class="btn submit-btn" onclick="window.location='/clientes/';">
-                    </div>
-                </form>
-            </div>
-            <br><br><br>
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="10%">ID</th>
+                    <th width="20%">Nombre</th>
+                    <th width="20%">Duracion Estimada</th>
+                    <th width="20%">Priorizacion</th>
+                </tr>
+
+            </thead>
+            {% for userstory in object_list|dictsortreversed:"priorizacion"%}
+                <tr class="table-row" data-href="#">
+                    <td>{{ userstory.pk }}</td>
+                    <td>{{ userstory.nombre }}</td>
+                    <td>{{ userstory.duracion_estimada }}</td>
+                    <td>{{ userstory.priorizacion }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div>
+            <input type="button" value="Atras" class="btn submit-btn" onclick="window.location='/userstory/';">
         </div>
     </div>
 </body>
