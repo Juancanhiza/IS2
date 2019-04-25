@@ -1,5 +1,7 @@
 import datetime
 from django.db import models
+from rol.models import Rol
+from usuarios.models import Usuario
 
 # Create your models here.
 
@@ -12,7 +14,6 @@ ESTADOS_PROYECTO = (
 )
 
 class Proyecto(models.Model):
-    id = models.AutoField
     nombre = models.CharField(max_length=20)
     fecha_inicio = models.DateField('Fecha de Inicio Proyecto')
     fecha_fin = models.DateField('Fecha de Fin Proyecto')
@@ -21,4 +22,10 @@ class Proyecto(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class ProyectoDetalle(models.Model):
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    rol = models.ForeignKey(Rol, on_delete=models.PROTECT)
+
 

@@ -1,8 +1,14 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Proyecto
+from .models import *
 from rol.models import Rol
 from rol.models import Permiso
 
-admin.site.register(Proyecto)
+class ProyectoDetalleInLine(admin.TabularInline):
+    model = ProyectoDetalle
+
+class ProyectoAdmin(admin.ModelAdmin):
+    inlines = (ProyectoDetalleInLine,)
+
+admin.site.register(Proyecto,ProyectoAdmin)
