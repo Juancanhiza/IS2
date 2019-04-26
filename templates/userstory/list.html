@@ -1,0 +1,52 @@
+{%include 'header_admin.html'%}
+
+    <div class="container">
+        <h1 class="jumbotron head" align="center"> Administracion de User Story </h1>
+        <hr>
+    </div>
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="8%">ID</th>
+                    <th width="15%">Nombre</th>
+                    <th width="20%">Duracion Estimada</th>
+                    <th width="15%">Priorizacion</th>
+                    <th width="20%">Team Member</th>
+                    <th width="30%">Descripcion</th>
+                    <th width="8%">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-1">
+                            <a href="./create/">
+                                <div class="btn new-btn-list">
+                                    <span class="glyphicon glyphicon-plus glyphicon-new"></span>
+                                </div>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            {% for userstory in object_list %}
+                <tr class="table-row" data-href="{% url 'update_userstory' project.pk userstory.pk %}">
+                    <td>{{ userstory.pk }}</td>
+                    <td>{{ userstory.nombre }}</td>
+                    <td>{{ userstory.duracion_estimada }}</td>
+                    <td>{{ userstory.priorizacion }}</td>
+                    <td>{{ userstory.team_member }}</td>
+                    <td colspan="2">{{ userstory.descripcion }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div>
+            <input type="button" value="Ver P.B." class="btn submit-btn" onclick="">
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function($) {
+        $(".table-row").click(function() {
+            window.document.location = $(this).data("href");
+        });
+    });
+</script>

@@ -1,4 +1,5 @@
-{%include 'header_admin.html'%}
+{%include 'header_admin.html' %}
+<html>
 <div class="container">
     <h1 class="jumbotron head" align="center"> {{ title }} </h1>
     <hr>
@@ -14,20 +15,11 @@
                 <th width="9%">Estado</th>
                 <th width="20%">Descripcion</th>
                 <th width="8%">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-1">
-                        <a href="/proyectos/create/">
-                            <div class="btn new-btn-list">
-                                <span class="glyphicon glyphicon-plus glyphicon-new"></span>
-                            </div>
-                        </a>
-                    </div>
                 </th>
             </tr>
-
         </thead>
         {% for project in object_list %}
-            <tr class="table-row" data-href="{% url 'update_project' project.pk %}">
+            <tr class="table-row" data-href="{% url 'update_ejecucion' project.pk %}">
                 <td>{{ project.id }}</td>
                 <td>{{ project.nombre }}</td>
                 <td>{{ project.fecha_inicio }}</td>
@@ -38,6 +30,7 @@
         {% endfor %}
     </table>
 </div>
+</body>
 <script type="text/javascript">
     $(document).ready(function($) {
         $(".table-row").click(function() {
@@ -45,3 +38,4 @@
         });
     });
 </script>
+</html>

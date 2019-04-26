@@ -1,0 +1,34 @@
+{%include 'header_admin.html'%}
+
+    <div class="container">
+        <h1 class="jumbotron head" align="center"> Product Backlog </h1>
+        <hr>
+    </div>
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="10%">ID</th>
+                    <th width="20%">Nombre</th>
+                    <th width="20%">Duracion Estimada</th>
+                    <th width="20%">Priorizacion</th>
+                    <th width="20%">Estado</th>
+                </tr>
+
+            </thead>
+            {% for userstory in object_list|dictsortreversed:"priorizacion"%}
+                <tr>
+                    <td>{{ userstory.pk }}</td>
+                    <td>{{ userstory.nombre }}</td>
+                    <td>{{ userstory.duracion_estimada }}</td>
+                    <td>{{ userstory.priorizacion }}</td>
+                    <td>{{ userstory.estado }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div>
+            <input type="button" value="Atras" class="btn submit-btn" onclick="window.location='../';">
+        </div>
+    </div>
+</body>
+</html>

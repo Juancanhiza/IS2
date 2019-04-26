@@ -26,5 +26,4 @@ urlpatterns = [
     url(r'^roles/', include('rol.urls')),
     url(r'^$', views.home),
     url(r'^clientes/',include('clientes.urls')),
-    url(r'^tipoUserStory/',include('tipoUserStory.urls')),
 ]

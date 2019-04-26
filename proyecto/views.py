@@ -177,6 +177,17 @@ class OptionsListView(LoginRequiredMixin, ListView):
         return context
 
 @method_decorator(login_required, name='dispatch')
+class EjecucionListView(LoginRequiredMixin, ListView):
+    template_name = 'proyecto/ejecuciones_list.html'
+    model = Proyecto
+    queryset = Proyecto.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ejecuciones de Proyectos"
+        return context
+
+@method_decorator(login_required, name='dispatch')
 class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     template_name = 'proyecto/flujo.html'
     model = Flujo
@@ -420,3 +431,77 @@ class UpdateDetalleProyectoView(LoginRequiredMixin, SuccessMessageMixin, UpdateV
 
     def form_invalid(self, form,proyectodetalle_formset):
         return self.render_to_response(self.get_context_data(form=form, proyectodetalles=proyectodetalle_formset))
+
+
+@method_decorator(login_required, name='dispatch')
+class UpdateProjectView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    template_name = 'proyecto/proyecto.html'
+    model = Proyecto
+    form_class = UpdateProjectForm
+    success_url = '/proyectos/'
+    success_message = 'Los cambios se guardaron correctamente'
+
+    def get(self,request,*args,**kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        detalles = ProyectoDetalle.objects.filter(proyecto=self.object).order_by('pk')
+        detalles_data = []
+        for detalle in detalles:
+            d = {'usuario': detalle.usuario,
+                 'rol': detalle.rol}
+            detalles_data.append(d)
+        ProyectoDetalleFormSet = inlineformset_factory(Proyecto, ProyectoDetalle, form=ProyectoDetalleForm,extra=len(detalles_data))
+        proyectodetalle_orden_formset = ProyectoDetalleFormSet(initial=detalles_data)
+        return self.render_to_response(self.get_context_data(form=form, proyectodetalles=proyectodetalle_orden_formset))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Modificar Proyecto"
+        return context
+
+    def get_object(self, queryset=None):
+        return Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+
+    def get_absolute_url(self):
+        return reverse('update_project', kwargs={'pk_proyecto': self.kwargs['pk_proyecto']})
+
+    def post(self,request,*args,**kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        proyectodetalle_formset = ProyectoDetalleFormSet(request.POST)
+        if form.is_valid() and proyectodetalle_formset.is_valid():
+            return self.form_valid(form,proyectodetalle_formset)
+        else:
+            return self.form_invalid(form,proyectodetalle_formset)
+
+    def form_valid(self, form, proyectodetalle_formset):
+        self.object = form.save()
+        proyectodetalle_formset.instance = self.object
+        ProyectoDetalle.objects.filter(proyecto=self.object).delete()
+        proyectodetalle_formset.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form,proyectodetalle_formset):
+        return self.render_to_response(self.get_context_data(form=form, proyectodetalles=proyectodetalle_formset))
+
+
+@method_decorator(login_required, name='dispatch')
+class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    template_name = 'proyecto/ejecucion.html'
+    model = Proyecto
+    form_class = UpdateProjectForm
+    success_url = '/proyectos/ejecuciones/'
+    success_message = 'Los cambios se guardaron correctamente'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ejecucion de Proyecto"
+        return context
+
+    def get_object(self, queryset=None):
+        return Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+
+    def get_absolute_url(self):
+        return reverse('update_ejecucion', kwargs={'pk_proyecto': self.kwargs['pk_proyecto']})
