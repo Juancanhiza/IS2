@@ -28,4 +28,18 @@ class ProyectoDetalle(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT)
     rol = models.ForeignKey(Rol, on_delete=models.PROTECT)
 
+ESTADOS_FASE = (
+    ('To Do', 'To Do'), # pendiente
+    ('Doing', 'Doing'), # en proceso
+    ('Do','Do'), #terminado
+)
 
+class Flujo(models.Model):
+    proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=20)
+    descripcion = models.TextField()
+
+class Fase(models.Model):
+    flujo = models.ForeignKey(Flujo,on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=20)
+    estado = models.CharField(max_length=25, choices=ESTADOS_FASE, default='To Do')
