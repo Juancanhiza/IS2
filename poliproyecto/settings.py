@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'clientes',
     'tipoUserStory',
     'userstory',
+    'sprint',
 )
 
 MIDDLEWARE = [

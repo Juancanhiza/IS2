@@ -29,6 +29,7 @@ class UserStory(models.Model):
     valor_tecnico = models.PositiveIntegerField(validators=[rango])
     estado = models.PositiveIntegerField( default=PENDIENTE, choices=ESTADOS_US)
     team_member =  models.ForeignKey('usuarios.Usuario', on_delete=models.CASCADE, null=True)
+    sprint = models.ForeignKey('sprint.Sprint', on_delete=models.PROTECT, null=True, blank=True)
     '''tipo user story'''
 
     def __str__(self):

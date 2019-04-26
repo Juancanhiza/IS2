@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 from tipoUserStory.views import *
 from userstory.views import *
+from sprint.views import *
 urlpatterns = [
     #administracion
     url(r'^$', views.ProjectListView.as_view(),name='project_list'),
@@ -18,11 +19,14 @@ urlpatterns = [
     path(route='opciones/<int:pk_proyecto>/tipoUserStory/create/', view=CreateUserStoryTypeView.as_view(), name='create_user_story_type'),
 	path(route='opciones/<int:pk_proyecto>/tipoUserStory/<int:pk>/', view=UpdateUserStoryTypeView.as_view(), name='update_user_story_type'),
     path(route='opciones/<int:pk_proyecto>/asignarRoles/', view=views.UpdateDetalleProyectoView.as_view(), name='update_roles_proyecto'),
-    #ejecuciones
+    #ejecucion
     url(r'^ejecuciones/$', views.EjecucionListView.as_view(), name='options_project'),
     path(route='ejecuciones/<int:pk_proyecto>/', view=views.UpdateEjecucionView.as_view(), name='update_ejecucion'),
     path(route='ejecuciones/<int:pk_proyecto>/userstory/', view=UserStoryListView.as_view(), name='user_story_list'),
     path(route='ejecuciones/<int:pk_proyecto>/userstory/create/', view=CreateUserStoryView.as_view(), name='create_userstory'),
 	path(route='ejecuciones/<int:pk_proyecto>/userstory/<int:pk>/', view=UpdateUserStoryView.as_view(), name='update_userstory'),
     path(route='ejecuciones/<int:pk_proyecto>/productbacklog/',view=ProductBacklogListView.as_view(), name = 'product_backlog'),
+    path(route='ejecuciones/<int:pk_proyecto>/sprint/', view=SprintListView.as_view(), name='sprint_list'),
+    path(route='ejecuciones/<int:pk_proyecto>/sprint/create/', view=CreateSprintView.as_view(), name='create_sprint'),
+	path(route='ejecuciones/<int:pk_proyecto>/sprint/<int:pk>/', view=UpdateSprintView.as_view(), name='update_sprint'),
 ]

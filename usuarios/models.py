@@ -10,7 +10,7 @@ ESTADOS_USUARIO = (
 class Usuario(AbstractUser):
     ''' Implementa la clase de Usuarios, hereda campos de AbstractUser en la que se
     encuentran campos necesarios como Nombre, Apellido, Contraseña, email, '''
-    estado = models.CharField(max_length=8,choices=ESTADOS_USUARIO, default='Activo')
+    estado = models.CharField(max_length=8, choices=ESTADOS_USUARIO, default='Activo')
     ci = models.CharField(max_length=10)
     telefono= models.CharField(max_length=50)
     direccion = models.CharField(max_length=200)
