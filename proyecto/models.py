@@ -12,7 +12,6 @@ ESTADOS_PROYECTO = (
 )
 
 class Proyecto(models.Model):
-    id = models.AutoField
     nombre = models.CharField(max_length=20)
     fecha_inicio = models.DateField('Fecha de Inicio Proyecto')
     fecha_fin = models.DateField('Fecha de Fin Proyecto')
