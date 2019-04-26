@@ -23,7 +23,7 @@ class UserStoryListView(LoginRequiredMixin, ListView):
 class CreateUserStoryView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     template_name = 'userstory/userstory.html'
     model = UserStory
-    success_url = './'
+    success_url = '../'
     form_class = CreateUserStoryForm
     success_message = 'Se ha creado el user story'
 

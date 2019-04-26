@@ -1,36 +1,39 @@
-from django.db import models
-from typing import Any
 from django.core.exceptions import ValidationError
-from django.db.models import IntegerField, Model
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.utils.translation import gettext_lazy as _
+from django.db import models
 
+PENDIENTE = 2
+ASIGNADO = 1
+FINALIZADO = 0
+ESTADOS_US = (
+    (PENDIENTE, 'Pendiente'), # cuando se crea
+    (ASIGNADO, 'Asignado'), # cuando se asigna a un sprint
+    (FINALIZADO,'Finalizado'), # cuando se finaliza
+)
+
+
+def rango(valor):
+    """Validación de rango permitido"""
+    if valor >10 or valor < 0:
+        raise ValidationError('El valor debe estar en 0-10')
 
 class UserStory(models.Model):
+    '''Modelo de User Story'''
+    '''Campos:'''
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
     fecha_inicio = models.DateField('Fecha de inicio del User Story')
     duracion_estimada = models.DurationField()
-    valor_negocio = models.PositiveIntegerField()
-    prioridad = models.PositiveIntegerField()
-    valor_tecnico = models.PositiveIntegerField()
+    valor_negocio = models.PositiveIntegerField(validators=[rango])
+    prioridad = models.PositiveIntegerField(validators=[rango])
+    valor_tecnico = models.PositiveIntegerField(validators=[rango])
+    estado = models.PositiveIntegerField( default=PENDIENTE, choices=ESTADOS_US)
+    team_member =  models.ForeignKey('usuarios.Usuario', on_delete=models.CASCADE, null=True)
     '''tipo user story'''
-    '''team member'''
+
     def __str__(self):
         return self.nombre
-
-    '''def valor_negocio_validacion(self):
-        if self.valor_negocio >10:
-             raise ValidationError('Valor entre 0 y 10')'''
 
     def set_priorizacion(self):
         return (2*self.valor_negocio + self.prioridad + 2*self.valor_tecnico)/4
 
     priorizacion = property(set_priorizacion)
-
-    def validate_even(value):
-        if value > 10:
-            raise ValidationError(
-                _('%(value) debe estar entre 0 y 10'),
-                params={'value': value},
-            )

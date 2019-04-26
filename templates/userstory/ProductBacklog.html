@@ -13,14 +13,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- javascript -->
-    <script type="text/javascript">
-        $(document).ready(function($) {
-            $(".table-row").click(function() {
-                window.document.location = $(this).data("href");
-            });
-        });
-    </script>
 </head>
 <body>
 
@@ -55,22 +47,24 @@
         <hr>
     </div>
     <div class="container">
-        <table class="table table-hover">
+        <table class="table">
             <thead>
                 <tr>
                     <th width="10%">ID</th>
                     <th width="20%">Nombre</th>
                     <th width="20%">Duracion Estimada</th>
                     <th width="20%">Priorizacion</th>
+                    <th width="20%">Estado</th>
                 </tr>
 
             </thead>
             {% for userstory in object_list|dictsortreversed:"priorizacion"%}
-                <tr class="table-row" data-href="#">
+                <tr class="table-row">
                     <td>{{ userstory.pk }}</td>
                     <td>{{ userstory.nombre }}</td>
                     <td>{{ userstory.duracion_estimada }}</td>
                     <td>{{ userstory.priorizacion }}</td>
+                    <td>{{ userstory.estado }}</td>
                 </tr>
             {% endfor %}
         </table>

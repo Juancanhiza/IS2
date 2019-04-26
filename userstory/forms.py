@@ -12,7 +12,9 @@ class CreateUserStoryForm(forms.ModelForm):
                   'duracion_estimada',
                   'valor_negocio',
                   'prioridad',
-                  'valor_tecnico')
+                  'valor_tecnico',
+                  'team_member'
+                  )
 
 class UpdateUserStoryForm(forms.ModelForm):
     fecha_inicio = forms.DateTimeField()
@@ -24,5 +26,6 @@ class UpdateUserStoryForm(forms.ModelForm):
                   'duracion_estimada',
                   'valor_negocio',
                   'prioridad',
-                  'valor_tecnico'
+                  'valor_tecnico',
+                  'team_member'
                   )
