@@ -15,6 +15,7 @@ class Usuario(AbstractUser):
     telefono= models.CharField(max_length=50)
     direccion = models.CharField(max_length=200)
     descripcion = models.TextField()
+    permisos = models.ManyToManyField('rol.Permiso', blank=False)
 
     def __str__(self):
         return self.username
