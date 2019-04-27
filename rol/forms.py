@@ -27,8 +27,18 @@ class CreateRolForm(forms.ModelForm):
 
         }
         widgets = {
-        'permisos': forms.CheckboxSelectMultiple(),
+            'permisos': forms.CheckboxSelectMultiple(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(CreateRolForm, self).__init__(*args, **kwargs)
+        permisos_all = Permiso.objects.filter(tipo=2)
+        p = self.fields['permisos'].widget
+        permisos = []
+        for permiso in permisos_all:
+            permisos.append((permiso.id, permiso.nombre))
+        p.choices = permisos
+
     def clean_permiso(self):
         permisos = self.cleaned_data['permisos']
         try:
@@ -58,6 +68,16 @@ class UpdateRolForm(forms.ModelForm):
         widgets = {
         'permisos': forms.CheckboxSelectMultiple(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateRolForm, self).__init__(*args, **kwargs)
+        permisos_all = Permiso.objects.filter(tipo=2)
+        p = self.fields['permisos'].widget
+        permisos = []
+        for permiso in permisos_all:
+            permisos.append((permiso.id, permiso.nombre))
+        p.choices = permisos
+
     def clean_permiso(self):
         permisos = self.cleaned_data['permisos']
         try:
