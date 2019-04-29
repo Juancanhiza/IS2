@@ -1,13 +1,6 @@
-from django import forms
 from rol.models import *
 from django import forms
-from django.forms import CharField, Form
 
-#class BuscarRol(Form):
-#    """
-#    Formulario para buscar un Rol por nombre
-#    """
-#    Nombre = CharField()
 
 class CreateRolForm(forms.ModelForm):
     """

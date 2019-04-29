@@ -1,5 +1,4 @@
 import unittest
-
 from clientes.models import Cliente
 
 class Test(unittest.TestCase):

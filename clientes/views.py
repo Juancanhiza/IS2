@@ -1,10 +1,6 @@
-from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView
 from .models import Cliente
 from clientes.forms import CreateClientForm, UpdateClientForm
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.http import HttpResponseForbidden
 from django.urls import reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required

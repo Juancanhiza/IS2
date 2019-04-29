@@ -1,4 +1,13 @@
-from django.urls import path
 from django.conf.urls import url
-from . import views
+from django.urls import path
+from .views import *
+
+"""
+URL para el tipo de User Story, crear, listar y modificar
+"""
+urlpatterns = [
+    url(r'^$', UserStoryListView.as_view(), name='user_story_list'),
+    path('create/', view=CreateUserStoryView.as_view(), name='create_userstory'),
+    path('<int:pk>/', view=UpdateUserStoryView.as_view(), name='update_userstory'),
+]
 
