@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>{{ title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--css -->
+	<link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/component.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/normalize.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/home.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/lista.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/registro.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- js-->
+    <script src="{% static '/js/classie.js' %}"></script>
+    <script src="{% static '/js/detail.js' %}"></script>
+    <script src="{% static '/js/gnmenu.js' %}"></script>
+    <script defer src="{% static '/js/fontawesome.js' %}"></script>
+    <script defer src="{% static '/js/brands.js' %}"></script>
+    <script defer src="{% static '/js/solid.js' %}"></script>
+    <script defer src="{% static '/js/regular.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div class="container">
+        <ul id="gn-menu" class="gn-menu-main">
+            <li class="gn-trigger">
+                <a class="gn-icon gn-icon-menu"><span>Menu</span></a>
+                <nav class="gn-menu-wrapper">
+                    <div class="gn-scroller">
+                        <ul class="gn-menu">
+                            <li>
+                                <i class="far fa-address-card" style="width: 60px"></i>Administracion
+                                <ul class="gn-submenu">
+                                    <li><a href="/usuarios/"><i class="fas fa-arrow-right" style="width: 60px"></i>Usuarios</a></li>
+                                    <li><a href="/roles/"><i class="fas fa-arrow-right" style="width: 60px"></i>Roles</a></li>
+                                    <li><a href="/proyectos/"><i class="fas fa-arrow-right" style="width: 60px"></i>Proyectos</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <i class="fas fa-cogs" style="width: 60px"></i>Definicion
+                                <ul class="gn-submenu">
+                                    <li><a href="/clientes/"><i class="fas fa-arrow-right" style="width: 60px"></i>Clientes</a></li>
+                                    <li><a href="/proyectos/opciones/"><i class="fas fa-arrow-right" style="width: 60px"></i>Opciones de Proyecto</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/proyectos/ejecuciones/"><i class="far fa-play-circle" style="width: 60px"></i>Ejecucion</a></li>
+                        </ul>
+                    </div><!-- /gn-scroller -->
+                </nav>
+            </li>
+            <li id="polip"><a href="/">Poliproyectos</a></li>
+            <li id="log-out"><a href="/accounts/logout/"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
+        </ul>
+    </div><!-- /container -->
+    <script>
+        new gnMenu( document.getElementById( 'gn-menu' ) );
+    </script>
+</body>
+</html>

@@ -81,7 +81,7 @@ def login(request, template_name='accounts/login.html',
 
 
 def logout(request, next_page=None,
-           template_name='accounts/logout.html',
+           template_name='accounts/login.html',
            redirect_field_name=REDIRECT_FIELD_NAME,
            current_app=None, extra_context=None):
     """

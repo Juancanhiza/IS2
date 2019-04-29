@@ -1,14 +1,11 @@
-
-/* @import url("https://fonts.googleapis.com/css?family=Sniglet"); */
-@import url("https://fonts.googleapis.com/css?family=Hind+Vadodara");
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
 
 html,body{
-    background-color: mediumturquoise;
+    background-color: #4f7bab !important;;
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
-    /*font-family: "Haley Fiege", sniglet;*/
-    font-family: "Hind Vadodara", indian type foundry;
+    font-family: 'Lato', Arial, sans-serif;
 }
 
 .container{
@@ -31,7 +28,7 @@ background-color: rgba(0,0,0,0.5) !important;
 
 .input-group-prepend span{
 width: 50px;
-background-color: mediumpurple;
+background-color: midnightblue;
 color: black;
 border:0 !important;
 }
@@ -55,14 +52,14 @@ margin-right: 5px;
 }
 
 .login_btn{
-color: aliceblue;
-background-color: mediumpurple;
-width: 115px;
+color: whitesmoke !important;;
+background-color: midnightblue !important;;
+width: 119px;
 }
 
 .login_btn:hover{
-color: black;
-background-color: white;
+color: black !important;;
+background-color: white !important;;
 }
 
 .links{

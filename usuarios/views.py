@@ -25,7 +25,7 @@ class UserListView(LoginRequiredMixin, ListView):
 class CreateUserView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     template_name = 'usuarios/user.html'
     model = Usuario
-    success_url = './'
+    success_url = '/usuarios/'
     form_class = CreateUserForm
     success_message = 'Se ha creado el usuario'
 
@@ -40,7 +40,7 @@ class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'usuarios/user.html'
     model = Usuario
     form_class = UpdateUserForm
-    success_url = './'
+    success_url = '/usuarios/'
     success_message = 'Los cambios se guardaron correctamente'
 
     def get_context_data(self, **kwargs):
