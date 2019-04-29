@@ -1,5 +1,5 @@
 import unittest
-from rol.models import Permiso, Rol
+from rol.models import *
 class Test(unittest.TestCase):
     """
     Test de creacion de Rol vacio

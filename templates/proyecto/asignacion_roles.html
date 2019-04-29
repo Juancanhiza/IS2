@@ -12,7 +12,7 @@
             </div>
             <div class="team-member-title">Team members <hr></div>
             <div class="detalle">
-                {{ proyectodetalles.management_form }}
+                {{ tean_members.management_form }}
                 <table id="tabla_detalle" class="table table-sm scrolltable-team">
                     <thead class="thead-dark">
                         <tr>
@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                         <tbody>
-                            {% for form in proyectodetalles %}
+                            {% for form in team_members %}
                                 <tr>
                                     <td width="45%">
                                       {{ form.usuario }}
@@ -43,13 +43,13 @@
                 <tbody id="empty_form">
                     <tr>
                         <td width="45%">
-                          {{ proyectodetalles.empty_form.usuario }}
+                          {{ team_members.empty_form.usuario }}
                         </td>
                         <td width="40%">
-                            {{ proyectodetalles.empty_form.rol }}
+                            {{ team_members.empty_form.rol }}
                         </td>
                         <td width="15%" id="last-column">
-                            {{ proyectodetalles.empty_form.DELETE }}
+                            {{ team_members.empty_form.DELETE }}
                         </td>
                     </tr>
                 </tbody>

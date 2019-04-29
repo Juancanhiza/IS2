@@ -12,11 +12,9 @@ class Permiso(models.Model):
         return self.nombre
 
 
-
 class Rol(models.Model):
-    id = models.AutoField
-    nombre = models.CharField(max_length=50, unique=True,blank=False, null=False)
-    descripcion = models.CharField(max_length=300)
+    nombre = models.CharField(max_length=50, unique=True, blank=False, null=False)
+    descripcion = models.TextField(blank=True, null=True)
     permisos = models.ManyToManyField('Permiso', blank=False)
 
     def __str__(self):

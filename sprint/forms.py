@@ -1,19 +1,25 @@
 from django import forms
-
 from .models import Sprint
 
+
 class CreateSprintForm(forms.ModelForm):
-    fecha_inicio = forms.DateTimeField()
-    fecha_fin = forms.DateTimeField()
-    duracion = forms.DurationField()
+
     class Meta:
         model = Sprint
-        fields = ('proyecto','nombre', 'fecha_inicio', 'fecha_fin', 'duracion')
+        fields = ('proyecto', 'nombre', 'fecha_ini_estimada', 'fecha_fin_estimada',)
+
+    widgets = {
+        'fecha_ini_estimada': forms.DateField(),
+        'fecha_fin_estimada': forms.DateField()
+    }
+
 
 class UpdateSprintForm(forms.ModelForm):
-    fecha_inicio = forms.DateTimeField()
-    fecha_fin = forms.DateTimeField()
-    duracion = forms.DurationField()
     class Meta:
         model = Sprint
-        fields = ('proyecto','nombre', 'fecha_inicio', 'fecha_fin', 'duracion')
+        fields = ('proyecto','nombre', 'fecha_ini_estimada', 'fecha_fin_estimada',)
+
+    widgets = {
+        'fecha_ini_estimada': forms.DateField(),
+        'fecha_fin_estimada': forms.DateField()
+    }

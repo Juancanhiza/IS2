@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import TipoUserStory
 
 class CreateUserStoryTypeForm(forms.ModelForm):

@@ -7,6 +7,7 @@ class CreateUserForm(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ('username',
+                  'email',
                   'first_name',
                   'last_name',
                   'estado',
@@ -43,6 +44,7 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ('username',
+                  'email',
                   'first_name',
                   'last_name',
                   'estado',

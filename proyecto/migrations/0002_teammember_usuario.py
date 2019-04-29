@@ -10,14 +10,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('proyecto', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('userstory', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='userstory',
-            name='team_member',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name='teammember',
+            name='usuario',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
         ),
     ]
