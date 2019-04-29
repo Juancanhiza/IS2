@@ -1,34 +1,29 @@
-{%include 'header_admin.html'%}
-
-    <div class="container">
-        <h1 class="jumbotron head" align="center"> Product Backlog </h1>
+{%include 'base.html'%}
+<div class="container">
+    <div class="head">
+        <h1 align="center">Product Backlog {{ project.nombre }}</h1>
         <hr>
     </div>
-    <div class="container">
-        <table class="table">
-            <thead>
+    <div class="body">
+        <table class="table table-sm scrolltable" width="100%">
+            <thead class="thead-dark thead">
                 <tr>
                     <th width="10%">ID</th>
-                    <th width="20%">Nombre</th>
-                    <th width="20%">Duracion Estimada</th>
-                    <th width="20%">Priorizacion</th>
-                    <th width="20%">Estado</th>
+                    <th width="45%">Nombre</th>
+                    <th width="24%">Duracion Estimada</th>
+                    <th width="18%">Priorizacion</th>
                 </tr>
-
             </thead>
-            {% for userstory in object_list|dictsortreversed:"priorizacion"%}
-                <tr>
-                    <td>{{ userstory.pk }}</td>
-                    <td>{{ userstory.nombre }}</td>
-                    <td>{{ userstory.duracion_estimada }}</td>
-                    <td>{{ userstory.priorizacion }}</td>
-                    <td>{{ userstory.estado }}</td>
-                </tr>
-            {% endfor %}
+            <tbody class="tbody">
+                {% for us in object_list %}
+                    <tr>
+                        <td width="10%">{{ us.pk }}</td>
+                        <td width="45%">{{ us.nombre }}</td>
+                        <td width="24%">{{ us.duracion_estimada }}</td>
+                        <td width="18%">{{ us.priorizacion }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
-        <div>
-            <input type="button" value="Atras" class="btn submit-btn" onclick="window.location='../';">
-        </div>
     </div>
-</body>
-</html>
+</div>

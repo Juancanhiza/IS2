@@ -37,7 +37,7 @@ class SprintListView(LoginRequiredMixin, ListView):
 class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     template_name = 'sprint/sprint.html'
     model = Sprint
-    success_url = './'
+    success_url = '../'
     form_class = CreateSprintForm
     success_message = 'Se ha creado el sprint'
 
