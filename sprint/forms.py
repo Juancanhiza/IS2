@@ -6,7 +6,7 @@ class CreateSprintForm(forms.ModelForm):
 
     class Meta:
         model = Sprint
-        fields = ('proyecto', 'nombre', 'fecha_ini_estimada', 'fecha_fin_estimada',)
+        fields = ('proyecto', 'nombre', 'fecha_ini_estimada', 'fecha_fin_estimada','estado')
 
     widgets = {
         'fecha_ini_estimada': forms.DateField(),
@@ -17,7 +17,7 @@ class CreateSprintForm(forms.ModelForm):
 class UpdateSprintForm(forms.ModelForm):
     class Meta:
         model = Sprint
-        fields = ('proyecto','nombre', 'fecha_ini_estimada', 'fecha_fin_estimada',)
+        fields = ('proyecto','nombre', 'fecha_ini_estimada', 'fecha_fin_estimada','estado')
 
     widgets = {
         'fecha_ini_estimada': forms.DateField(),

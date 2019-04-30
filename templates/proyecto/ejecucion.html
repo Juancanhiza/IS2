@@ -15,9 +15,32 @@
             <li>
                 <a href="{% url 'product_backlog' object.pk%}">Product Backlog</a>
             </li>
+            <li>
+                {% if sprint_pendiente %}
+                <a href="{% url 'asignar_us' object.pk sprint_pendiente.pk %}">Asignar User Stories</a>
+                {% else %}
+                <a href="#sinSprint" role="button" data-toggle="modal">Asignar User Stories</a>
+                {% endif %}
+            </li>
         </div>
         <br><br><br>
         <hr>
         <br>
+    </div>
+</div>
+<div id="sinSprint" class="modal fade modal-centrado">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">No existe sprint pendiente</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Debe crear un nuevo sprint para asignar User Stories</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn submit-btn" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
     </div>
 </div>

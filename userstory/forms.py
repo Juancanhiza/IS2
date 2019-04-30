@@ -15,6 +15,7 @@ class CreateUserStoryForm(forms.ModelForm):
                   'prioridad',
                   'valor_tecnico',
                   'team_member',
+                  'sprint',
                   )
 
 class UpdateUserStoryForm(forms.ModelForm):
@@ -29,5 +30,6 @@ class UpdateUserStoryForm(forms.ModelForm):
                   'valor_negocio',
                   'prioridad',
                   'valor_tecnico',
-                  'team_member'
+                  'team_member',
+                  'sprint'
                   )

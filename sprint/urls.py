@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^$', SprintListView.as_view(), name='sprint_list'),
     path('create/', view=CreateSprintView.as_view(), name='create_sprint'),
     path('<int:pk>/', view=UpdateSprintView.as_view(), name='update_sprint'),
+    path('<int:pk>/asignarus', view=AsignarUSUpdateView.as_view(), name='asignar_us'),
 ]
