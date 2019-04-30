@@ -42,6 +42,7 @@ class UpdateRolView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_url = '/roles/'
     success_message = 'Los cambios se guardaron correctamente'
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of all the books
