@@ -106,15 +106,17 @@
 <div class="container tablero" id="control-calidad" style="display: none">
     <table class="table table-sm scrolltable-cc" width="100%">
         <thead class="thead-dark">
-            <th width="80%">User Story</th>
+            <th width="30%">Nombre</th>
+            <th width="50%">Descripcion</th>
             <th width="20%" style="padding-left: 2.5em">Acciones</th>
         </thead>
         <tbody>
             {% for us in user_stories %}
                 {% if us.estado_fase == 'Control de Calidad' %}
-                    <td width="80%">{{ us.nombre }}: {{ us.descripcion }}</td>
+                    <td width="30%">{{ us.nombre }}</td>
+                    <td width="50%">{{ us.descripcion }}</td>
                     <td width="20%">
-                        <button type="submit" class="btn btn-danger">No OK</button>
+                        <button type="button" href="#Mover_{{ us.pk }}" data-toggle="modal" class="btn btn-danger">No OK</button>
                         <form method="POST" style="display: inline">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-success">Finalizar</button>
@@ -258,6 +260,33 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="Mover_{{ us.pk }}" class="modal fade">
+    <form method="POST">
+    {% csrf_token %}
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inline; text-align: center">
+                <h4>Mover {{ us.nombre }}
+                <button type="button" style="display: inline" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <label for="id_fase_{{ us.pk }}">Fase: </label>
+                <select name="fase" id="id_fase_{{ us.pk }}">
+                    {% for fase in fases %}
+                        <option value="{{ fase.pk }}">{{ fase.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="us" value="{{ us.pk }}">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Mover</button>
+            </div>
+        </div>
+    </div>
+    </form>
 </div>
 
 {% endfor %}

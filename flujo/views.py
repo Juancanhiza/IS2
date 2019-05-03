@@ -159,10 +159,11 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         return context
 
     def post(self, request, *args, **kwargs):
-        ''' Se guardan los archivos, actividades o notas si lo que se agrega es un adjunto,
-        o se mueve un US al estado siguiente o estado anterior, segun la consulta POST
-        recibida'''
-        print(str(request.POST))
+        ''' En este metodo se guardan los archivos, actividades o notas si lo que se agrega
+        es un adjunto, o se mueve un US al estado siguiente o estado anterior o se mueve el
+        US a una fase especifica si no paso el control de calidad o pasa a finalizado si es
+        que paso el control de calidad, se toma una y solo una de las acciones mecionadas
+        segun la consulta POST recibida'''
         if 'tipo-adjunto' in request.POST.keys():
             if request.POST['tipo-adjunto'] == 'nota':
                 adjunto = GuardarNotaForm(request.POST)
@@ -224,5 +225,11 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             us.fase = None
             us.estado_fase = 'Done'
             us.estado = 0
+            us.save()
+        if 'fase' in request.POST.keys():
+            us = UserStory.objects.get(id=request.POST['us'])
+            fase = Fase.objects.get(id=request.POST['fase'])
+            us.fase = fase
+            us.estado_fase = 'To Do'
             us.save()
         return HttpResponseRedirect('./')
