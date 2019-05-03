@@ -142,10 +142,12 @@
         <tbody>
             {% for us in user_stories %}
                 {% if us.estado == 0 %} <!-- Finalizado -->
-                    <td width="30%">{{ us.nombre }}</td>
-                    <td width="40%">{{ us.descripcion }}</td>
-                    <td width="17%" style="padding-left: 13px;">{{ us.duracion_estimada}}</td>
-                    <td width="13%" style="padding-left: 17px;">{{ us.priorizacion }}</td>
+                    <tr>
+                        <td width="30%">{{ us.nombre }}</td>
+                        <td width="40%">{{ us.descripcion }}</td>
+                        <td width="17%" style="padding-left: 13px;">{{ us.duracion_estimada}}</td>
+                        <td width="13%" style="padding-left: 17px;">{{ us.priorizacion }}</td>
+                    </tr>
                 {% endif %}
             {% endfor %}
         </tbody>
