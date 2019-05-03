@@ -78,3 +78,19 @@ class Archivo(models.Model):
 
     def __str__(self):
         return self.titulo
+
+
+class Actividad(models.Model):
+    """
+        Clase para agregar una actividad a un User Story
+    """
+    """Campos:"""
+    nombre = models.CharField(max_length=20)
+    descripcion = models.TextField()
+    duracion = models.TimeField()
+    usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT, null=True)
+    us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.nombre

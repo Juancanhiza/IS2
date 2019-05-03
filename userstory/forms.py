@@ -62,6 +62,16 @@ class NotaForm(forms.ModelForm):
         fields = ('nota',)
 
 
+class ActividadForm(forms.ModelForm):
+    """
+    Formulario para subir notas al User Story
+    """
+    class Meta:
+        model = Actividad
+        """Campos a ingresar"""
+        fields = ('nombre','descripcion','duracion')
+
+
 class GuardarNotaForm(forms.ModelForm):
     """
     Formulario para subir notas al User Story
@@ -80,3 +90,13 @@ class GuardarArchivoForm(forms.ModelForm):
         model = Archivo
         """Campos a ingresar"""
         fields = ('titulo', 'archivo','us','usuario')
+
+
+class GuardarActividadForm(forms.ModelForm):
+    """
+    Formulario para subir notas al User Story
+    """
+    class Meta:
+        model = Actividad
+        """Campos a ingresar"""
+        fields = ('nombre','descripcion','duracion','us','usuario')

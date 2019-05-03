@@ -148,18 +148,69 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         context['user_stories'] = UserStory.objects.filter(sprint=self.kwargs['sprint_pk'])
         context['nota_form'] = NotaForm()
         context['archivo_form'] = ArchivoForm()
+        context['actividad_form'] = ActividadForm()
         context['notas'] = {}
         context['archivos'] = {}
+        context['actividades'] = {}
         for us in context['user_stories']:
             context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
             context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
+            context['actividades'][us.pk] = Actividad.objects.filter(us=us.pk)
         return context
 
     def post(self, request, *args, **kwargs):
-        if request.POST['tipo-adjunto'] == 'nota':
-            adjunto = GuardarNotaForm(request.POST)
-        if request.POST['tipo-adjunto'] == 'archivo':
-            adjunto = GuardarArchivoForm(request.POST, request.FILES)
-        print(str(adjunto.is_valid()))
-        adjunto.save()
+        ''' Se guardan los archivos, actividades o notas si lo que se agrega es un adjunto,
+        o se mueve un US al estado siguiente o estado anterior, segun la consulta POST
+        recibida'''
+        if 'tipo-adjunto' in request.POST.keys():
+            if request.POST['tipo-adjunto'] == 'nota':
+                adjunto = GuardarNotaForm(request.POST)
+            if request.POST['tipo-adjunto'] == 'archivo':
+                adjunto = GuardarArchivoForm(request.POST, request.FILES)
+            if request.POST['tipo-adjunto'] == 'actividad':
+                adjunto = GuardarActividadForm(request.POST)
+            if adjunto.is_valid():
+                adjunto.save()
+            else:
+                self.render_to_response(self.get_context_data(formulario=adjunto))
+        elif 'siguiente' in request.POST.keys():
+            us = UserStory.objects.get(id=request.POST['siguiente'])
+            if us.estado_fase == 'To Do':
+                us.estado_fase = 'Doing'
+                us.save()
+            elif us.estado_fase == 'Doing':
+                us.estado_fase = "Done"
+                us.save()
+            elif us.estado_fase == 'Done':
+                fases = Fase.objects.filter(flujo=self.kwargs['flujo_pk']).order_by('pk')
+                idx_fase = None
+                pos = -1
+                for f in fases:
+                    pos += 1
+                    if f == us.fase:
+                        idx_fase = pos
+                        break
+                us.fase = fases[idx_fase + 1]
+                us.estado_fase = 'To Do'
+                us.save()
+        elif 'anterior' in request.POST.keys():
+            us = UserStory.objects.get(id=request.POST['anterior'])
+            if us.estado_fase == 'Done':
+                us.estado_fase = 'Doing'
+                us.save()
+            elif us.estado_fase == 'Doing':
+                us.estado_fase = "To Do"
+                us.save()
+            elif us.estado_fase == 'To Do':
+                fases = Fase.objects.filter(flujo=self.kwargs['flujo_pk']).order_by('pk')
+                idx_fase = None
+                pos = -1
+                for f in fases:
+                    pos += 1
+                    if f == us.fase:
+                        idx_fase = pos
+                        break
+                us.fase = fases[idx_fase - 1]
+                us.estado_fase = 'To Do'
+                us.save()
         return HttpResponseRedirect('./')

@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(UserStory)
 admin.site.register(Nota)
 admin.site.register(Archivo)
+admin.site.register(Actividad)
