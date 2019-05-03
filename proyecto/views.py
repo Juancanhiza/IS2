@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from sprint.models import *
+from flujo.models import *
 
 ''' Vistas de proyecto'''
 
@@ -217,6 +218,13 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             context['sprint_pendiente'] = Sprint.objects.get(proyecto=self.kwargs['pk_proyecto'], estado="Pendiente")
         except:
             pass
+        try:
+            context['sprint_actual'] = Sprint.objects.get(proyecto=self.kwargs['pk_proyecto'], estado="En Proceso")
+        except:
+            pass
+        flujos = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
+        context['flujos'] = flujos
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         return context
 
     def get_object(self, queryset=None):

@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import UserStory
+from .models import *
 
 admin.site.register(UserStory)
-# Register your models here.
+admin.site.register(Nota)
+admin.site.register(Archivo)
+admin.site.register(Actividad)

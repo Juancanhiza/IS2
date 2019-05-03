@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from .forms import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from proyecto.models import *
+from sprint.models import *
+from userstory.models import *
+from userstory.forms import *
 
 
 @method_decorator(login_required, name='dispatch')
@@ -123,4 +126,110 @@ class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form,fases_formset):
-        return self.render_to_respose(self.get_context_data(form=form,fases=fases_formset))
+        return self.render_to_response(self.get_context_data(form=form, fases=fases_formset))
+
+
+@method_decorator(login_required, name='dispatch')
+class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
+    template_name = 'flujo/tablero.html'
+
+    def get(self,request,*args,**kwargs):
+        self.object = None
+        usuario = request.user
+        return self.render_to_response(self.get_context_data(usuario=usuario))
+
+    def get_context_data(self, **kwargs):
+        context = super(TableroTemplateView, self).get_context_data(**kwargs)
+        context['title'] = "Tableros de Proyecto"
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        context['sprint_actual'] = Sprint.objects.get(pk=self.kwargs['sprint_pk'])
+        context['flujo'] = Flujo.objects.get(pk=self.kwargs['flujo_pk'])
+        context['fases'] = Fase.objects.filter(flujo=self.kwargs['flujo_pk']).order_by('pk')
+        context['user_stories'] = UserStory.objects.filter(sprint=self.kwargs['sprint_pk'])
+        context['nota_form'] = NotaForm()
+        context['archivo_form'] = ArchivoForm()
+        context['actividad_form'] = ActividadForm()
+        context['notas'] = {}
+        context['archivos'] = {}
+        context['actividades'] = {}
+        for us in context['user_stories']:
+            context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
+            context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
+            context['actividades'][us.pk] = Actividad.objects.filter(us=us.pk)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        ''' En este metodo se guardan los archivos, actividades o notas si lo que se agrega
+        es un adjunto, o se mueve un US al estado siguiente o estado anterior o se mueve el
+        US a una fase especifica si no paso el control de calidad o pasa a finalizado si es
+        que paso el control de calidad, se toma una y solo una de las acciones mecionadas
+        segun la consulta POST recibida'''
+        if 'tipo-adjunto' in request.POST.keys():
+            if request.POST['tipo-adjunto'] == 'nota':
+                adjunto = GuardarNotaForm(request.POST)
+            if request.POST['tipo-adjunto'] == 'archivo':
+                adjunto = GuardarArchivoForm(request.POST, request.FILES)
+            if request.POST['tipo-adjunto'] == 'actividad':
+                adjunto = GuardarActividadForm(request.POST)
+            if adjunto.is_valid():
+                adjunto.save()
+            else:
+                self.render_to_response(self.get_context_data(formulario=adjunto))
+        elif 'siguiente' in request.POST.keys():
+            us = UserStory.objects.get(id=request.POST['siguiente'])
+            if us.estado_fase == 'To Do':
+                us.estado_fase = 'Doing'
+                us.save()
+            elif us.estado_fase == 'Doing':
+                us.estado_fase = "Done"
+                us.save()
+            elif us.estado_fase == 'Done':
+                fases = Fase.objects.filter(flujo=self.kwargs['flujo_pk']).order_by('pk')
+                idx_fase = None
+                pos = -1
+                for f in fases:
+                    pos += 1
+                    if f == us.fase:
+                        idx_fase = pos
+                        break
+                if idx_fase < len(fases) - 1: #no es la ultima fase
+                    us.fase = fases[idx_fase + 1]
+                    us.estado_fase = 'To Do'
+                    us.save()
+                else: #es la ultima fase, pasa a control de calidad
+                    us.fase = None
+                    us.estado_fase = 'Control de Calidad'
+                us.save()
+        if 'anterior' in request.POST.keys():
+            us = UserStory.objects.get(id=request.POST['anterior'])
+            if us.estado_fase == 'Done':
+                us.estado_fase = 'Doing'
+                us.save()
+            elif us.estado_fase == 'Doing':
+                us.estado_fase = "To Do"
+                us.save()
+            elif us.estado_fase == 'To Do':
+                fases = Fase.objects.filter(flujo=self.kwargs['flujo_pk']).order_by('pk')
+                idx_fase = None
+                pos = -1
+                for f in fases:
+                    pos += 1
+                    if f == us.fase:
+                        idx_fase = pos
+                        break
+                us.fase = fases[idx_fase - 1]
+                us.estado_fase = 'To Do'
+                us.save()
+        if 'finalizar' in request.POST.keys():
+            us = UserStory.objects.get(id=request.POST['finalizar'])
+            us.fase = None
+            us.estado_fase = 'Done'
+            us.estado = 0
+            us.save()
+        if 'fase' in request.POST.keys():
+            us = UserStory.objects.get(id=request.POST['us'])
+            fase = Fase.objects.get(id=request.POST['fase'])
+            us.fase = fase
+            us.estado_fase = 'To Do'
+            us.save()
+        return HttpResponseRedirect('./')

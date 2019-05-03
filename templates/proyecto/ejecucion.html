@@ -19,7 +19,14 @@
                 {% if sprint_pendiente %}
                 <a href="{% url 'asignar_us' object.pk sprint_pendiente.pk %}">Asignar User Stories</a>
                 {% else %}
-                <a href="#sinSprint" role="button" data-toggle="modal">Asignar User Stories</a>
+                <a href="#sinSprintPendiente" role="button" data-toggle="modal">Asignar User Stories</a>
+                {% endif %}
+            </li>
+            <li>
+                {% if sprint_actual %}
+                <a href="#tiposTablero" role="button" data-toggle="modal">Ver tableros de sprint actual</a>
+                {% else %}
+                <a href="#sinSprintActual" role="button" data-toggle="modal">Ver tableros de sprint actual</a>
                 {% endif %}
             </li>
         </div>
@@ -28,7 +35,7 @@
         <br>
     </div>
 </div>
-<div id="sinSprint" class="modal fade modal-centrado">
+<div id="sinSprintPendiente" class="modal fade modal-centrado">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -37,6 +44,46 @@
             </div>
             <div class="modal-body">
                 <p>Debe crear un nuevo sprint para asignar User Stories</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn submit-btn" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="sinSprintActual" class="modal fade modal-centrado">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">No existe sprint en proceso</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Debe iniciar un nuevo sprint ver sus tableros</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn submit-btn" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="tiposTablero" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content modal-flujos">
+            <div class="modal-header">
+                <h4 class="modal-title">Tableros de Proyecto</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="options-flujos">
+                    {% for flujo in flujos %}
+                        {% if sprint_actual %}
+                            <li>
+                                <a href="{% url 'tablero' project.pk sprint_actual.pk flujo.pk %}">{{ flujo.nombre }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn submit-btn" data-dismiss="modal">Cerrar</button>
