@@ -162,6 +162,7 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         ''' Se guardan los archivos, actividades o notas si lo que se agrega es un adjunto,
         o se mueve un US al estado siguiente o estado anterior, segun la consulta POST
         recibida'''
+        print(str(request.POST))
         if 'tipo-adjunto' in request.POST.keys():
             if request.POST['tipo-adjunto'] == 'nota':
                 adjunto = GuardarNotaForm(request.POST)
@@ -190,10 +191,15 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     if f == us.fase:
                         idx_fase = pos
                         break
-                us.fase = fases[idx_fase + 1]
-                us.estado_fase = 'To Do'
+                if idx_fase < len(fases) - 1: #no es la ultima fase
+                    us.fase = fases[idx_fase + 1]
+                    us.estado_fase = 'To Do'
+                    us.save()
+                else: #es la ultima fase, pasa a control de calidad
+                    us.fase = None
+                    us.estado_fase = 'Control de Calidad'
                 us.save()
-        elif 'anterior' in request.POST.keys():
+        if 'anterior' in request.POST.keys():
             us = UserStory.objects.get(id=request.POST['anterior'])
             if us.estado_fase == 'Done':
                 us.estado_fase = 'Doing'
@@ -213,4 +219,10 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 us.fase = fases[idx_fase - 1]
                 us.estado_fase = 'To Do'
                 us.save()
+        if 'finalizar' in request.POST.keys():
+            us = UserStory.objects.get(id=request.POST['finalizar'])
+            us.fase = None
+            us.estado_fase = 'Done'
+            us.estado = 0
+            us.save()
         return HttpResponseRedirect('./')

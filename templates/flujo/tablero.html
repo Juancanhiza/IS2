@@ -7,15 +7,17 @@
     <div class="body">
         <div id="contenedor-tablero">
             <div class="container fases" id="selector">
-                {% for fase in fases %}
-                    {% if fase.pk == fases.0.pk %}
-                    <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-light">{{ fase.nombre }}</button>
-                    {% else %}
-                    <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-dark">{{ fase.nombre }}</button>
-                    {% endif %}
-                {% endfor %}
-                <button type="button" class="btn btn-dark">Control de Calidad</button>
-                <button type="button" class="btn btn-dark">Finalizados</button>
+                <div class="fases-dinamicas" style="display: inline;">
+                    {% for fase in fases %}
+                        {% if fase.pk == fases.0.pk %}
+                        <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-light fases-btn">{{ fase.nombre }}</button>
+                        {% else %}
+                        <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-dark fases-btn">{{ fase.nombre }}</button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button type="button" class="btn btn-dark fases-btn" id="cc-btn">Control de Calidad</button>
+                <button type="button" class="btn btn-dark fases-btn" id="finalizados-btn">Finalizados</button>
             </div>
             <div class="container tablero" id="tablero_actual">
                 <div class="row">
@@ -99,6 +101,55 @@
     </div>
 {% endfor %}
 <!-- fin de tableros -->
+
+<!-- control de calidad -->
+<div class="container tablero" id="control-calidad" style="display: none">
+    <table class="table table-sm scrolltable-cc" width="100%">
+        <thead class="thead-dark">
+            <th width="80%">User Story</th>
+            <th width="20%" style="padding-left: 2.5em">Acciones</th>
+        </thead>
+        <tbody>
+            {% for us in user_stories %}
+                {% if us.estado_fase == 'Control de Calidad' %}
+                    <td width="80%">{{ us.nombre }}: {{ us.descripcion }}</td>
+                    <td width="20%">
+                        <button type="submit" class="btn btn-danger">No OK</button>
+                        <form method="POST" style="display: inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success">Finalizar</button>
+                            <input type="hidden" name="finalizar" value="{{ us.pk }}">
+                        </form>
+                    </td>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- fin de control de calidad -->
+
+<!-- finalizados -->
+<div class="container tablero" id="finalizados" style="display: none">
+    <table class="table table-sm scrolltable-cc" width="100%">
+        <thead class="thead-dark">
+            <th width="30%">Nombre</th>
+            <th width="40%">Descripcion</th>
+            <th width="17%">Duracion Estimada</th>
+            <th width="13%">Priorizacion</th>
+        </thead>
+        <tbody>
+            {% for us in user_stories %}
+                {% if us.estado == 0 %} <!-- Finalizado -->
+                    <td width="30%">{{ us.nombre }}</td>
+                    <td width="40%">{{ us.descripcion }}</td>
+                    <td width="17%" style="padding-left: 13px;">{{ us.duracion_estimada}}</td>
+                    <td width="13%" style="padding-left: 17px;">{{ us.priorizacion }}</td>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- fin finalizados
 
 <!-- modales de los us -->
 {% for us in user_stories %}
@@ -238,14 +289,34 @@
 
 <script type="text/javascript">
     $(document).ready(function($) {
-        $('.fases > button').click(function() {
+        $('#finalizados-btn').click(function() {
+            var finalizados =  $('#finalizados').html();
+            var ex_select = document.getElementsByClassName("fases-btn");
+            for (var i=0; i< ex_select.length; i++){
+                 ex_select[i].setAttribute('class','btn btn-dark fases-btn');
+            }
+            document.getElementById(this.id).className = "btn btn-light fases-btn";
+            document.getElementById('tablero_actual').innerHTML = finalizados;
+        });
+
+        $('#cc-btn').click(function() {
+            var cc =  $('#control-calidad').html();
+            var ex_select = document.getElementsByClassName("fases-btn");
+            for (var i=0; i< ex_select.length; i++){
+                 ex_select[i].setAttribute('class','btn btn-dark fases-btn');
+            }
+            document.getElementById(this.id).className = "btn btn-light fases-btn";
+            document.getElementById('tablero_actual').innerHTML = cc;
+        });
+
+        $('.fases-dinamicas > button').click(function() {
             var tablero_id = '#tablero_'.concat(this.value);
             var tablero =  $(tablero_id).html();
-            var ex_select = document.getElementsByClassName("btn-light")
+            var ex_select = document.getElementsByClassName("fases-btn");
             for (var i=0; i< ex_select.length; i++){
-                 ex_select[i].setAttribute('class','btn btn-dark');
+                 ex_select[i].setAttribute('class','btn btn-dark fases-btn');
             }
-            document.getElementById(this.id).className = "btn btn-light";
+            document.getElementById(this.id).className = "btn btn-light fases-btn";
             document.getElementById('tablero_actual').innerHTML = tablero;
         });
 

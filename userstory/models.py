@@ -15,6 +15,7 @@ ESTADOS_EN_FASE = (
     ('To Do', 'To Do'),
     ('Doing', 'Doing'),
     ('Done', 'Done'),
+    ('Control de Calidad', 'Control de Calidad'),
 )
 
 

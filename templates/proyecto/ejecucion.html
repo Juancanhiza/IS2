@@ -77,9 +77,11 @@
             <div class="modal-body">
                 <div class="options-flujos">
                     {% for flujo in flujos %}
-                        <li>
-                            <a href="{% url 'tablero' project.pk sprint_actual.pk flujo.pk %}">{{ flujo.nombre }}</a>
-                        </li>
+                        {% if sprint_actual %}
+                            <li>
+                                <a href="{% url 'tablero' project.pk sprint_actual.pk flujo.pk %}">{{ flujo.nombre }}</a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

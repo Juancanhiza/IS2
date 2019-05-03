@@ -1,3 +1,16 @@
+.scrolltable-cc tbody{
+    background-color: #c6d0da;
+    display: block;
+    height: 417px;
+    overflow-y: scroll;
+}
+
+.scrolltable-cc thead,tbody tr{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
 .change-status{
 	width: 250px!important;;
 }
