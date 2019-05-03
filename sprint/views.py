@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from django.http import HttpResponseRedirect
 from .models import Sprint
 from proyecto.models import Proyecto
@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from userstory.models import UserStory
+from flujo.models import *
 """
 Vista del Login
 """
@@ -72,10 +73,10 @@ class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return context
 
     def get_object(self, queryset=None):
-        return Sprint.objects.get(pk=self.kwargs['pk'])
+        return Sprint.objects.get(pk=self.kwargs['sprint_pk'])
 
     def get_absolute_url(self):
-        return reverse('update_rol', kwargs={'pk': self.kwargs['pk']})
+        return reverse('update_sprint', kwargs={'sprint_pk': self.kwargs['sprint_pk']})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -87,7 +88,7 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
         self.object = None
         self.object_list = UserStory.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
-        sprint = Sprint.objects.get(pk=self.kwargs['pk'])
+        sprint = Sprint.objects.get(pk=self.kwargs['sprint_pk'])
         return self.render_to_response(self.get_context_data(sprint=sprint,project=proyecto, object_list=self.object_list))
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -97,7 +98,7 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
 
     def post(self,request,*args,**kwargs):
         self.object = None
-        sprint = Sprint.objects.get(pk=self.kwargs['pk'])
+        sprint = Sprint.objects.get(pk=self.kwargs['sprint_pk'])
         try:
             user_stories = request.POST.getlist('user_stories')
         except:
@@ -113,6 +114,3 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
             us.sprint = sprint
             us.save()
         return HttpResponseRedirect('../../')
-
-
-

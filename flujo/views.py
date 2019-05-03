@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView
 from .forms import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from proyecto.models import *
+from sprint.models import *
+from userstory.models import *
+from userstory.forms import *
 
 
 @method_decorator(login_required, name='dispatch')
@@ -123,4 +126,37 @@ class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form,fases_formset):
-        return self.render_to_respose(self.get_context_data(form=form,fases=fases_formset))
+        return self.render_to_response(self.get_context_data(form=form, fases=fases_formset))
+
+
+@method_decorator(login_required, name='dispatch')
+class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
+    template_name = 'flujo/tablero.html'
+
+    def get(self,request,*args,**kwargs):
+        self.object = None
+        usuario = request.user
+        return self.render_to_response(self.get_context_data(usuario=usuario))
+
+    def get_context_data(self, **kwargs):
+        context = super(TableroTemplateView, self).get_context_data(**kwargs)
+        context['title'] = "Tableros de Proyecto"
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        context['sprint_actual'] = Sprint.objects.get(pk=self.kwargs['sprint_pk'])
+        context['flujo'] = Flujo.objects.get(pk=self.kwargs['flujo_pk'])
+        context['fases'] = Fase.objects.filter(flujo=self.kwargs['flujo_pk']).order_by('pk')
+        context['user_stories'] = UserStory.objects.filter(sprint=self.kwargs['sprint_pk'])
+        context['nota_form'] = NotaForm()
+        context['notas'] = {}
+        for us in context['user_stories']:
+            context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        print(str(request.user.pk))
+        nota = GuardarNotaForm(request.POST)
+        if nota.is_valid():
+            nota.save()
+        else:
+            return self.render_to_response(self.get_context_data())
+        return HttpResponseRedirect('./')

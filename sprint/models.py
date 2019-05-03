@@ -2,7 +2,7 @@ from django.db import models
 
 ESTADOS_SPRINT = (
     ('Pendiente', 'Pendiente'), # cuando se crea
-    ('Activo', 'Activo'), # cuando se inicia
+    ('En Proceso', 'En Proceso'), # cuando se inicia
     ('Terminado', 'Terminado'),  # cuando finaliza
 )
 

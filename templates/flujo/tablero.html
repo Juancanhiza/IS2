@@ -1,0 +1,194 @@
+{%include 'base.html' %}
+<div class="container">
+    <div class="head-tablero">
+        <h1 align="center">Tablero {{ flujo.nombre }}</h1>
+        <hr>
+    </div>
+    <div class="body">
+        <div id="contenedor-tablero">
+            <div class="container fases" id="selector">
+                {% for fase in fases %}
+                    {% if fase.pk == fases.0.pk %}
+                    <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-light">{{ fase.nombre }}</button>
+                    {% else %}
+                    <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-dark">{{ fase.nombre }}</button>
+                    {% endif %}
+                {% endfor %}
+                <button type="button" class="btn btn-dark">Control de Calidad</button>
+                <button type="button" class="btn btn-dark">Finalizados</button>
+            </div>
+            <div class="container tablero" id="tablero_actual">
+                <div class="row">
+                    <div class="panel kanban-col" id="ToDoCol">To Do
+                        <div class="container us-container">
+                            {% for us in user_stories %}
+                                {% if us.fase == fases.0 and us.estado_fase == 'To Do' %}
+                                    <div class="panel user-story">
+                                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="panel kanban-col" id="DoingCol">Doing
+                         <div class="container us-container">
+                             {% for us in user_stories %}
+                                {% if us.fase == fases.0 and us.estado_fase == 'Doing' %}
+                                    <div class="panel user-story">
+                                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                         </div>
+                    </div>
+                    <div class="panel kanban-col" id="DoneCol">Done
+                         <div class="container us-container">
+                             {% for us in user_stories %}
+                                {% if us.fase == fases.0 and us.estado_fase == 'Done' %}
+                                    <div class="panel user-story">
+                                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- tableros -->
+{% for fase in fases %}
+    <div class="container tablero" id="tablero_{{ fase.pk }}" style="display: none">
+        <div class="row">
+            <div class="panel kanban-col" id="ToDoCol">To Do
+                <div class="container us-container">
+                    {% for us in user_stories %}
+                        {% if us.fase == fase and us.estado_fase == 'To Do' %}
+                            <div class="panel user-story">
+                                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="panel kanban-col" id="DoingCol">Doing
+                 <div class="container us-container">
+                     {% for us in user_stories %}
+                        {% if us.fase == fase and us.estado_fase == 'Doing' %}
+                            <div class="panel user-story">
+                                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                 </div>
+            </div>
+            <div class="panel kanban-col" id="DoneCol">Done
+                 <div class="container us-container">
+                     {% for us in user_stories %}
+                        {% if us.fase == fase and us.estado_fase == 'Done' %}
+                            <div class="panel user-story">
+                                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                 </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<!-- fin de tableros -->
+
+<!-- modal del los us -->
+{% for us in user_stories %}
+<div id="UserStory_{{ us.pk }}" class="modal fade">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content modal-us">
+            <div class="modal-header">
+                <h5 class="modal-title w-100 text-center">{{ us.nombre }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="texto">
+                    <li>
+                        Descripcion: {{ us.descripcion }}
+                    </li>
+                    <li>
+                        Estimacion: {{ us.duracion_estimada }}
+                    </li>
+                    <br>
+                </div>
+                <div class="botones-historial">
+                    <div class="boton-nueva-nota">
+                        <button type="button" value="{{ us.pk }}" class="btn btn-dark">Nueva Nota</button>
+                    </div>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="container" id="formulario-nuevo-{{ us.pk }}">
+                    </div>
+                    <input type='hidden' name='us' value="{{ us.pk }}">
+                    <input type='hidden' name='usuario' value="{{ usuario.pk }}">
+                </form>
+                <hr>
+                <h5 class="w-100 text-center">Historial de US</h5><hr>
+                <div class="container historial-us">
+                    {% for key, notas in notas.items %}
+                        {% if key == us.pk %}
+                            {% for nota in notas %}
+                                {{ nota.nota }}<br>
+                                Autor: {{ nota.usuario }}, {{ nota.fecha }}
+                                <div class="container" style="width: 600px;">
+                                    <hr>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger change-status">
+                    <i class="fas fa-arrow-left"></i>
+                    Mover a estado anterior
+                </button>
+                <button type="button" class="btn btn-success change-status">
+                    Mover a estado siguiente
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!-- fin modal de los us -->
+
+<!-- Formulario nueva nota -->
+<div class="container" id="formulario-nota" style="display: none">
+    <hr>
+    {{ nota_form.as_p }}
+    <button type="button" class="btn btn-danger" style="margin-left: 200px">Cancelar</button>
+    <button type="submit" class="btn btn-success">Guardar</button>
+</div>
+<!-- fin formulario nueva nota -->
+
+<!-- script para cambiar fase seleccionada y tablero segun la fase -->
+<script type="text/javascript">
+    $(document).ready(function($) {
+        $('.fases > button').click(function() {
+            var tablero_id = '#tablero_'.concat(this.value);
+            var tablero =  $(tablero_id).html();
+            var ex_select = document.getElementsByClassName("btn-light")
+            for (var i=0; i< ex_select.length; i++){
+                 ex_select[i].setAttribute('class','btn btn-dark');
+            }
+            document.getElementById(this.id).className = "btn btn-light";
+            document.getElementById('tablero_actual').innerHTML = tablero;
+        });
+
+        $('.boton-nueva-nota > button').click(function() {
+            var formulario  = $('#formulario-nota').html();
+            document.getElementById('formulario-nuevo-'.concat(this.value)).innerHTML = formulario;
+        });
+    });
+</script>
