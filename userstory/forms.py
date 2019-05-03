@@ -42,18 +42,6 @@ class UpdateUserStoryForm(forms.ModelForm):
                   )
 
 
-class ActividadForm(forms.ModelForm):
-    """
-    Formulario para subir archivos al User story
-    """
-    class Meta:
-        model = Actividad
-        fields = ('nombre',
-                  'descripcion',
-                  'duracion',
-                  )
-
-
 class ArchivoForm(forms.ModelForm):
     """
     Formulario para subir archivos al User Story
@@ -81,4 +69,14 @@ class GuardarNotaForm(forms.ModelForm):
     class Meta:
         model = Nota
         """Campos a ingresar"""
-        fields = ('us','usuario','nota',)
+        fields = ('us', 'usuario', 'nota',)
+
+
+class GuardarArchivoForm(forms.ModelForm):
+    """
+    Formulario para subir archivos al User Story
+    """
+    class Meta:
+        model = Archivo
+        """Campos a ingresar"""
+        fields = ('titulo', 'archivo','us','usuario')

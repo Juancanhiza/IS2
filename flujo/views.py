@@ -147,16 +147,19 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         context['fases'] = Fase.objects.filter(flujo=self.kwargs['flujo_pk']).order_by('pk')
         context['user_stories'] = UserStory.objects.filter(sprint=self.kwargs['sprint_pk'])
         context['nota_form'] = NotaForm()
+        context['archivo_form'] = ArchivoForm()
         context['notas'] = {}
+        context['archivos'] = {}
         for us in context['user_stories']:
             context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
+            context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
         return context
 
     def post(self, request, *args, **kwargs):
-        print(str(request.user.pk))
-        nota = GuardarNotaForm(request.POST)
-        if nota.is_valid():
-            nota.save()
-        else:
-            return self.render_to_response(self.get_context_data())
+        if request.POST['tipo-adjunto'] == 'nota':
+            adjunto = GuardarNotaForm(request.POST)
+        if request.POST['tipo-adjunto'] == 'archivo':
+            adjunto = GuardarArchivoForm(request.POST, request.FILES)
+        print(str(adjunto.is_valid()))
+        adjunto.save()
         return HttpResponseRedirect('./')

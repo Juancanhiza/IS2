@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from poliproyecto import settings
 
 PENDIENTE = 2
 ASIGNADO = 1
@@ -50,17 +51,6 @@ class UserStory(models.Model):
     priorizacion = property(set_priorizacion)
 
 
-class Actividad(models.Model):
-    nombre = models.CharField(max_length=20)
-    descripcion = models.TextField()
-    duracion = models.TimeField()
-    fecha = models.DateTimeField(auto_now_add=True)
-    usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT, null=True)
-
-    def __str__(self):
-        return self.nombre
-
-
 class Nota(models.Model):
     """
         Clase para adjuntar una nota a un US
@@ -77,8 +67,8 @@ class Nota(models.Model):
 
 class Archivo(models.Model):
     """
-           Clase para adjuntar un archivo a un US
-       """
+        Clase para adjuntar un archivo a un US
+    """
     """Campos:"""
     titulo = models.CharField(max_length=255, blank=True)
     archivo = models.FileField(upload_to='')

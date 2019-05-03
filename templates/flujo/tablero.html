@@ -100,7 +100,7 @@
 {% endfor %}
 <!-- fin de tableros -->
 
-<!-- modal del los us -->
+<!-- modales de los us -->
 {% for us in user_stories %}
 <div id="UserStory_{{ us.pk }}" class="modal fade">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -120,25 +120,42 @@
                     <br>
                 </div>
                 <div class="botones-historial">
-                    <div class="boton-nueva-nota">
-                        <button type="button" value="{{ us.pk }}" class="btn btn-dark">Nueva Nota</button>
-                    </div>
+                    <button type="button" value="{{ us.pk }}" class="btn btn-dark add-nota">Agregar Nota</button>
+                    <button type="button" value="{{ us.pk }}" class="btn btn-dark add-archivo">Agregar Archivo</button>
                 </div>
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="container" id="formulario-nuevo-{{ us.pk }}">
                     </div>
+                    <button type="button" id="cancelar-{{ us.pk }}" value="{{ us.pk }}" class="btn btn-danger cancelar-form" style="margin-left: 200px;display: none;">Cancelar</button>
+                    <button type="submit" id="guardar-{{ us.pk }}" value="{{ us.pk }}" class="btn btn-success" style="display: none">Guardar</button>
                     <input type='hidden' name='us' value="{{ us.pk }}">
                     <input type='hidden' name='usuario' value="{{ usuario.pk }}">
                 </form>
                 <hr>
-                <h5 class="w-100 text-center">Historial de US</h5><hr>
-                <div class="container historial-us">
+                <h5 class="w-100 text-center">Historial de US:
+                <button type="button" id="notas-btn-{{ us.pk }}" value="{{ us.pk }}" class="btn btn-light notas-btn">Notas</button>
+                <button type="button" id="archivos-btn-{{ us.pk }}" value="{{ us.pk }}" class="btn btn-dark archivos-btn">Archivos</button>
+                </h5><hr>
+                <div class="container" id="notas-us-{{ us.pk }}">
                     {% for key, notas in notas.items %}
                         {% if key == us.pk %}
                             {% for nota in notas %}
                                 {{ nota.nota }}<br>
                                 Autor: {{ nota.usuario }}, {{ nota.fecha }}
+                                <div class="container" style="width: 600px;">
+                                    <hr>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="container" id="archivos-us-{{ us.pk }}" style="display: none">
+                    {% for key, archivos in archivos.items %}
+                        {% if key == us.pk %}
+                            {% for archivo in archivos %}
+                                {{ archivo.titulo }}: <a href="/media/{{ archivo.nombre }}">{{ archivo.archivo }}</a><br>
+                                Autor: {{ archivo.usuario }}, {{ archivo.fecha }}
                                 <div class="container" style="width: 600px;">
                                     <hr>
                                 </div>
@@ -160,19 +177,26 @@
         </div>
     </div>
 </div>
+
 {% endfor %}
 <!-- fin modal de los us -->
 
-<!-- Formulario nueva nota -->
+<!--formulario de nota -->
 <div class="container" id="formulario-nota" style="display: none">
     <hr>
     {{ nota_form.as_p }}
-    <button type="button" class="btn btn-danger" style="margin-left: 200px">Cancelar</button>
-    <button type="submit" class="btn btn-success">Guardar</button>
+    <input type="hidden" name="tipo-adjunto" value="nota">
 </div>
-<!-- fin formulario nueva nota -->
+<!-- fin formulario de nota -->
 
-<!-- script para cambiar fase seleccionada y tablero segun la fase -->
+<!--formulario de nota -->
+<div class="container" id="formulario-archivo" style="display: none">
+    <hr>
+    {{ archivo_form.as_p }}
+    <input type="hidden" name="tipo-adjunto" value="archivo">
+</div>
+<!-- fin formulario de nota -->
+
 <script type="text/javascript">
     $(document).ready(function($) {
         $('.fases > button').click(function() {
@@ -186,9 +210,37 @@
             document.getElementById('tablero_actual').innerHTML = tablero;
         });
 
-        $('.boton-nueva-nota > button').click(function() {
-            var formulario  = $('#formulario-nota').html();
-            document.getElementById('formulario-nuevo-'.concat(this.value)).innerHTML = formulario;
+        $('.add-nota').click(function() {
+            var nota  = $('#formulario-nota').html();
+            document.getElementById('formulario-nuevo-'.concat(this.value)).innerHTML = nota;
+            document.getElementById('guardar-'.concat(this.value)).style.display = "inline";
+            document.getElementById('cancelar-'.concat(this.value)).style.display = "inline";
+        });
+
+        $('.add-archivo').click(function() {
+            var archivo  = $('#formulario-archivo').html();
+            document.getElementById('formulario-nuevo-'.concat(this.value)).innerHTML = archivo;
+            document.getElementById('guardar-'.concat(this.value)).style.display = "inline";
+            document.getElementById('cancelar-'.concat(this.value)).style.display = "inline";
+        });
+
+        $('.cancelar-form').click(function() {
+            document.getElementById('formulario-nuevo-'.concat(this.value)).innerHTML = '';
+            document.getElementById('guardar-'.concat(this.value)).style.display = "none";
+            document.getElementById('cancelar-'.concat(this.value)).style.display = "none";
+        });
+
+        $('.notas-btn').click(function() {
+            document.getElementById('archivos-btn-'.concat(this.value)).setAttribute('class','btn btn-dark');
+            document.getElementById('notas-btn-'.concat(this.value)).setAttribute('class','btn btn-light')
+            document.getElementById('notas-us-'.concat(this.value)).style.display = "block";
+            document.getElementById('archivos-us-'.concat(this.value)).style.display = "none";
+        });
+        $('.archivos-btn').click(function() {
+            document.getElementById('notas-btn-'.concat(this.value)).setAttribute('class','btn btn-dark');
+            document.getElementById('archivos-btn-'.concat(this.value)).setAttribute('class','btn btn-light')
+            document.getElementById('archivos-us-'.concat(this.value)).style.display = "block";
+            document.getElementById('notas-us-'.concat(this.value)).style.display = "none";
         });
     });
 </script>
