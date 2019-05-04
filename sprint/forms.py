@@ -8,10 +8,9 @@ class CreateSprintForm(forms.ModelForm):
         model = Sprint
         fields = ('proyecto', 'nombre', 'fecha_ini_estimada', 'fecha_fin_estimada','estado')
 
-    widgets = {
-        'fecha_ini_estimada': forms.DateField(),
-        'fecha_fin_estimada': forms.DateField()
-    }
+        widgets = {
+            'proyecto': forms.HiddenInput(),
+        }
 
 
 class UpdateSprintForm(forms.ModelForm):
@@ -19,7 +18,6 @@ class UpdateSprintForm(forms.ModelForm):
         model = Sprint
         fields = ('proyecto','nombre', 'fecha_ini_estimada', 'fecha_fin_estimada','estado')
 
-    widgets = {
-        'fecha_ini_estimada': forms.DateField(),
-        'fecha_fin_estimada': forms.DateField()
-    }
+        widgets = {
+            'proyecto': forms.HiddenInput(),
+        }

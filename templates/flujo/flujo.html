@@ -3,6 +3,7 @@
     <div class="head">
         <h1 align="center"> {{ title }} </h1>
         <hr>
+        <h3 style="text-align: center">Proyecto: {{ project.nombre }}</h3>
     </div>
     <div class="register">
         <form method="POST">
@@ -13,6 +14,9 @@
             <div class="team-member-title">Fases<hr></div>
             <div class="detalle">
                 {{ fases.management_form }}
+                {% if fs_error %}
+                    <p style="color: red">{{ fs_error }}</p>
+                {% endif %}
                 <table id="tabla_detalle" class="table table-sm scrolltable-team">
                     <thead class="thead-dark">
                         <tr>

@@ -6,19 +6,21 @@ from .models import *
 class CreateFlujoForm(forms.ModelForm):
     class Meta:
         model = Flujo
-        fields = ('nombre','proyecto','descripcion')
-    widgets = {
-        'proyecto': forms.HiddenInput()
-    }
+        fields = ('proyecto','nombre','descripcion')
+
+    def __init__(self, *args, **kwargs):
+        super(CreateFlujoForm, self).__init__(*args, **kwargs)
+        self.fields['proyecto'].widget = forms.HiddenInput()
 
 
 class UpdateFlujoForm(forms.ModelForm):
     class Meta:
         model = Flujo
-        fields = ('nombre','proyecto','descripcion')
-    widgets = {
-        'proyecto': forms.HiddenInput()
-    }
+        fields = ('proyecto','nombre','descripcion')
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateFlujoForm, self).__init__(*args, **kwargs)
+        self.fields['proyecto'].widget = forms.HiddenInput()
 
 
 class FaseForm(forms.ModelForm):
@@ -28,4 +30,23 @@ class FaseForm(forms.ModelForm):
         fields = ('nombre',)
 
 
-FaseFormSet = inlineformset_factory(Flujo, Fase, form=FaseForm, extra=1)
+BaseFaseFormSet = inlineformset_factory(Flujo, Fase, form=FaseForm, extra=1)
+
+class FaseFormSet(BaseFaseFormSet):
+
+    def is_valid(self):
+        super(FaseFormSet,self).is_valid()
+        """Retorna verdadero si existe al menos un formulario dentro del formset ytodos los
+        formularios en el formset tienen nombre, en caso contrario retorna falso"""
+        self.vacio = False
+        self.sin_nombre = False
+        if not self.forms:
+            self.vacio = True
+            return False
+        for form in self.forms:
+            if not str(form['nombre'].value()).strip():
+                self.sin_nombre = True
+                return False
+        if not self.is_bound:
+            return False
+        return True

@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from userstory.models import UserStory
-from flujo.models import *
+from django.contrib import messages
 """
 Vista del Login
 """
@@ -23,6 +23,10 @@ class SprintListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Sprints de Proyecto"
+        try:
+            context['sprint_pendiente'] = Sprint.objects.get(proyecto=self.kwargs['pk_proyecto'],estado='Pendiente')
+        except:
+            pass
         return context
 
     def get(self,request,*args,**kwargs):
@@ -54,8 +58,11 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 
     def get_context_data(self, **kwargs):
+        self.object = None
         context = super().get_context_data(**kwargs)
         context['title'] = "Crear Sprint"
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        context['obs'] = "Los sprints se crean por defecto en estado Pendiente, deben iniciarse manualmente"
         return context
 
 
@@ -70,6 +77,7 @@ class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Modificar Sprint"
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         return context
 
     def get_object(self, queryset=None):

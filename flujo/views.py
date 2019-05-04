@@ -35,7 +35,7 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'flujo/flujo.html'
     model = Flujo
     success_url = '../'
-    form_class = CreateFlujoForm
+    form_class = UpdateFlujoForm
     success_message = 'Se ha modificado el flujo'
 
     def get(self,request,*args,**kwargs):
@@ -53,14 +53,12 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['title'] = "Modificar Flujo"
         return context
 
     def get_object(self, queryset=None):
         return Flujo.objects.get(pk=self.kwargs['pk'])
-
-    def get_absolute_url(self):
-        return reverse('update_project', kwargs={'pk_proyecto': self.kwargs['pk_proyecto']})
 
     def post(self,request,*args,**kwargs):
         self.object = self.get_object()
@@ -68,9 +66,9 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         form = self.get_form(form_class)
         fases_formset = FaseFormSet(request.POST)
         if form.is_valid() and fases_formset.is_valid():
-            return self.form_valid(form,fases_formset)
+            return self.form_valid(form, fases_formset)
         else:
-            return self.form_invalid(form,fases_formset)
+            return self.form_invalid(form, fases_formset)
 
     def form_valid(self, form, fases_formset):
         self.object = form.save()
@@ -80,7 +78,12 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form,fases_formset):
-        return self.render_to_response(self.get_context_data(form=form, fases=fases_formset))
+        fs_error = None
+        if fases_formset.vacio:
+            fs_error = "El flujo debe tener al menos una fase"
+        if fases_formset.sin_nombre:
+            fs_error = "Las fases deben tener un nombre"
+        return self.render_to_response(self.get_context_data(fs_error=fs_error, form=form, fases=fases_formset))
 
 
 @method_decorator(login_required, name='dispatch')
@@ -106,6 +109,7 @@ class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateFlujoView,self).get_context_data(**kwargs)
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['title'] = "Crear Flujo"
         return context
 
@@ -126,7 +130,12 @@ class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form,fases_formset):
-        return self.render_to_response(self.get_context_data(form=form, fases=fases_formset))
+        fs_error = None
+        if fases_formset.vacio:
+            fs_error = "El flujo debe tener al menos una fase"
+        if fases_formset.sin_nombre:
+            fs_error = "Las fases deben tener un nombre"
+        return self.render_to_response(self.get_context_data(fs_error=fs_error, form=form, fases=fases_formset))
 
 
 @method_decorator(login_required, name='dispatch')
