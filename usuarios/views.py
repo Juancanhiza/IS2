@@ -1,7 +1,5 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Usuario
 from .forms import *
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -53,3 +51,17 @@ class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_absolute_url(self):
         return reverse('update_user', kwargs={'pk': self.kwargs['pk']})
+
+
+@method_decorator(login_required, name='dispatch')
+class VerUserDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = Usuario
+    template_name = 'usuarios/ver_user.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Usuario"
+        return context
+
+    def get_object(self, queryset=None):
+        return Usuario.objects.get(pk=self.kwargs['pk'])
