@@ -37,7 +37,9 @@ class CreateUserForm(forms.ModelForm):
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
+            self.save_m2m()
         return user
+
 
 class UpdateUserForm(forms.ModelForm):
 
@@ -66,6 +68,7 @@ class UpdateUserForm(forms.ModelForm):
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()
+            self.save_m2m()
         return user
 
     def __init__(self, *args, **kwargs):

@@ -35,7 +35,7 @@ class CreateRolForm(forms.ModelForm):
     def clean_permiso(self):
         permisos = self.cleaned_data['permisos']
         try:
-            pr = Permiso.objects.get(permisos = permisos)
+            pr = Permiso.objects.get(permisos=permisos)
         except:
             return self.cleaned_data['permisos']
         raise forms.ValidationError('Debe seleccionar al menos uno')
@@ -74,7 +74,7 @@ class UpdateRolForm(forms.ModelForm):
     def clean_permiso(self):
         permisos = self.cleaned_data['permisos']
         try:
-            pr = Permiso.objects.get(permisos = permisos)
+            pr = Permiso.objects.get(permisos=permisos)
         except:
             return self.cleaned_data['permisos']
         raise forms.ValidationError('Debe seleccionar al menos uno')

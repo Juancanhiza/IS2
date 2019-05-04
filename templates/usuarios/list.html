@@ -25,7 +25,7 @@
                         <td width="39%">{{ usuario.first_name }}</td>
                         <td width="10%" id="last-column">{{ usuario.estado }}</td>
                         <td id="acciones" width="8%">
-                            <a><i class="fas fa-eye"></i></a>
+                            <a href="{% url 'ver_user' usuario.pk %}"><i class="fas fa-eye"></i></a>
                             <a href="{% url 'update_user' usuario.pk %}"><i class="fas fa-edit"></i></a>
                         </td>
                         <td width="3%"></td>
