@@ -12,7 +12,13 @@
                     <th width="45%">Nombre</th>
                     <th width="34%">Estado</th>
                     <th width="8%">Acciones</th>
-                    <th width="3%"><a href="./create/"><i class="fas fa-plus-square"></i> </a></th>
+                    <th width="3%">
+                        {% if sprint_pendiente %}
+                        <a href="#SprintPendiente" data-toggle="modal"><i class="fas fa-plus-square"></i> </a>
+                        {% else %}
+                        <a href="./create/"><i class="fas fa-plus-square"></i> </a>
+                        {% endif %}
+                    </th>
                 </tr>
             </thead>
             <tbody class="tbody">
@@ -30,5 +36,22 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
+
+<div id="SprintPendiente" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Ya existe un sprint pendiente</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>No se puede crear un nuevo sprint si ya existe un sprint pendiente</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn submit-btn" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
     </div>
 </div>

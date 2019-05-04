@@ -1,12 +1,13 @@
 from django.views.generic import ListView, CreateView, UpdateView
 from .models import TipoUserStory
+from django.http import HttpResponseRedirect
 from tipoUserStory.forms import CreateUserStoryTypeForm, UpdateUserStoryTypeForm
-from django.urls import reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from proyecto.models import *
+from flujo.models import *
 
 
 @method_decorator(login_required, name='dispatch')
@@ -40,17 +41,40 @@ class CreateUserStoryTypeView(SuccessMessageMixin, LoginRequiredMixin, CreateVie
         obj.proyecto = proyecto
         return obj
 
-    def get(self,request,*args,**kwargs):
-        self.object = self.get_object()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form = CreateUserStoryTypeForm()
+        form.fields["proyecto"].initial = self.kwargs['pk_proyecto']
+        flujos_all = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
+        f = form.fields['flujos'].widget
+        flujos = []
+        for flujo in flujos_all:
+            flujos.append((flujo.id, flujo.nombre))
+        f.choices = flujos
         return self.render_to_response(self.get_context_data(form=form))
 
 
     def get_context_data(self, **kwargs):
+        self.object = None
         context = super().get_context_data(**kwargs)
         context['title'] = "Crear Tipo de User Story"
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = CreateUserStoryTypeForm(request.POST)
+        flujos_all = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
+        f = form.fields['flujos'].widget
+        flujos = []
+        for flujo in flujos_all:
+            flujos.append((flujo.id, flujo.nombre))
+        f.choices = flujos
+        if form.is_valid():
+            form.save()
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+        return HttpResponseRedirect('../')
+
 
 @method_decorator(login_required, name='dispatch')
 class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
@@ -60,13 +84,43 @@ class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateVie
     form_class = UpdateUserStoryTypeForm
     success_message = 'Los cambios se guardaron correctamente'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        initial = {
+            'proyecto': self.object.proyecto.pk,
+            'nombre': self.object.nombre,
+            'descripcion': self.object.nombre,
+            'flujos': self.object.flujos.all
+        }
+        form = UpdateUserStoryTypeForm(initial=initial)
+        flujos_all = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
+        f = form.fields['flujos'].widget
+        flujos = []
+        for flujo in flujos_all:
+            flujos.append((flujo.id, flujo.nombre))
+        f.choices = flujos
+        return self.render_to_response(self.get_context_data(form=form))
+
     def get_context_data(self, **kwargs):
+        self.object = self.get_object()
         context = super().get_context_data(**kwargs)
         context['title'] = "Modificar Tipo de User Story"
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         return context
 
     def get_object(self, queryset=None):
         return TipoUserStory.objects.get(pk=self.kwargs['pk'])
 
-    def get_absolute_url(self):
-        return reverse('update_rol', kwargs={'pk': self.kwargs['pk']})
+    def post(self, request, *args, **kwargs):
+        form = UpdateUserStoryTypeForm(request.POST)
+        flujos_all = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
+        f = form.fields['flujos'].widget
+        flujos = []
+        for flujo in flujos_all:
+            flujos.append((flujo.id, flujo.nombre))
+        f.choices = flujos
+        if form.is_valid():
+            form.save()
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+        return HttpResponseRedirect('../')

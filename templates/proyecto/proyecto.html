@@ -13,6 +13,7 @@
             <div class="team-member-title">Team members<hr></div>
             <div class="detalle">
                 {{ team_members.management_form }}
+                <p style="color: red;">{{ fs_error }}</p>
                 <table id="tabla_detalle" class="table table-sm scrolltable-team">
                     <thead class="thead-dark">
                         <tr>
@@ -57,6 +58,11 @@
             <div class="row">
                 <input type="button" value="Nuevo team member" class="adddetail-btn" id="add_team_member">
             </div>
+            <br>
+            {% if obs %}
+                <li style="margin-left: 2em">{{ obs }}</li>
+            {% endif %}
+            <br>
             <div class="row">
                 <input type="submit" value="Guardar" class="btn submit-btn">
             </div>
@@ -68,9 +74,9 @@
 <script type="text/javascript">
     $(document).ready(function($) {
         $('#add_team_member').click(function() {
-        var form_idx = $('#id_proyectodetalle_set-TOTAL_FORMS').val();
+        var form_idx = $('#id_teammember_set-TOTAL_FORMS').val();
         $('#tabla_detalle > tbody:last-child').append($('#empty_form').html().replace(/__prefix__/g, form_idx));
-        $('#id_proyectodetalle_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+        $('#id_teammember_set-TOTAL_FORMS').val(parseInt(form_idx) + 1);
         });
     });
 </script>

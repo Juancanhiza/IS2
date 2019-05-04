@@ -37,12 +37,12 @@ class CreateProjectView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         team_member_formset = TeamMemberFormSet()
-        return self.render_to_response(
-            self.get_context_data(form=form, team_members=team_member_formset))
+        return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
 
     def get_context_data(self, **kwargs):
         context = super(CreateProjectView, self).get_context_data(**kwargs)
         context['title'] = "Crear Proyecto"
+        context['obs'] = "El proyecto se crea por defecto en estado pendiente, debe iniciar el proyecto manualmente"
         return context
 
     def post(self, request, *args, **kwargs):
@@ -117,7 +117,15 @@ class UpdateProjectView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, team_member_formset):
-        return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
+        if team_member_formset.vacio:
+            fs_error = "Debe ingresar al menos un team member"
+        if team_member_formset.sin_usuario:
+            fs_error = "Debe completar el campo Usuario de todos los team members"
+        if team_member_formset.sin_rol:
+            fs_error = "Debe asignar un rol a todos los team members"
+        if team_member_formset.doble_usuario:
+            fs_error = "El usuario " + team_member_formset.doble_usuario + " se asignó mas de una vez"
+        return self.render_to_response(self.get_context_data(fs_error=fs_error, form=form, team_members=team_member_formset))
 
 
 '''  Vistas de opciones de proyecto '''
@@ -252,13 +260,13 @@ class UpdateTeamMemberView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             d = {'usuario': tm.usuario,
                  'rol': tm.rol}
             tm_data.append(d)
-        TeamMemberFormSet = inlineformset_factory(Proyecto, TeamMember, form=TeamMemberForm,extra=len(tm_data))
+        TeamMemberFormSet = inlineformset_factory(Proyecto, TeamMember, form=TeamMemberForm, extra=len(tm_data))
         team_member_formset = TeamMemberFormSet(initial=tm_data)
         return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Modificar Proyecto"
+        context['title'] = "Asignar Roles"
         return context
 
     def get_object(self, queryset=None):
@@ -285,4 +293,12 @@ class UpdateTeamMemberView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, team_member_formset):
-        return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
+        if team_member_formset.vacio:
+            fs_error = "Debe ingresar al menos un team member"
+        if team_member_formset.sin_usuario:
+            fs_error = "Debe completar el campo Usuario de todos los team members"
+        if team_member_formset.sin_rol:
+            fs_error = "Debe asignar un rol a todos los team members"
+        if team_member_formset.doble_usuario:
+            fs_error = "El usuario " + team_member_formset.doble_usuario + " se asignó mas de una vez"
+        return self.render_to_response(self.get_context_data(fs_error=fs_error, form=form, team_members=team_member_formset))
