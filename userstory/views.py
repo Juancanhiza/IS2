@@ -7,6 +7,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
+from tipoUserStory.models import *
 
 
 @method_decorator(login_required, name='dispatch')
@@ -20,6 +21,7 @@ class UserStoryListView(LoginRequiredMixin, ListView):
         self.object_list = UserStory.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         return self.render_to_response(self.get_context_data(project=proyecto,object_list=self.object_list))
+
 
 @method_decorator(login_required, name='dispatch')
 class CreateUserStoryView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -43,6 +45,12 @@ class CreateUserStoryView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        context['tipos_us'] = TipoUserStory.objects.filter(proyecto=self.kwargs['pk_proyecto'])
+        context['flujos'] = {}
+        for tipo in context['tipos_us']:
+            if tipo.pk not in context['flujos'].keys():
+                context['flujos'][tipo.pk] = tipo.flujos.all
         context['title'] = "Crear User Story"
         return context
 
@@ -57,6 +65,12 @@ class UpdateUserStoryView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        context['tipos_us'] = TipoUserStory.objects.filter(proyecto=self.kwargs['pk_proyecto'])
+        context['flujos'] = {}
+        for tipo in context['tipos_us']:
+            if tipo.pk not in context['flujos'].keys():
+                context['flujos'][tipo.pk] = tipo.flujos.all
         context['title'] = "Modificar User Story"
         return context
 

@@ -9,6 +9,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from sprint.models import *
 from flujo.models import *
+from django.utils import timezone
+from userstory.models import *
 
 ''' Vistas de proyecto'''
 
@@ -219,6 +221,41 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_url = '/proyectos/ejecuciones/'
     success_message = 'Los cambios se guardaron correctamente'
 
+    def post(self, request, *args, **kwargs):
+        print(str(request.POST))
+        #se debe iniciar el proyecto
+        proyecto = self.get_object()
+        if 'iniciar' in request.POST.keys():
+            proyecto.fecha_inicio = timezone.now().today()
+            proyecto.estado = "Activo"
+            proyecto.save()
+        if 'terminar' in request.POST.keys():
+            proyecto.fecha_fin = timezone.now().today()
+            proyecto.estado = "Terminado"
+            proyecto.save()
+        if 'suspender' in request.POST.keys():
+            proyecto.estado = "Suspendido"
+            proyecto.save()
+        if 'cancelar' in request.POST.keys():
+            proyecto.estado = "Cancelado"
+            proyecto.save()
+        if 'reiniciar' in request.POST.keys():
+            proyecto.estado = "Activo"
+            proyecto.save()
+        print(str(request.POST))
+        if 'terminar_sprint' in request.POST.keys():
+            sprint = Sprint.objects.get(pk=request.POST['terminar_sprint'])
+            sprint.estado = 'Terminado'
+            sprint.fecha_fin = timezone.now().today()
+            sprint.save()
+            us_list = UserStory.objects.filter(sprint=sprint.pk)
+            for us in us_list:
+                if us.estado != 0: #terminado
+                    us.estado = 2 #pendiente
+                    us.sprint = None
+                    us.save()
+        return HttpResponseRedirect('./')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Ejecucion de Proyecto"
@@ -237,9 +274,6 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
-
-    def get_absolute_url(self):
-        return reverse('update_ejecucion', kwargs={'pk_proyecto': self.kwargs['pk_proyecto']})
 
 
 @method_decorator(login_required, name='dispatch')

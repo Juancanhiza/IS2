@@ -112,7 +112,9 @@ class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateVie
         return TipoUserStory.objects.get(pk=self.kwargs['pk'])
 
     def post(self, request, *args, **kwargs):
-        form = UpdateUserStoryTypeForm(request.POST)
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
         flujos_all = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         f = form.fields['flujos'].widget
         flujos = []

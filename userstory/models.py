@@ -28,19 +28,19 @@ class UserStory(models.Model):
     '''Modelo de User Story'''
     '''Campos:'''
     estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE, default='To Do')
-    flujo = models.ForeignKey('flujo.Flujo', on_delete=models.PROTECT, null=True)
-    fase = models.ForeignKey('flujo.Fase', on_delete=models.PROTECT, null=True)
-    proyecto = models.ForeignKey('proyecto.Proyecto', on_delete=models.CASCADE, null=True)
+    flujo = models.ForeignKey('flujo.Flujo', on_delete=models.PROTECT)
+    fase = models.ForeignKey('flujo.Fase', on_delete=models.PROTECT, null=True, blank=True)
+    proyecto = models.ForeignKey('proyecto.Proyecto', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
-    fecha_inicio = models.DateField('Fecha de inicio del User Story')
-    duracion_estimada = models.DurationField()
+    fecha_inicio = models.DateField('Fecha de inicio del User Story', null=True, blank=True)
+    duracion_estimada = models.TimeField()
     valor_negocio = models.PositiveIntegerField(validators=[rango])
     prioridad = models.PositiveIntegerField(validators=[rango])
     valor_tecnico = models.PositiveIntegerField(validators=[rango])
     estado = models.PositiveIntegerField(default=PENDIENTE, choices=ESTADOS_US)
-    team_member = models.ForeignKey('usuarios.Usuario', on_delete=models.CASCADE, null=True)
-    tipo_us = models.ForeignKey('tipoUserStory.TipoUserStory', on_delete=models.PROTECT, null=True)
+    team_member = models.ForeignKey('usuarios.Usuario', on_delete=models.CASCADE, blank=True, null=True)
+    tipo_us = models.ForeignKey('tipoUserStory.TipoUserStory', on_delete=models.PROTECT)
     sprint = models.ForeignKey('sprint.Sprint', on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):

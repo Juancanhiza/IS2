@@ -2,44 +2,43 @@ from django import forms
 from .models import *
 
 class CreateUserStoryForm(forms.ModelForm):
-    fecha_inicio= forms.DateTimeField()
     class Meta:
         model = UserStory
         fields = ('proyecto',
                   'nombre',
                   'descripcion',
-                  'fecha_inicio',
                   'duracion_estimada',
                   'valor_negocio',
                   'prioridad',
                   'valor_tecnico',
-                  'team_member',
-                  'sprint',
                   'tipo_us',
                   'flujo',
+                  )
+
+        widgets = {
+            'proyecto': forms.HiddenInput,
+        }
+
+class UpdateUserStoryForm(forms.ModelForm):
+    class Meta:
+        model = UserStory
+        fields = ('proyecto',
+                  'nombre',
+                  'descripcion',
+                  'duracion_estimada',
+                  'valor_negocio',
+                  'prioridad',
+                  'valor_tecnico',
+                  'tipo_us',
+                  'flujo',
+                  'sprint',
                   'fase',
                   'estado_fase'
                   )
 
-class UpdateUserStoryForm(forms.ModelForm):
-    fecha_inicio = forms.DateTimeField()
-    class Meta:
-        model = UserStory
-        fields = ('proyecto',
-                  'nombre',
-                  'descripcion',
-                  'fecha_inicio',
-                  'duracion_estimada',
-                  'valor_negocio',
-                  'prioridad',
-                  'valor_tecnico',
-                  'team_member',
-                  'sprint',
-                  'tipo_us',
-                  'flujo',
-                  'fase',
-                  'estado_fase',
-                  )
+        widgets ={
+            'proyecto': forms.HiddenInput,
+        }
 
 
 class ArchivoForm(forms.ModelForm):
