@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .forms import *
 from proyecto.forms import CreateProjectForm, UpdateProjectForm
 from django.http import HttpResponseRedirect
@@ -65,7 +65,7 @@ class CreateProjectView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form, team_member_formset):
-        return self.render_to_respose(self.get_context_data(form=form, team_members=team_member_formset))
+        return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
 
 
 @method_decorator(login_required, name='dispatch')
@@ -336,3 +336,16 @@ class UpdateTeamMemberView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         if team_member_formset.doble_usuario:
             fs_error = "El usuario " + team_member_formset.doble_usuario + " se asignó mas de una vez"
         return self.render_to_response(self.get_context_data(fs_error=fs_error, form=form, team_members=team_member_formset))
+
+@method_decorator(login_required, name='dispatch')
+class VerProyectoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = Proyecto
+    template_name = 'proyecto/ver_proyecto.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Proyecto"
+        return context
+
+    def get_object(self, queryset=None):
+        return Proyecto.objects.get(pk=self.kwargs['pk'])

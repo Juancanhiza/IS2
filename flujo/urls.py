@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^$', FlujoListView.as_view(), name='update_options_flujo_list'),
     path(route='create/', view=CreateFlujoView.as_view(), name='create_options_flujo'),
     path(route='<int:pk>/', view=UpdateFlujoView.as_view(), name='update_options_flujo'),
+    path(route='ver/<int:pk>/', view=VerFlujoDetailView.as_view(), name='ver_flujo')
 ]

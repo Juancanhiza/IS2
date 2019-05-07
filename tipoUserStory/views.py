@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import TipoUserStory
 from django.http import HttpResponseRedirect
 from tipoUserStory.forms import CreateUserStoryTypeForm, UpdateUserStoryTypeForm
@@ -126,3 +126,16 @@ class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateVie
         else:
             return self.render_to_response(self.get_context_data(form=form))
         return HttpResponseRedirect('../')
+
+@method_decorator(login_required, name='dispatch')
+class VerUserStoryTypeDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = TipoUserStory
+    template_name = 'tipoUserStory/ver_tipoUserStory.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Tipo de User Story"
+        return context
+
+    def get_object(self, queryset=None):
+        return TipoUserStory.objects.get(pk=self.kwargs['pk'])

@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView, DetailView
 from .forms import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -242,3 +242,16 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             us.estado_fase = 'To Do'
             us.save()
         return HttpResponseRedirect('./')
+
+@method_decorator(login_required, name='dispatch')
+class VerFlujoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = Flujo
+    template_name = 'flujo/ver_flujo.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Flujo"
+        return context
+
+    def get_object(self, queryset=None):
+        return Flujo.objects.get(pk=self.kwargs['pk'])

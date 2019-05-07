@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView, DetailView
 from django.http import HttpResponseRedirect
 from .models import Sprint
 from proyecto.models import Proyecto
@@ -122,3 +122,16 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
             us.sprint = sprint
             us.save()
         return HttpResponseRedirect('../../')
+
+@method_decorator(login_required, name='dispatch')
+class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = Sprint
+    template_name = 'sprint/ver_sprint.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Sprint"
+        return context
+
+    def get_object(self, queryset=None):
+        return Sprint.objects.get(pk=self.kwargs['pk'])

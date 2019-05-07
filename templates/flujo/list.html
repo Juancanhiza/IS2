@@ -22,7 +22,7 @@
                         <td width="25%">{{ flujo.nombre }}</td>
                         <td width="54">{{ flujo.descripcion }}</td>
                         <td id="acciones" width="8%">
-                            <a><i class="fas fa-eye"></i></a>
+                            <a href="{% url 'ver_flujo' project.pk flujo.pk %}"><i class="fas fa-eye"></i></a>
                             <a href="{% url 'update_options_flujo' project.pk flujo.pk %}"><i class="fas fa-edit"></i></a>
                         </td>
                         <td width="3%"></td>

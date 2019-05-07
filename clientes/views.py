@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import Cliente
 from clientes.forms import CreateClientForm, UpdateClientForm
 from django.urls import reverse
@@ -53,3 +53,15 @@ class UpdateClientView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     def get_absolute_url(self):
         return reverse('update_client', kwargs={'pk': self.kwargs['pk']})
 
+@method_decorator(login_required, name='dispatch')
+class VerClientDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = Cliente
+    template_name = 'clientes/ver_cliente.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Cliente"
+        return context
+
+    def get_object(self, queryset=None):
+        return Cliente.objects.get(pk=self.kwargs['pk'])
