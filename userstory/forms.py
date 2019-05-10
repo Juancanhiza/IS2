@@ -13,6 +13,7 @@ class CreateUserStoryForm(forms.ModelForm):
                   'valor_tecnico',
                   'tipo_us',
                   'flujo',
+                  'estado',
                   )
 
         widgets = {
