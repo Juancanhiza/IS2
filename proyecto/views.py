@@ -12,10 +12,15 @@ from flujo.models import *
 from django.utils import timezone
 from userstory.models import *
 
-''' Vistas de proyecto'''
+"""
+Vistas del Proyecto
+"""
 
 @method_decorator(login_required, name='dispatch')
 class ProjectListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de Proyectos
+    """
     template_name = 'proyecto/list.html'
     model = Proyecto
     queryset = Proyecto.objects.all()
@@ -28,6 +33,9 @@ class ProjectListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateProjectView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista de la creacion de un nuevo Proyecto
+    """
     template_name = 'proyecto/proyecto.html'
     model = Proyecto
     success_url = '/proyectos/'
@@ -70,6 +78,9 @@ class CreateProjectView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateProjectView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista de la modificacion de un Proyecto
+    """
     template_name = 'proyecto/proyecto.html'
     model = Proyecto
     form_class = UpdateProjectForm
@@ -130,10 +141,15 @@ class UpdateProjectView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return self.render_to_response(self.get_context_data(fs_error=fs_error, form=form, team_members=team_member_formset))
 
 
-'''  Vistas de opciones de proyecto '''
+"""
+Vistas de Opciones de Proyecto
+"""
 
 @method_decorator(login_required, name='dispatch')
 class OptionsListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de opciones para administrar un proyecto existente
+    """
     template_name = 'proyecto/opciones_list.html'
     model = Proyecto
     queryset = Proyecto.objects.all()
@@ -146,6 +162,9 @@ class OptionsListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateOptionsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vistas para modificacion de las opciones de proyecto
+    """
     template_name = 'proyecto/options.html'
     model = Proyecto
     form_class = UpdateProjectForm
@@ -197,12 +216,16 @@ class UpdateOptionsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     def form_invalid(self, form,team_member_formset):
         return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
 
-
-'''vistas de ejecucion'''
+"""
+Vistas de Ejecucion
+"""
 
 
 @method_decorator(login_required, name='dispatch')
 class EjecucionListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de los proyectos en ejecucion
+    """
     template_name = 'proyecto/ejecuciones_list.html'
     model = Proyecto
     queryset = Proyecto.objects.all()
@@ -215,6 +238,9 @@ class EjecucionListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista de las modificaciones de los proyectos en ejecucion
+    """
     template_name = 'proyecto/ejecucion.html'
     model = Proyecto
     form_class = UpdateProjectForm
@@ -278,6 +304,9 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateTeamMemberView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista de la modificacion del TeamMember
+    """
     template_name = 'proyecto/asignacion_roles.html'
     model = Proyecto
     form_class = UpdateProjectForm

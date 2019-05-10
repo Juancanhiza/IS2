@@ -3,7 +3,9 @@ from .models import Usuario
 from rol.models import Permiso
 
 class CreateUserForm(forms.ModelForm):
-
+    """
+    Formulario para la creacion de un  Usuario
+    """
     class Meta:
         model = Usuario
         fields = ('username',
@@ -42,7 +44,9 @@ class CreateUserForm(forms.ModelForm):
 
 
 class UpdateUserForm(forms.ModelForm):
-
+    """
+    Formulario para la modificacion de un Usuario
+    """
     class Meta:
         model = Usuario
         fields = ('username',

@@ -12,6 +12,9 @@ from tipoUserStory.models import *
 
 @method_decorator(login_required, name='dispatch')
 class UserStoryListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de UserStory
+    """
     template_name = 'userstory/list.html'
     model = UserStory
     queryset = UserStory.objects.all()
@@ -25,6 +28,9 @@ class UserStoryListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateUserStoryView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista para la creacion de un User Story
+    """
     template_name = 'userstory/userstory.html'
     model = UserStory
     success_url = '../'
@@ -57,6 +63,9 @@ class CreateUserStoryView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateUserStoryView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista para la modificacion de un User Story
+    """
     template_name = 'userstory/userstory.html'
     model = UserStory
     form_class = UpdateUserStoryForm
@@ -83,6 +92,9 @@ class UpdateUserStoryView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class ProductBacklogListView(LoginRequiredMixin, ListView):
+    """
+    Vista del Product Backlog
+    """
     template_name = 'userstory/ProductBacklog.html'
     model = UserStory
 

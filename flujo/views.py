@@ -14,6 +14,9 @@ from userstory.forms import *
 
 @method_decorator(login_required, name='dispatch')
 class FlujoListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de Flujos
+    """
     template_name = 'flujo/list.html'
     model = Flujo
     queryset = Flujo.objects.all()
@@ -32,6 +35,9 @@ class FlujoListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista para la modificacion de flujo
+    """
     template_name = 'flujo/flujo.html'
     model = Flujo
     success_url = '../'
@@ -88,6 +94,9 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista de la creacion de Flujo
+    """
     template_name = 'flujo/flujo.html'
     model = Flujo
     success_url = '../'
@@ -140,6 +149,9 @@ class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView):
+    """
+    Vista del tablero de los flujos
+    """
     template_name = 'flujo/tablero.html'
 
     def get(self,request,*args,**kwargs):
@@ -168,11 +180,13 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         return context
 
     def post(self, request, *args, **kwargs):
-        ''' En este metodo se guardan los archivos, actividades o notas si lo que se agrega
+        """
+        En este metodo se guardan los archivos, actividades o notas si lo que se agrega
         es un adjunto, o se mueve un US al estado siguiente o estado anterior o se mueve el
         US a una fase especifica si no paso el control de calidad o pasa a finalizado si es
         que paso el control de calidad, se toma una y solo una de las acciones mecionadas
-        segun la consulta POST recibida'''
+        segun la consulta POST recibida
+        """
         if 'tipo-adjunto' in request.POST.keys():
             if request.POST['tipo-adjunto'] == 'nota':
                 adjunto = GuardarNotaForm(request.POST)

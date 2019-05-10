@@ -16,6 +16,9 @@ Vista del Login
 
 @method_decorator(login_required, name='dispatch')
 class SprintListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de Sprints
+    """
     template_name = 'sprint/list.html'
     model = Sprint
     queryset = Sprint.objects.all()
@@ -38,6 +41,9 @@ class SprintListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista para la creacion de un Sprint
+    """
     template_name = 'sprint/sprint.html'
     model = Sprint
     success_url = '../'
@@ -68,6 +74,9 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista para la modificacion de un Sprint
+    """
     template_name = 'sprint/sprint.html'
     model = Sprint
     form_class = UpdateSprintForm
@@ -89,6 +98,9 @@ class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class AsignarUSUpdateView(LoginRequiredMixin, ListView):
+    """
+    Vista para la asignacion de user story
+    """
     template_name = 'sprint/asignar_us.html'
     model = UserStory
 

@@ -2,6 +2,9 @@ from django import forms
 from .models import *
 
 class CreateUserStoryForm(forms.ModelForm):
+    """
+    Formulario de la creacion de User Story
+    """
     class Meta:
         model = UserStory
         fields = ('proyecto',
@@ -20,6 +23,9 @@ class CreateUserStoryForm(forms.ModelForm):
         }
 
 class UpdateUserStoryForm(forms.ModelForm):
+    """
+    Formulario de la modificacion de User Story
+    """
     class Meta:
         model = UserStory
         fields = ('proyecto',
@@ -63,7 +69,7 @@ class NotaForm(forms.ModelForm):
 
 class ActividadForm(forms.ModelForm):
     """
-    Formulario para subir notas al User Story
+    Formulario para agregar actividades al User Story
     """
     class Meta:
         model = Actividad
@@ -73,7 +79,7 @@ class ActividadForm(forms.ModelForm):
 
 class GuardarNotaForm(forms.ModelForm):
     """
-    Formulario para subir notas al User Story
+    Formulario para guardar notas en el user story
     """
     class Meta:
         model = Nota
@@ -83,7 +89,7 @@ class GuardarNotaForm(forms.ModelForm):
 
 class GuardarArchivoForm(forms.ModelForm):
     """
-    Formulario para subir archivos al User Story
+    Formulario para guardar archivos en el User Story
     """
     class Meta:
         model = Archivo
@@ -93,7 +99,7 @@ class GuardarArchivoForm(forms.ModelForm):
 
 class GuardarActividadForm(forms.ModelForm):
     """
-    Formulario para subir notas al User Story
+    Formulario para guardar actividades en el User Story
     """
     class Meta:
         model = Actividad
