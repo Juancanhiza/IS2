@@ -14,7 +14,7 @@
             <li>Flujos:</li>
             <div class="container" style="margin-left: 50px">
                 {% for flujo in object.flujos.all %}
-                    <li>{{ flujo }}</li>
+                    <li>{{ flujo.nombre }}</li>
                 {% endfor %}
             </div>
         </div>

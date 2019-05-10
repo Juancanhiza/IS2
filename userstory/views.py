@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import UserStory
 from proyecto.models import *
 from userstory.forms import CreateUserStoryForm, UpdateUserStoryForm
@@ -79,6 +79,20 @@ class UpdateUserStoryView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_absolute_url(self):
         return reverse('update_userstory', kwargs={'pk': self.kwargs['pk']})
+
+
+@method_decorator(login_required, name='dispatch')
+class VerUserStoryDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = UserStory
+    template_name = 'userstory/ver_userstory.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver UserStory"
+        return context
+
+    def get_object(self, queryset=None):
+        return UserStory.objects.get(pk=self.kwargs['pk'])
 
 
 @method_decorator(login_required, name='dispatch')
