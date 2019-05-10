@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>forms.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>forms.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">inlineformset_factory</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="o">*</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Formulario para la creacion de un nuevo Proyecto</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">CreateProjectForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;nombre&#39;</span><span class="p">,</span> <span class="s1">&#39;fecha_ini_estimada&#39;</span><span class="p">,</span> <span class="s1">&#39;fecha_fin_estimada&#39;</span><span class="p">,</span> <span class="s1">&#39;descripcion&#39;</span><span class="p">)</span>
+
+    <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;fecha_ini_estimada&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">(),</span>
+        <span class="s1">&#39;fecha_fin_estimada&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+    <span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Formulario para la modificacion de un Proyecto</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">UpdateProjectForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Proyecto</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;nombre&#39;</span><span class="p">,</span> <span class="s1">&#39;fecha_ini_estimada&#39;</span><span class="p">,</span> <span class="s1">&#39;fecha_fin_estimada&#39;</span><span class="p">,</span> <span class="s1">&#39;descripcion&#39;</span><span class="p">)</span>
+
+    <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;fecha_ini_estimada&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">(),</span>
+        <span class="s1">&#39;fecha_fin_estimada&#39;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+    <span class="p">}</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>Formulario para la creacion del TeamMember</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">TeamMemberForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">TeamMember</span>
+        <span class="n">exclude</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;usuario&#39;</span><span class="p">,</span> <span class="s1">&#39;rol&#39;</span><span class="p">)</span>
+
+
+<span class="n">BaseTeamMemberFormSet</span> <span class="o">=</span> <span class="n">inlineformset_factory</span><span class="p">(</span><span class="n">Proyecto</span><span class="p">,</span> <span class="n">TeamMember</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">TeamMemberForm</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Formulario para la validacion de los campos del TeamMember</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">TeamMemberFormSet</span><span class="p">(</span><span class="n">BaseTeamMemberFormSet</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>Retorna verdadero si existe al menos un formulario dentro del formset y todos los</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">formularios</span> <span class="n">en</span> <span class="n">el</span> <span class="n">formset</span> <span class="n">tienen</span> <span class="n">usuario</span> <span class="n">y</span> <span class="n">rol</span><span class="p">,</span> <span class="n">en</span> <span class="n">caso</span> <span class="n">contrario</span> <span class="n">retorna</span> <span class="n">falso</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        super(TeamMemberFormSet,self).is_valid()</span>
+<span class="s2">        self.vacio = False</span>
+<span class="s2">        self.sin_usuario = False</span>
+<span class="s2">        self.sin_rol = False</span>
+<span class="s2">        self.doble_usuario = False</span>
+<span class="s2">        if not self.forms:</span>
+<span class="s2">            self.vacio = True</span>
+<span class="s2">            return False</span>
+<span class="s2">        all_delete = True</span>
+<span class="s2">        usuarios = []</span>
+<span class="s2">        for form in self.forms:</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">            if form[&#39;usuario&#39;].value() and not form[&#39;usuario&#39;].value() in usuarios:</span>
+<span class="s2">                usuarios.append(form[&#39;usuario&#39;].value())</span>
+<span class="s2">            elif form[&#39;usuario&#39;].value() and form[&#39;usuario&#39;].value() in usuarios:</span>
+<span class="s2">                if not form[&#39;DELETE&#39;].value():</span>
+<span class="s2">                    self.doble_usuario = Usuario.objects.get(pk=form[&#39;usuario&#39;].value()).username</span>
+<span class="s2">                    return False</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">            if not form[&#39;DELETE&#39;].value():</span>
+<span class="s2">                all_delete = False</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">            if not form[&#39;usuario&#39;].value() and not form[&#39;DELETE&#39;].value():</span>
+<span class="s2">                self.sin_usuario = True</span>
+<span class="s2">                return False</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">            if not form[&#39;rol&#39;].value() and not form[&#39;DELETE&#39;].value():</span>
+<span class="s2">                self.sin_rol = True</span>
+<span class="s2">                return False</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">        if all_delete:</span>
+<span class="s2">            self.vacio=True</span>
+<span class="s2">            return False</span>
+<span class="s2">        return True</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>un usuario solo puede asignarse una vez</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>existe al menos un form que no se elimina, por lo tanto el formset no esta vacio</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>todos los forms deben tener usuario</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>todos los forms deben tener rol</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      <p>si todos los forms se van a eliminar</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

@@ -3,6 +3,11 @@ from django.urls import path
 from . import views
 from userstory.views import *
 
+
+"""
+Definicion de URLs contenidas en proyectos
+"""
+
 urlpatterns = [
     # URLs en el modulo de Administracion
     url(r'^$', views.ProjectListView.as_view(),name='project_list'),

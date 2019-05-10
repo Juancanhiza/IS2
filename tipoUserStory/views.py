@@ -12,6 +12,9 @@ from flujo.models import *
 
 @method_decorator(login_required, name='dispatch')
 class tipoUserStoryListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de Tipos de User Story
+    """
     template_name = 'tipoUserStory/list.html'
     model = TipoUserStory
     queryset = TipoUserStory.objects.all()
@@ -29,6 +32,9 @@ class tipoUserStoryListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateUserStoryTypeView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista para la creacion de un Tipo de User Story
+    """
     template_name = 'tipoUserStory/tipoUserStory.html'
     model = TipoUserStory
     success_url = '../'
@@ -78,6 +84,9 @@ class CreateUserStoryTypeView(SuccessMessageMixin, LoginRequiredMixin, CreateVie
 
 @method_decorator(login_required, name='dispatch')
 class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista para la modificacion de un Tipo de User Story
+    """
     template_name = 'tipoUserStory/tipoUserStory.html'
     model = TipoUserStory
     success_url = '../'

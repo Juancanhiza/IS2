@@ -2,14 +2,31 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from poliproyecto import settings
 
+"""
+Definicion de los estados de User Story
+"""
+
 PENDIENTE = 2
 ASIGNADO = 1
 FINALIZADO = 0
 ESTADOS_US = (
-    (PENDIENTE, 'Pendiente'), # cuando se crea
-    (ASIGNADO, 'Asignado'), # cuando se asigna a un sprint
+    """
+    Perdiente: Cuando se crea
+    """
+    (PENDIENTE, 'Pendiente'),
+    """
+    Asignado: Cuando se asigna a un sprint
+    """
+    (ASIGNADO, 'Asignado'),
+    """
+    Finalizado: Cuando se finaliza
+    """
     (FINALIZADO,'Finalizado'), # cuando se finaliza
 )
+
+"""
+Se definen los estados en fase
+"""
 
 ESTADOS_EN_FASE = (
     ('To Do', 'To Do'),
@@ -18,15 +35,23 @@ ESTADOS_EN_FASE = (
     ('Control de Calidad', 'Control de Calidad'),
 )
 
-
+"""
+Metodo que realiza la validacion del rango permitido para los campos de: Valor de Negocio, Prioridad y Valor tecnico 
+"""
 def rango(valor):
-    """Validación de rango permitido"""
+    """
+    Validación de rango permitido
+    """
     if valor >10 or valor < 0:
         raise ValidationError('El valor debe estar en 0-10')
 
+"""
+Se define el modelo User Story
+"""
 class UserStory(models.Model):
-    '''Modelo de User Story'''
-    '''Campos:'''
+    """
+    Se definen los campos necesarios para el modelo
+    """
     estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE, default='To Do')
     flujo = models.ForeignKey('flujo.Flujo', on_delete=models.PROTECT)
     fase = models.ForeignKey('flujo.Fase', on_delete=models.PROTECT, null=True, blank=True)

@@ -4,7 +4,7 @@ from proyecto.models import Proyecto
 
 class Test(unittest.TestCase):
     """
-    Test para creación de US
+    Test para creacion de US
     """
     def test_creacionUs(self):
         us = UserStory()

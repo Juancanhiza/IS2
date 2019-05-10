@@ -4,6 +4,9 @@ from .models import *
 
 
 class CreateProjectForm(forms.ModelForm):
+    """
+    Formulario para la creacion de un nuevo Proyecto
+    """
     class Meta:
         model = Proyecto
         fields = ('nombre', 'fecha_ini_estimada', 'fecha_fin_estimada', 'descripcion')
@@ -15,6 +18,9 @@ class CreateProjectForm(forms.ModelForm):
 
 
 class UpdateProjectForm(forms.ModelForm):
+    """
+    Formulario para la modificacion de un Proyecto
+    """
     class Meta:
         model = Proyecto
         fields = ('nombre', 'fecha_ini_estimada', 'fecha_fin_estimada', 'descripcion')
@@ -26,6 +32,9 @@ class UpdateProjectForm(forms.ModelForm):
 
 
 class TeamMemberForm(forms.ModelForm):
+    """
+    Formulario para la creacion del TeamMember
+    """
     class Meta:
         model = TeamMember
         exclude = ()
@@ -35,7 +44,9 @@ class TeamMemberForm(forms.ModelForm):
 BaseTeamMemberFormSet = inlineformset_factory(Proyecto, TeamMember, form=TeamMemberForm, extra=1)
 
 class TeamMemberFormSet(BaseTeamMemberFormSet):
-
+    """
+    Formulario para la validacion de los campos del TeamMember
+    """
     def is_valid(self):
         """Retorna verdadero si existe al menos un formulario dentro del formset y todos los
         formularios en el formset tienen usuario y rol, en caso contrario retorna falso"""
