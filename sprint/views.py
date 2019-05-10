@@ -8,7 +8,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from userstory.models import UserStory
+from userstory.models import *
 from django.contrib import messages
 """
 Vista del Login
@@ -132,6 +132,7 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
         for us_id in user_stories:
             us = UserStory.objects.get(pk=us_id)
             us.sprint = sprint
+            us.estado = 1
             us.save()
         return HttpResponseRedirect('../../')
 
