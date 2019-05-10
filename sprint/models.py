@@ -3,18 +3,9 @@ from django.db import models
 Definimos los estados de un Sprint
 """
 ESTADOS_SPRINT = (
-    """
-    Cuando se crea
-    """
     ('Pendiente', 'Pendiente'),
-    """
-    Cuando se inicia
-    """
     ('En Proceso', 'En Proceso'),
-    """
-    Cuando finaliza
-    """
-    ('Terminado', 'Terminado'),
+    ('Terminado', 'Terminado')
 )
 
 

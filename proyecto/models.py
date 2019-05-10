@@ -8,35 +8,15 @@ from usuarios.models import Usuario
 Definimos los estados de un Proyecto
 """
 ESTADOS_PROYECTO = (
-    """
-    Cuando se crea
-    """
     ('Pendiente', 'Pendiente'),
-    """
-    Cuando se inicia
-    """
     ('Activo', 'Activo'),
-    """
-    Cuando se cancela
-    """
     ('Cancelado','Cancelado'),
-    """
-    Cuando se aprueba uno finalizado
-    """
     ('Terminado', 'Terminado'),
-    """
-    Cuando se inactiva el proyecto
-    """
-    ('Suspendido', 'Suspendido'),
+    ('Suspendido', 'Suspendido')
 )
 
-"""
-Definimos el modelo Proyecto
-"""
 class Proyecto(models.Model):
-    """
-    Se definen los campos necesarios para el modelo
-    """
+
     nombre = models.CharField(max_length=20, blank=False, null=False)
     fecha_inicio = models.DateField(blank=True, null=True)
     fecha_fin = models.DateField(blank=True, null=True)
@@ -48,13 +28,7 @@ class Proyecto(models.Model):
     def __str__(self):
         return self.nombre
 
-"""
-Definimos el modelo TeamMember
-"""
 class TeamMember(models.Model):
-    """
-    Se definen los campos necesarios para el modelo
-    """
     proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, null=False, blank=False)
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, blank=False, null=False)
     rol = models.ForeignKey(Rol, on_delete=models.PROTECT, blank=False, null=False)

@@ -10,18 +10,9 @@ PENDIENTE = 2
 ASIGNADO = 1
 FINALIZADO = 0
 ESTADOS_US = (
-    """
-    Perdiente: Cuando se crea
-    """
     (PENDIENTE, 'Pendiente'),
-    """
-    Asignado: Cuando se asigna a un sprint
-    """
     (ASIGNADO, 'Asignado'),
-    """
-    Finalizado: Cuando se finaliza
-    """
-    (FINALIZADO,'Finalizado'), # cuando se finaliza
+    (FINALIZADO,'Finalizado')
 )
 
 """

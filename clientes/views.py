@@ -12,9 +12,9 @@ Vistas necesarias para la administracion de Cliente
 
 @method_decorator(login_required, name='dispatch')
 class ClientListView(LoginRequiredMixin, ListView):
-   """
-   Vista de lista de Clientes
-   """
+    """
+    Vista de lista de Clientes
+    """
     template_name = 'clientes/list.html'
     model = Cliente
     queryset = Cliente.objects.all()
