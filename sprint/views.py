@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView, TemplateView
+from django.views.generic import ListView, CreateView, UpdateView, TemplateView, DetailView
 from django.http import HttpResponseRedirect
 from .models import Sprint
 from proyecto.models import Proyecto
@@ -8,7 +8,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from userstory.models import UserStory
+from userstory.models import *
 from django.contrib import messages
 """
 Vista del Login
@@ -16,6 +16,9 @@ Vista del Login
 
 @method_decorator(login_required, name='dispatch')
 class SprintListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de Sprints
+    """
     template_name = 'sprint/list.html'
     model = Sprint
     queryset = Sprint.objects.all()
@@ -38,6 +41,9 @@ class SprintListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista para la creacion de un Sprint
+    """
     template_name = 'sprint/sprint.html'
     model = Sprint
     success_url = '../'
@@ -68,6 +74,9 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista para la modificacion de un Sprint
+    """
     template_name = 'sprint/sprint.html'
     model = Sprint
     form_class = UpdateSprintForm
@@ -89,6 +98,9 @@ class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class AsignarUSUpdateView(LoginRequiredMixin, ListView):
+    """
+    Vista para la asignacion de user story
+    """
     template_name = 'sprint/asignar_us.html'
     model = UserStory
 
@@ -120,5 +132,19 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
         for us_id in user_stories:
             us = UserStory.objects.get(pk=us_id)
             us.sprint = sprint
+            us.estado = 1
             us.save()
         return HttpResponseRedirect('../../')
+
+@method_decorator(login_required, name='dispatch')
+class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = Sprint
+    template_name = 'sprint/ver_sprint.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Sprint"
+        return context
+
+    def get_object(self, queryset=None):
+        return Sprint.objects.get(pk=self.kwargs['pk'])

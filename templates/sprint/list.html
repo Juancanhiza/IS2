@@ -28,7 +28,7 @@
                         <td width="45%">{{ sprint.nombre }}</td>
                         <td width="34">{{ sprint.estado }}</td>
                         <td id="acciones" width="8%">
-                            <a><i class="fas fa-eye"></i></a>
+                            <a href="{% url 'ver_sprint' project.pk sprint.pk %}"><i class="fas fa-eye"></i></a>
                             <a href="{% url 'update_sprint' project.pk sprint.pk %}"><i class="fas fa-edit"></i></a>
                         </td>
                         <td width="3%"></td>

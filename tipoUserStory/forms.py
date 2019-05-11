@@ -2,6 +2,9 @@ from django import forms
 from .models import TipoUserStory
 
 class CreateUserStoryTypeForm(forms.ModelForm):
+    """
+    Formulario para la creacion de un Tipo de User Story
+    """
     class Meta:
         model = TipoUserStory
         fields = ('proyecto','nombre', 'descripcion','flujos')
@@ -16,6 +19,9 @@ class CreateUserStoryTypeForm(forms.ModelForm):
         self.fields['proyecto'].widget = forms.HiddenInput()
 
 class UpdateUserStoryTypeForm(forms.ModelForm):
+    """
+    Formulario para la modificacion de un Tipo de User Story
+    """
     class Meta:
         model = TipoUserStory
         fields = ('proyecto','nombre', 'descripcion','flujos')

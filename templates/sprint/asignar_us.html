@@ -12,13 +12,14 @@
                     <tr>
                         <th width="8%">Asignar</th>
                         <th width="10%">ID</th>
-                        <th width="40%">Nombre</th>
-                        <th width="24%">Duracion Estimada</th>
+                        <th width="25%">Nombre</th>
+                        <th width="20%">Duracion Estimada</th>
+                        <th width="19%">Estado</th>
                         <th width="18%">Priorizacion</th>
                     </tr>
                 </thead>
                 <tbody class="tbody">
-                    {% for us in object_list %}
+                    {% for us in object_list|dictsortreversed:"priorizacion"|dictsortreversed:"estado"  %}
                         <tr>
                             {% if us.sprint == sprint %}
                                 <td width="8%"><input type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}" checked></td>
@@ -26,14 +27,15 @@
                                 <td width="8%"><input type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}"></td>
                             {% endif %}
                             <td width="10%">{{ us.pk }}</td>
-                            <td width="40%">{{ us.nombre }}</td>
-                            <td width="24%" id="last-column">{{ us.duracion_estimada }}</td>
+                            <td width="25%">{{ us.nombre }}</td>
+                            <td width="20%" id="last-column">{{ us.duracion_estimada }}</td>
+                            <td width="19%">{{ us.get_estado_display }}</td>
                             <td width="18%" id="acciones">{{ us.priorizacion }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <button type="submit" class="btn submit-btn"></button>
+            <button type="submit" class="btn submit-btn">Asignar</button>
         </form>
     </div>
 </div>

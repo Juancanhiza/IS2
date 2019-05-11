@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:sprint_pk>/', view=UpdateSprintView.as_view(), name='update_sprint'),
     path('<int:sprint_pk>/asignarus/', view=AsignarUSUpdateView.as_view(), name='asignar_us'),
     path('<int:sprint_pk>/tableros/<int:flujo_pk>/', view=TableroTemplateView.as_view(), name='tablero'),
+    path(route='ver/<int:pk>/', view=VerSprintDetailView.as_view(), name='ver_sprint')
 ]

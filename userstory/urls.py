@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^$', UserStoryListView.as_view(), name='user_story_list'),
     path('create/', view=CreateUserStoryView.as_view(), name='create_userstory'),
     path('<int:pk>/', view=UpdateUserStoryView.as_view(), name='update_userstory'),
+    path(route='ver/<int:pk>/', view=VerUserStoryDetailView.as_view(), name='ver_userstory')
 ]
 

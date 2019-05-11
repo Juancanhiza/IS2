@@ -9,6 +9,9 @@ from django.urls import reverse
 
 @method_decorator(login_required, name='dispatch')
 class UserListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de Usuarios
+    """
     template_name = 'usuarios/list.html'
     model = Usuario
     queryset = Usuario.objects.all()
@@ -21,6 +24,9 @@ class UserListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateUserView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista para la creacion de un Usuario
+    """
     template_name = 'usuarios/user.html'
     model = Usuario
     success_url = '/usuarios/'
@@ -35,6 +41,9 @@ class CreateUserView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista para la modificacion de un Usuario
+    """
     template_name = 'usuarios/user.html'
     model = Usuario
     form_class = UpdateUserForm
@@ -55,6 +64,9 @@ class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class VerUserDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    """
+    Vista de los detalles de un Usuario
+    """
     model = Usuario
     template_name = 'usuarios/ver_user.html'
 

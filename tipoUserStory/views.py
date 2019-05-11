@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import TipoUserStory
 from django.http import HttpResponseRedirect
 from tipoUserStory.forms import CreateUserStoryTypeForm, UpdateUserStoryTypeForm
@@ -12,6 +12,9 @@ from flujo.models import *
 
 @method_decorator(login_required, name='dispatch')
 class tipoUserStoryListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de Tipos de User Story
+    """
     template_name = 'tipoUserStory/list.html'
     model = TipoUserStory
     queryset = TipoUserStory.objects.all()
@@ -29,6 +32,9 @@ class tipoUserStoryListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateUserStoryTypeView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista para la creacion de un Tipo de User Story
+    """
     template_name = 'tipoUserStory/tipoUserStory.html'
     model = TipoUserStory
     success_url = '../'
@@ -78,6 +84,9 @@ class CreateUserStoryTypeView(SuccessMessageMixin, LoginRequiredMixin, CreateVie
 
 @method_decorator(login_required, name='dispatch')
 class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista para la modificacion de un Tipo de User Story
+    """
     template_name = 'tipoUserStory/tipoUserStory.html'
     model = TipoUserStory
     success_url = '../'
@@ -126,3 +135,16 @@ class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateVie
         else:
             return self.render_to_response(self.get_context_data(form=form))
         return HttpResponseRedirect('../')
+
+@method_decorator(login_required, name='dispatch')
+class VerUserStoryTypeDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = TipoUserStory
+    template_name = 'tipoUserStory/ver_tipoUserStory.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Tipo de User Story"
+        return context
+
+    def get_object(self, queryset=None):
+        return TipoUserStory.objects.get(pk=self.kwargs['pk'])

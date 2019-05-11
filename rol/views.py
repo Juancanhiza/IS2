@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from rol.forms import *
 from django.urls import reverse
 from django.contrib.messages.views import SuccessMessageMixin
@@ -9,6 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 @method_decorator(login_required, name='dispatch')
 class RolListView(LoginRequiredMixin, ListView):
+    """
+    Vista de la lista de Roles
+    """
     template_name = 'rol/list.html'
     model = Rol
     queryset = Rol.objects.all()
@@ -21,6 +24,9 @@ class RolListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateRolView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista para la creacion de un nuevo Rol
+    """
     template_name = 'rol/rol.html'
     model = Rol
     success_url = '/roles/'
@@ -36,6 +42,9 @@ class CreateRolView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateRolView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista para la modificacion de un Rol
+    """
     template_name = 'rol/rol.html'
     model = Rol
     form_class = UpdateRolForm
@@ -54,3 +63,16 @@ class UpdateRolView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_absolute_url(self):
         return reverse('update_rol', kwargs={'pk': self.kwargs['pk']})
+
+@method_decorator(login_required, name='dispatch')
+class VerRolDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = Rol
+    template_name = 'rol/ver_rol.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Rol"
+        return context
+
+    def get_object(self, queryset=None):
+        return Rol.objects.get(pk=self.kwargs['pk'])

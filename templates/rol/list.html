@@ -10,7 +10,7 @@
                 <tr>
                     <th width="10%">ID</th>
                     <th width="25%">Nombre</th>
-                    <th width="54%">Descipcion</th>
+                    <th width="54%">Descripcion</th>
                     <th width="8%">Acciones</th>
                     <th width="3%"><a href="/roles/create/"><i class="fas fa-plus-square"></i> </a></th>
                 </tr>
@@ -22,7 +22,7 @@
                         <td width="25%">{{ rol.nombre }}</td>
                         <td width="54">{{ rol.descripcion }}</td>
                         <td id="acciones" width="8%">
-                            <a><i class="fas fa-eye"></i></a>
+                            <a href="{% url 'ver_rol' rol.pk %}"><i class="fas fa-eye"></i></a>
                             <a href="{% url 'update_rol' rol.pk %}"><i class="fas fa-edit"></i></a>
                         </td>
                         <td width="3%"></td>

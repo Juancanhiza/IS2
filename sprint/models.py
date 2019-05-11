@@ -1,13 +1,21 @@
 from django.db import models
-
+"""
+Definimos los estados de un Sprint
+"""
 ESTADOS_SPRINT = (
-    ('Pendiente', 'Pendiente'), # cuando se crea
-    ('En Proceso', 'En Proceso'), # cuando se inicia
-    ('Terminado', 'Terminado'),  # cuando finaliza
+    ('Pendiente', 'Pendiente'),
+    ('En Proceso', 'En Proceso'),
+    ('Terminado', 'Terminado')
 )
 
 
+"""
+Se define el modelo Sprint
+"""
 class Sprint(models.Model):
+    """
+    Se definen los campos necesarios para el modelo
+    """
     nombre = models.CharField(max_length=20, blank=False, null=False)
     fecha_inicio = models.DateField(blank=True, null=True)
     fecha_fin = models.DateField(blank=True, null=True)

@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import Cliente
 from clientes.forms import CreateClientForm, UpdateClientForm
 from django.urls import reverse
@@ -6,10 +6,15 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+"""
+Vistas necesarias para la administracion de Cliente
+"""
 
 @method_decorator(login_required, name='dispatch')
 class ClientListView(LoginRequiredMixin, ListView):
+    """
+    Vista de lista de Clientes
+    """
     template_name = 'clientes/list.html'
     model = Cliente
     queryset = Cliente.objects.all()
@@ -22,6 +27,9 @@ class ClientListView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class CreateClientView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    """
+    Vista de Creacion de Cliente
+    """
     template_name = 'clientes/cliente.html'
     model = Cliente
     success_url = './'
@@ -36,6 +44,9 @@ class CreateClientView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
 @method_decorator(login_required, name='dispatch')
 class UpdateClientView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    """
+    Vista de Modificacion de Cliente
+    """
     template_name = 'clientes/cliente.html'
     model = Cliente
     form_class = UpdateClientForm
@@ -53,3 +64,15 @@ class UpdateClientView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     def get_absolute_url(self):
         return reverse('update_client', kwargs={'pk': self.kwargs['pk']})
 
+@method_decorator(login_required, name='dispatch')
+class VerClientDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    model = Cliente
+    template_name = 'clientes/ver_cliente.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Ver Cliente"
+        return context
+
+    def get_object(self, queryset=None):
+        return Cliente.objects.get(pk=self.kwargs['pk'])

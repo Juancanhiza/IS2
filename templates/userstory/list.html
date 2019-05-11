@@ -24,7 +24,7 @@
                         <td width="24%">{{ us.duracion_estimada }}</td>
                         <td width="10%">{{ us.priorizacion }}</td>
                         <td id="acciones" width="8%">
-                            <a><i class="fas fa-eye"></i></a>
+                            <a href="{% url 'ver_userstory' project.pk us.pk %}"><i class="fas fa-eye"></i></a>
                             <a href="{% url 'update_userstory' project.pk us.pk %}"><i class="fas fa-edit"></i></a>
                         </td>
                         <td width="3%"></td>

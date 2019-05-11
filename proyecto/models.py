@@ -3,18 +3,20 @@ from django.db import models
 from rol.models import Rol
 from usuarios.models import Usuario
 
-# Create your models here.
 
+"""
+Definimos los estados de un Proyecto
+"""
 ESTADOS_PROYECTO = (
-    ('Pendiente', 'Pendiente'), # cuando se crea
-    ('Activo', 'Activo'), # cuando se inicia
-    ('Cancelado','Cancelado'), # cuando se cancela
-    ('Terminado', 'Terminado'), # cuando se aprueba uno finalizado
-    ('Suspendido', 'Suspendido'), # cuando se inactiva el proyecto
+    ('Pendiente', 'Pendiente'),
+    ('Activo', 'Activo'),
+    ('Cancelado','Cancelado'),
+    ('Terminado', 'Terminado'),
+    ('Suspendido', 'Suspendido')
 )
 
-
 class Proyecto(models.Model):
+
     nombre = models.CharField(max_length=20, blank=False, null=False)
     fecha_inicio = models.DateField(blank=True, null=True)
     fecha_fin = models.DateField(blank=True, null=True)
@@ -25,7 +27,6 @@ class Proyecto(models.Model):
 
     def __str__(self):
         return self.nombre
-
 
 class TeamMember(models.Model):
     proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, null=False, blank=False)
