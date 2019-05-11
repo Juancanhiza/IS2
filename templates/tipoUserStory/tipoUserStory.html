@@ -1,3 +1,4 @@
+{% if 'Modificar Tipos de User Story' in permisos or 'Crear Tipos de User Story' in permisos %}
 {%include 'base.html'%}
 <html>
 <body>
@@ -20,3 +21,6 @@
 </div>
 </body>
 </html>
+{% else %}
+Permiso denegado
+{% endif %}

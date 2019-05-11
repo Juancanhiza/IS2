@@ -1,3 +1,4 @@
+{% if 'Ver Clientes' in permisos %}
 {%include 'base.html'%}
 <div class="container">
     <div class="head">
@@ -12,7 +13,11 @@
                     <th width="45%">Nombre</th>
                     <th width="34%">RUC</th>
                     <th width="8%">Acciones</th>
-                    <th width="3%"><a href="/clientes/create/"><i class="fas fa-plus-square"></i> </a></th>
+                    <th width="3%">
+                        {% if 'Crear Clientes' in permisos %}
+                        <a href="/clientes/create/"><i class="fas fa-plus-square"></i></a>
+                        {% endif %}
+                    </th>
                 </tr>
             </thead>
             <tbody class="tbody">
@@ -23,7 +28,9 @@
                         <td width="34">{{ cliente.ruc }}</td>
                         <td id="acciones" width="8%">
                             <a href="{% url 'ver_cliente' cliente.pk %}"><i class="fas fa-eye"></i></a>
+                            {% if 'Mofificar Clientes' in permisos %}
                             <a href="{% url 'update_client' cliente.pk %}"><i class="fas fa-edit"></i></a>
+                            {% endif %}
                         </td>
                         <td width="3%"></td>
                     </tr>
@@ -32,3 +39,6 @@
         </table>
     </div>
 </div>
+{% else %}
+Permiso denegado
+{% endif %}

@@ -1,3 +1,4 @@
+{% if 'Ver Opciones de Proyecto' in permisos %}
 {%include 'base.html'%}
 <div class="container">
     <div class="head">
@@ -6,18 +7,27 @@
     </div>
     <div class="body">
         <div class="options">
+            {% if 'Ver Flujos' in permisos %}
             <li>
                 <a href="{% url 'update_options_flujo_list' object.pk %}">Flujos</a>
             </li>
+            {% endif %}
+            {% if 'Ver Tipos de User Story' in permisos %}
             <li>
                 <a href="{% url 'user_story_type_list' object.pk %}">Tipos de User Story</a>
             </li>
+            {% endif %}
+            {% if 'Asignar Roles' in permisos %}
             <li>
                 <a href="{% url 'update_roles_proyecto' object.pk %}">Asignacion de Roles</a>
             </li>
+            {% endif %}
         </div>
         <br><br><br>
         <hr>
         <br>
     </div>
 </div>
+{% else %}
+Permiso denegado
+{% endif %}

@@ -22,7 +22,8 @@ class UserStoryListView(LoginRequiredMixin, ListView):
         self.object = None
         self.object_list = UserStory.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
-        return self.render_to_response(self.get_context_data(project=proyecto,object_list=self.object_list))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(project=proyecto,object_list=self.object_list,permisos=permisos))
 
 
 @method_decorator(login_required, name='dispatch')

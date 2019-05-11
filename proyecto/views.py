@@ -25,6 +25,12 @@ class ProjectListView(LoginRequiredMixin, ListView):
     model = Proyecto
     queryset = Proyecto.objects.all()
 
+    def get(self,request,*args,**kwargs):
+        self.object_list = Proyecto.objects.all()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(object_list=self.object_list, permisos=permisos))
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Administración de Proyectos"
@@ -47,7 +53,8 @@ class CreateProjectView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         team_member_formset = TeamMemberFormSet()
-        return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form, team_members=team_member_formset))
 
     def get_context_data(self, **kwargs):
         context = super(CreateProjectView, self).get_context_data(**kwargs)
@@ -99,7 +106,8 @@ class UpdateProjectView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             tm_data.append(d)
         TeamMemberFormSet = inlineformset_factory(Proyecto, TeamMember, form=TeamMemberForm, extra=len(tm_data))
         team_member_formset = TeamMemberFormSet(initial=tm_data)
-        return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form, team_members=team_member_formset))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -154,6 +162,11 @@ class OptionsListView(LoginRequiredMixin, ListView):
     model = Proyecto
     queryset = Proyecto.objects.all()
 
+    def get(self,request,*args,**kwargs):
+        self.object_list = Proyecto.objects.all()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(object_list=self.object_list, permisos=permisos))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Opciones de Proyectos"
@@ -183,7 +196,9 @@ class UpdateOptionsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             tm_data.append(d)
         TeamMemberFormSet = inlineformset_factory(Proyecto, TeamMember, form=TeamMemberForm,extra=len(tm_data))
         team_member_formset = TeamMemberFormSet(initial=tm_data)
-        return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        print(str(permisos))
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form, team_members=team_member_formset))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -230,6 +245,11 @@ class EjecucionListView(LoginRequiredMixin, ListView):
     model = Proyecto
     queryset = Proyecto.objects.all()
 
+    def get(self, request, *args, **kwargs):
+        self.object_list = Proyecto.objects.all()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(object_list=self.object_list, permisos=permisos))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Ejecuciones de Proyectos"
@@ -247,8 +267,15 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_url = '/proyectos/ejecuciones/'
     success_message = 'Los cambios se guardaron correctamente'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        formclass = self.get_form_class()
+        form = self.get_form(formclass)
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        print(str(permisos))
+        return self.render_to_response(self.get_context_data(form=form, permisos=permisos))
+
     def post(self, request, *args, **kwargs):
-        print(str(request.POST))
         #se debe iniciar el proyecto
         proyecto = self.get_object()
         if 'iniciar' in request.POST.keys():
@@ -325,7 +352,8 @@ class UpdateTeamMemberView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             tm_data.append(d)
         TeamMemberFormSet = inlineformset_factory(Proyecto, TeamMember, form=TeamMemberForm, extra=len(tm_data))
         team_member_formset = TeamMemberFormSet(initial=tm_data)
-        return self.render_to_response(self.get_context_data(form=form, team_members=team_member_formset))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form, team_members=team_member_formset))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -370,6 +398,11 @@ class UpdateTeamMemberView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 class VerProyectoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
     model = Proyecto
     template_name = 'proyecto/ver_proyecto.html'
+
+    def get(self,request,*args,**kwargs):
+        self.object = self.get_object()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

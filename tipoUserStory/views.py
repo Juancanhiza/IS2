@@ -28,7 +28,8 @@ class tipoUserStoryListView(LoginRequiredMixin, ListView):
         self.object = None
         self.object_list = TipoUserStory.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
-        return self.render_to_response(self.get_context_data(project=proyecto, object_list=self.object_list))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos, project=proyecto, object_list=self.object_list))
 
 @method_decorator(login_required, name='dispatch')
 class CreateUserStoryTypeView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -57,7 +58,8 @@ class CreateUserStoryTypeView(SuccessMessageMixin, LoginRequiredMixin, CreateVie
         for flujo in flujos_all:
             flujos.append((flujo.id, flujo.nombre))
         f.choices = flujos
-        return self.render_to_response(self.get_context_data(form=form))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form))
 
 
     def get_context_data(self, **kwargs):
@@ -108,7 +110,8 @@ class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateVie
         for flujo in flujos_all:
             flujos.append((flujo.id, flujo.nombre))
         f.choices = flujos
-        return self.render_to_response(self.get_context_data(form=form))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form))
 
     def get_context_data(self, **kwargs):
         self.object = self.get_object()

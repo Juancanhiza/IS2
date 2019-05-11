@@ -1,3 +1,4 @@
+{% if 'Modificar Roles' in permisos or 'Modificar Roles' in permisos %}
 {%include 'base.html'%}
 <html>
 <body>
@@ -19,3 +20,6 @@
 </div>
 </body>
 </html>
+{% else %}
+Permiso denegado
+{% endif %}

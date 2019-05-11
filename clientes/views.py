@@ -19,6 +19,11 @@ class ClientListView(LoginRequiredMixin, ListView):
     model = Cliente
     queryset = Cliente.objects.all()
 
+    def get(self,request,*args,**kwargs):
+        self.object_list = Cliente.objects.all()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(object_list=self.object_list, permisos=permisos))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Clientes"
@@ -32,9 +37,17 @@ class CreateClientView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     """
     template_name = 'clientes/cliente.html'
     model = Cliente
-    success_url = './'
+    success_url = '../'
     form_class = CreateClientForm
     success_message = 'Se ha creado el cliente'
+
+    def get(self,request,*args,**kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form))
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -52,6 +65,13 @@ class UpdateClientView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = UpdateClientForm
     success_url = './'
     success_message = 'Los cambios se guardaron correctamente'
+
+    def get(self,request,*args,**kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

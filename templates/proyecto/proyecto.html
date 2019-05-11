@@ -1,3 +1,4 @@
+{% if 'Modificar Proyectos' in permisos or 'Crear Proyectos' in permisos%}
 {%include 'base.html'%}
 <div class="container">
     <div class="head">
@@ -80,3 +81,7 @@
         });
     });
 </script>
+
+{% else %}
+Permiso denegado
+{% endif %}

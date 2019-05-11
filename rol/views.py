@@ -16,6 +16,11 @@ class RolListView(LoginRequiredMixin, ListView):
     model = Rol
     queryset = Rol.objects.all()
 
+    def get(self,request,*args,**kwargs):
+        self.object_list = Rol.objects.all()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(object_list=self.object_list, permisos=permisos))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Roles"
@@ -32,6 +37,13 @@ class CreateRolView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     success_url = '/roles/'
     form_class = CreateRolForm
     success_message = 'Se ha creado el rol'
+
+    def get(self,request,*args,**kwargs):
+        self.object = None
+        formclass = self.get_form_class()
+        form = self.get_form(formclass)
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(form=form, permisos=permisos))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,6 +63,12 @@ class UpdateRolView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_url = '/roles/'
     success_message = 'Los cambios se guardaron correctamente'
 
+    def get(self,request,*args,**kwargs):
+        self.object = self.get_object()
+        formclass = self.get_form_class()
+        form = self.get_form(formclass)
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(form=form, permisos=permisos))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -68,6 +86,11 @@ class UpdateRolView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 class VerRolDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
     model = Rol
     template_name = 'rol/ver_rol.html'
+
+    def get(self,request,*args,**kwargs):
+        self.object = self.get_object()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

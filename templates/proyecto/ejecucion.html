@@ -1,3 +1,4 @@
+{% if 'Ver Ejecucion de Proyectos' in permisos %}
 {%include 'base.html'%}
 <div class="container">
     <div class="head">
@@ -7,15 +8,22 @@
     <div class="body" style="">
         <div class="options" style="font-size: 1.5em; padding-top: 0em!important;;">
             {% if object.estado == "Activo" %}
+                {% if 'Ver Sprint' in permisos %}
                 <li>
                     <a href="{% url 'sprint_list' object.pk %}">Sprints</a>
                 </li>
+                {% endif %}
+                {% if 'Ver User Stories' in permisos %}
                 <li>
                     <a href="{% url 'user_story_list' object.pk %}">Administrar User Stories</a>
                 </li>
+                {% endif %}
+                {% if 'Ver Product Backlog' in permisos %}
                 <li>
                     <a href="{% url 'product_backlog' object.pk%}">Product Backlog</a>
                 </li>
+                {% endif %}
+                {% if 'Asignar User Stories' in permisos %}
                 <li>
                     {% if sprint_pendiente %}
                     <a href="{% url 'asignar_us' object.pk sprint_pendiente.pk %}">Asignar User Stories</a>
@@ -23,6 +31,8 @@
                     <a href="#sinSprintPendiente" role="button" data-toggle="modal">Asignar User Stories</a>
                     {% endif %}
                 </li>
+                {% endif %}
+                {% if 'Ver Tablero' in permisos %}
                 <li>
                     {% if sprint_actual %}
                     <a href="#tiposTablero" role="button" data-toggle="modal">Sprint actual</a>
@@ -30,28 +40,35 @@
                     <a href="#sinSprintActual" role="button" data-toggle="modal">Sprint actual</a>
                     {% endif %}
                 </li>
+                {% endif %}
                 <br>
                 <div class="container" align="right">
                     <form method="POST" style="display: inline">
                         {% csrf_token %}
                         <input type="hidden" name="terminar">
+                        {% if 'Terminar Proyecto' in permisos %}
                         <button type="submit" class="btn btn-success">
                             <i class="far fa-stop-circle"></i> Terminar Proyecto
                         </button>
+                        {% endif %}
                     </form>
                     <form method="POST" style="display: inline">
                         {% csrf_token %}
                         <input type="hidden" name="cancelar">
+                        {% if 'Cancelar Proyecto' in permisos %}
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-ban"></i> Cancelar Proyecto
                         </button>
+                        {% endif %}
                     </form>
                     <form method="POST" style="display: inline">
                         {% csrf_token %}
                         <input type="hidden" name="suspender">
+                        {% if 'Suspender Proyecto' in permisos %}
                         <button type="submit" class="btn btn-success">
                             <i class="far fa-pause-circle"></i> Suspender Proyecto
                         </button>
+                        {% endif %}
                     </form>
                 </div>
             {% elif object.estado == "Pendiente" %}
@@ -168,3 +185,6 @@
         </div>
     </div>
 </div>
+{% else %}
+Permiso denegado
+{% endif %}

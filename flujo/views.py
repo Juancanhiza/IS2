@@ -25,7 +25,9 @@ class FlujoListView(LoginRequiredMixin, ListView):
         self.object = None
         self.object_list = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
-        return self.render_to_response(self.get_context_data(project=proyecto,object_list=self.object_list))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        print(str(permisos))
+        return self.render_to_response(self.get_context_data(permisos=permisos, project=proyecto,object_list=self.object_list))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -55,7 +57,8 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             fases_data.append(d)
         FaseFormSet = inlineformset_factory(Flujo, Fase, form=FaseForm,extra=len(fases_data))
         fases_orden_formset = FaseFormSet(initial=fases_data)
-        return self.render_to_response(self.get_context_data(form=form, fases=fases_orden_formset))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos,form=form, fases=fases_orden_formset))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -114,7 +117,8 @@ class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         fases_orden_formset = FaseFormSet()
-        return self.render_to_response(self.get_context_data(form=form, fases=fases_orden_formset))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form, fases=fases_orden_formset))
 
     def get_context_data(self, **kwargs):
         context = super(CreateFlujoView,self).get_context_data(**kwargs)
@@ -157,7 +161,8 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
     def get(self,request,*args,**kwargs):
         self.object = None
         usuario = request.user
-        return self.render_to_response(self.get_context_data(usuario=usuario))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(usuario=usuario, permisos=permisos))
 
     def get_context_data(self, **kwargs):
         context = super(TableroTemplateView, self).get_context_data(**kwargs)
@@ -261,6 +266,11 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
 class VerFlujoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
     model = Flujo
     template_name = 'flujo/ver_flujo.html'
+
+    def get(self,request,*args,**kwargs):
+        self.object = self.get_object()
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

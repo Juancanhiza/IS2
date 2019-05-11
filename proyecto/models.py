@@ -1,7 +1,6 @@
 import datetime
 from django.db import models
 from rol.models import Rol
-from usuarios.models import Usuario
 
 
 """
@@ -30,5 +29,5 @@ class Proyecto(models.Model):
 
 class TeamMember(models.Model):
     proyecto = models.ForeignKey(Proyecto, on_delete=models.CASCADE, null=False, blank=False)
-    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, blank=False, null=False)
+    usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT, blank=False, null=False)
     rol = models.ForeignKey(Rol, on_delete=models.PROTECT, blank=False, null=False)
