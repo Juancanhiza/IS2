@@ -2,8 +2,7 @@ import unittest
 import time
 
 from proyecto.models import Proyecto
-from proyecto.models import Flujo
-from proyecto.models import Fase
+from flujo.models import Flujo, Fase
 
 class Test(unittest.TestCase):
     """

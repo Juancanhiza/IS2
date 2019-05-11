@@ -1,6 +1,7 @@
 import unittest
 from tipoUserStory.models import TipoUserStory
-from proyecto.models import Proyecto, Flujo
+from proyecto.models import Proyecto
+from flujo.models import Flujo
 
 class Test(unittest.TestCase):
     """

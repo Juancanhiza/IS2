@@ -1,5 +1,5 @@
 import unittest
-from userstory.models import UserStory
+from userstory.models import UserStory, Actividad, Archivo, Nota
 from proyecto.models import Proyecto
 
 class Test(unittest.TestCase):
@@ -16,3 +16,15 @@ class Test(unittest.TestCase):
         proyecto1 = Proyecto(nombre='Proyecto1', fecha_inicio='23/04/2019', fecha_fin='22/04/2019')
         us = UserStory(proyecto=proyecto1, nombre="p1", descripcion="desc", fecha_inicio='13/04/2019', duracion_estimada=100, valor_negocio=55)
         self.assertLessEqual(us.valor_negocio, 10)
+
+    def test_actividad(self):
+        actividad = Actividad(nombre='Actividad 1', descripcion='desc', duracion='1000')
+        self.assertIsNotNone(actividad)
+
+    def test_archivo(self):
+        archivo = Archivo(titulo='Archivo 1')
+        self.assertIsNotNone(archivo)
+
+    def test_nota(self):
+        nota = Nota(nota='Nota 1')
+        self.assertIsNotNone(nota)
