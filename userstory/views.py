@@ -1,6 +1,5 @@
 from django.views.generic import ListView, CreateView, UpdateView
 from .models import UserStory
-from proyecto.models import *
 from userstory.forms import CreateUserStoryForm, UpdateUserStoryForm
 from django.urls import reverse
 from django.contrib.messages.views import SuccessMessageMixin
@@ -89,8 +88,12 @@ class ProductBacklogListView(LoginRequiredMixin, ListView):
     def get(self,request,*args,**kwargs):
         self.object = None
         self.object_list = UserStory.objects.filter(proyecto=self.kwargs['pk_proyecto'])
+        ol = []
+        for us in self.object_list:
+            ol.append(us)
+        ol.sort(key=lambda x: x.priorizacion, reverse=True)
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
-        return self.render_to_response(self.get_context_data(project=proyecto, object_list=self.object_list))
+        return self.render_to_response(self.get_context_data(project=proyecto, ol=ol))
 
 
     def get_context_data(self, *, object_list=None, **kwargs):

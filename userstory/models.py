@@ -27,6 +27,7 @@ def rango(valor):
 class UserStory(models.Model):
     '''Modelo de User Story'''
     '''Campos:'''
+    sprints_asignados = models.ManyToManyField('sprint.Sprint', blank=True, related_name='userstory_sprint_asignado')
     estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE, default='To Do')
     flujo = models.ForeignKey('flujo.Flujo', on_delete=models.PROTECT)
     fase = models.ForeignKey('flujo.Fase', on_delete=models.PROTECT, null=True, blank=True)

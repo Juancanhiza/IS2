@@ -18,7 +18,7 @@
 }
 
 .scrolltable-team{
-    width: 700px !important;;
+    width: 49em !important;;
 }
 .scrolltable-team tbody{
     background-color: #c6d0da;
@@ -53,7 +53,7 @@
 .container .register {
 	margin: 0 auto;
 	padding: 0em 2em;
-	padding-left: 300px;
+	padding-left: 18em;
 	background: rgba(0,0,0,0.05);
 }
 

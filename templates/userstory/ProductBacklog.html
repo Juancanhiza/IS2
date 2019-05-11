@@ -10,17 +10,25 @@
                 <tr>
                     <th width="10%">ID</th>
                     <th width="45%">Nombre</th>
-                    <th width="24%">Duracion Estimada</th>
-                    <th width="18%">Priorizacion</th>
+                    <th width="20%">Duracion Estimada</th>
+                    <th width="15%">Priorizacion</th>
+                    <th width="10%">Estado</th>
                 </tr>
             </thead>
             <tbody class="tbody">
-                {% for us in object_list %}
+                {% for us in ol %}
                     <tr>
                         <td width="10%">{{ us.pk }}</td>
                         <td width="45%">{{ us.nombre }}</td>
-                        <td width="24%">{{ us.duracion_estimada }}</td>
-                        <td width="18%">{{ us.priorizacion }}</td>
+                        <td width="20%">{{ us.duracion_estimada }}</td>
+                        <td width="15%">{{ us.priorizacion }}</td>
+                        {% if us.estado == 0 %}
+                            <td width="10%">Terminado</td>
+                        {% elif us.estado == 1 %}
+                            <td width="10%">Asignado</td>
+                        {% elif us.estado == 2 %}
+                            <td width="10%">Pendiente</td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>
