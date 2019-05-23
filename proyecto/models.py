@@ -15,14 +15,11 @@ ESTADOS_PROYECTO = (
 )
 
 class Proyecto(models.Model):
-
     nombre = models.CharField(max_length=20, blank=False, null=False)
     fecha_inicio = models.DateField(blank=True, null=True)
     fecha_fin = models.DateField(blank=True, null=True)
     estado = models.CharField(max_length=25, choices=ESTADOS_PROYECTO, default='Pendiente')
-    descripcion= models.TextField(blank=True, null=True)
-    fecha_ini_estimada = models.DateField('Fecha de Inicio Estimada', blank=False, null=False)
-    fecha_fin_estimada = models.DateField('Fecha de Fin Estimada', blank=False, null=False)
+    descripcion = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.nombre

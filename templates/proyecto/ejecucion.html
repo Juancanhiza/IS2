@@ -1,4 +1,4 @@
-{% if 'Ver Ejecucion de Proyectos' in permisos %}
+{% if 'Ver Proyectos' in permisos %}
 {%include 'base.html'%}
 <div class="container">
     <div class="head">
@@ -8,7 +8,7 @@
     <div class="body" style="">
         <div class="options" style="font-size: 1.5em; padding-top: 0em!important;;">
             {% if object.estado == "Activo" %}
-                {% if 'Ver Sprint' in permisos %}
+                {% if 'Ver Sprints' in permisos %}
                 <li>
                     <a href="{% url 'sprint_list' object.pk %}">Sprints</a>
                 </li>
@@ -26,9 +26,9 @@
                 {% if 'Asignar User Stories' in permisos %}
                 <li>
                     {% if sprint_pendiente %}
-                    <a href="{% url 'asignar_us' object.pk sprint_pendiente.pk %}">Asignar User Stories</a>
+                    <a href="{% url 'asignar_us' object.pk sprint_pendiente.pk %}">Planificar siguiente sprint</a>
                     {% else %}
-                    <a href="#sinSprintPendiente" role="button" data-toggle="modal">Asignar User Stories</a>
+                    <a href="#sinSprintPendiente" role="button" data-toggle="modal">Planificar siguiente sprint</a>
                     {% endif %}
                 </li>
                 {% endif %}
@@ -132,9 +132,12 @@
             <div class="modal-body">
                 <p>Debe crear un nuevo sprint para asignar User Stories</p>
             </div>
+            {% if 'Crear Sprints' in permisos %}
             <div class="modal-footer">
-                <button type="button" class="btn submit-btn" data-dismiss="modal">Cerrar</button>
+                <a href="./sprint/create/"><button type="button" class="btn btn-success">
+                    Crear Sprint</button></a>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -145,12 +148,28 @@
                 <h4 class="modal-title">No existe sprint en proceso</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
+            {% if sprint_pendiente %}
+                <div class="modal-body">
+                    <p>Existe un sprint pendiente: {{ sprint_pendiente.nombre }}</p>
+                </div>
+            {% else %}
             <div class="modal-body">
-                <p>Debe iniciar un nuevo sprint</p>
+                <p>Se debe crear un nuevo sprint y asignar user stories</p>
             </div>
+            {% endif %}
+            {% if sprint_pendiente %}
+            {% if 'Iniciar Sprint' in permisos %}
             <div class="modal-footer">
-                <button type="button" class="btn submit-btn" data-dismiss="modal">Cerrar</button>
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">
+                        <i class="far fa-play-circle"></i> Iniciar Sprint
+                    </button>
+                    <input type="hidden" name="iniciar_sprint" value="{{ sprint_pendiente.pk }}">
+                </form>
             </div>
+            {% endif %}
+            {% endif %}
         </div>
     </div>
 </div>
@@ -186,5 +205,5 @@
     </div>
 </div>
 {% else %}
-Permiso denegado
+Permiso denegado (Ver Proyectos)
 {% endif %}

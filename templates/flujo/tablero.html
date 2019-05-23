@@ -27,6 +27,31 @@
                                 {% if us.fase == fases.0 and us.estado_fase == 'To Do' %}
                                     <div class="panel user-story">
                                         <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                                        <div class="container" style="padding-top: 5.7em;">
+                                            <form method="POST" style="display: inline">
+                                                {% csrf_token %}
+                                                {% if us.fase != fases.0 %}
+                                                <button type="submit" class="btn btn-sm btn-danger change-status">
+                                                    <i class="fas fa-arrow-left"></i>
+                                                    Anterior
+                                                </button>
+                                                {% elif  us.fase == fases.0 and us.estado_fase != 'To Do'%}
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-arrow-left"></i>
+                                                    Anterior
+                                                </button>
+                                                {% endif %}
+                                                <input type="hidden" name="anterior" value="{{ us.pk }}">
+                                            </form>
+                                            <form method="POST" style="display: inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-success">
+                                                    Siguiente
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </button>
+                                                <input type="hidden" name="siguiente" value="{{ us.pk }}">
+                                            </form>
+                                        </div>
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -38,6 +63,31 @@
                                 {% if us.fase == fases.0 and us.estado_fase == 'Doing' %}
                                     <div class="panel user-story">
                                         <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                                        <div class="container" style="padding-top: 5.7em;">
+                                            <form method="POST" style="display: inline">
+                                                {% csrf_token %}
+                                                {% if us.fase != fases.0 %}
+                                                <button type="submit" class="btn btn-sm btn-danger change-status">
+                                                    <i class="fas fa-arrow-left"></i>
+                                                    Anterior
+                                                </button>
+                                                {% elif  us.fase == fases.0 and us.estado_fase != 'To Do'%}
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-arrow-left"></i>
+                                                    Anterior
+                                                </button>
+                                                {% endif %}
+                                                <input type="hidden" name="anterior" value="{{ us.pk }}">
+                                            </form>
+                                            <form method="POST" style="display: inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-success">
+                                                    Siguiente
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </button>
+                                                <input type="hidden" name="siguiente" value="{{ us.pk }}">
+                                            </form>
+                                        </div>
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -49,6 +99,31 @@
                                 {% if us.fase == fases.0 and us.estado_fase == 'Done' %}
                                     <div class="panel user-story">
                                         <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                                        <div class="container" style="padding-top: 5.7em;">
+                                            <form method="POST" style="display: inline">
+                                                {% csrf_token %}
+                                                {% if us.fase != fases.0 %}
+                                                <button type="submit" class="btn btn-sm btn-danger change-status">
+                                                    <i class="fas fa-arrow-left"></i>
+                                                    Anterior
+                                                </button>
+                                                {% elif  us.fase == fases.0 and us.estado_fase != 'To Do'%}
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-arrow-left"></i>
+                                                    Anterior
+                                                </button>
+                                                {% endif %}
+                                                <input type="hidden" name="anterior" value="{{ us.pk }}">
+                                            </form>
+                                            <form method="POST" style="display: inline">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-success">
+                                                    Siguiente
+                                                    <i class="fas fa-arrow-right"></i>
+                                                </button>
+                                                <input type="hidden" name="siguiente" value="{{ us.pk }}">
+                                            </form>
+                                        </div>
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -70,6 +145,31 @@
                         {% if us.fase == fase and us.estado_fase == 'To Do' %}
                             <div class="panel user-story">
                                 <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                                <div class="container" style="padding-top: 5.7em;">
+                                    <form method="POST" style="display: inline">
+                                        {% csrf_token %}
+                                        {% if us.fase != fases.0 %}
+                                        <button type="submit" class="btn btn-sm btn-danger change-status">
+                                            <i class="fas fa-arrow-left"></i>
+                                            Anterior
+                                        </button>
+                                        {% elif  us.fase == fases.0 and us.estado_fase != 'To Do'%}
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-arrow-left"></i>
+                                            Anterior
+                                        </button>
+                                        {% endif %}
+                                        <input type="hidden" name="anterior" value="{{ us.pk }}">
+                                    </form>
+                                    <form method="POST" style="display: inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            Siguiente
+                                            <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                        <input type="hidden" name="siguiente" value="{{ us.pk }}">
+                                    </form>
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -81,6 +181,31 @@
                         {% if us.fase == fase and us.estado_fase == 'Doing' %}
                             <div class="panel user-story">
                                 <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                                <div class="container" style="padding-top: 5.7em;">
+                                    <form method="POST" style="display: inline">
+                                        {% csrf_token %}
+                                        {% if us.fase != fases.0 %}
+                                        <button type="submit" class="btn btn-sm btn-danger change-status">
+                                            <i class="fas fa-arrow-left"></i>
+                                            Anterior
+                                        </button>
+                                        {% elif  us.fase == fases.0 and us.estado_fase != 'To Do'%}
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-arrow-left"></i>
+                                            Anterior
+                                        </button>
+                                        {% endif %}
+                                        <input type="hidden" name="anterior" value="{{ us.pk }}">
+                                    </form>
+                                    <form method="POST" style="display: inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            Siguiente
+                                            <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                        <input type="hidden" name="siguiente" value="{{ us.pk }}">
+                                    </form>
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -92,6 +217,31 @@
                         {% if us.fase == fase and us.estado_fase == 'Done' %}
                             <div class="panel user-story">
                                 <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
+                                <div class="container" style="padding-top: 5.7em;">
+                                    <form method="POST" style="display: inline">
+                                        {% csrf_token %}
+                                        {% if us.fase != fases.0 %}
+                                        <button type="submit" class="btn btn-sm btn-danger change-status">
+                                            <i class="fas fa-arrow-left"></i>
+                                            Anterior
+                                        </button>
+                                        {% elif  us.fase == fases.0 and us.estado_fase != 'To Do'%}
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-arrow-left"></i>
+                                            Anterior
+                                        </button>
+                                        {% endif %}
+                                        <input type="hidden" name="anterior" value="{{ us.pk }}">
+                                    </form>
+                                    <form method="POST" style="display: inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            Siguiente
+                                            <i class="fas fa-arrow-right"></i>
+                                        </button>
+                                        <input type="hidden" name="siguiente" value="{{ us.pk }}">
+                                    </form>
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -113,6 +263,7 @@
         <tbody>
             {% for us in user_stories %}
                 {% if us.estado_fase == 'Control de Calidad' %}
+                    <tr>
                     <td width="30%">{{ us.nombre }}</td>
                     <td width="50%">{{ us.descripcion }}</td>
                     <td width="20%">
@@ -123,6 +274,7 @@
                             <input type="hidden" name="finalizar" value="{{ us.pk }}">
                         </form>
                     </td>
+                    </tr>
                 {% endif %}
             {% endfor %}
         </tbody>
@@ -170,7 +322,10 @@
                         Descripcion: {{ us.descripcion }}
                     </li>
                     <li>
-                        Estimacion: {{ us.duracion_estimada }}
+                        Estimacion: {{ us.duracion_estimada }} horas
+                    </li>
+                    <li>
+                        Asignado: {{ us.team_member.username }}
                     </li>
                     <br>
                 </div>

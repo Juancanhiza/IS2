@@ -1,3 +1,4 @@
+{% if 'Crear User Stories' in permisos and not object.nombre or 'Modificar User Stories' in permisos and object.nombre %}
 {%include 'base.html'%}
 <html>
 <body>
@@ -67,3 +68,10 @@
         });
     });
 </script>
+{% else %}
+    {% if object.nombre %}
+        Permiso denegado (Modificar User Stories)
+    {% else %}
+        Permiso denegado (Crear User Stories)
+    {% endif %}
+{% endif %}

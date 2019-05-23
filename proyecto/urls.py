@@ -12,7 +12,7 @@ urlpatterns = [
     # URLs en el modulo de Administracion
     url(r'^$', views.ProjectListView.as_view(),name='project_list'),
     url(r'^create/$', views.CreateProjectView.as_view(), name='create_project'),
-    path(route='update_project/<int:pk_proyecto>/', view=views.UpdateProjectView.as_view(), name='update_project'),
+    path(route='modificar/<int:pk_proyecto>/', view=views.UpdateProjectView.as_view(), name='update_project'),
     # URLs en el modulo de Definicion
     url(r'^opciones/$', views.OptionsListView.as_view(), name='options_project'),
     path(route='opciones/<int:pk_proyecto>/', view=views.UpdateOptionsView.as_view(), name='update_options'),

@@ -1,4 +1,4 @@
-{% if 'Modificar Flujo' in permisos or 'Crear Flujos' in permisos%}
+{% if 'Crear Flujos' in permisos and not object.nombre or 'Modificar Flujos' in permisos and object.nombre %}
 {%include 'base.html' %}
 <div class="container">
     <div class="head">
@@ -73,5 +73,9 @@
     });
 </script>
 {% else %}
-Permiso denegado
+    {% if object.nombre %}
+        Permiso denegado (Modificar Flujos)
+    {% else %}
+        Permiso denegado (Crear Flujos)
+    {% endif %}
 {% endif %}

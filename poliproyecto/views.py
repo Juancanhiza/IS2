@@ -24,11 +24,11 @@ def home(request):
     """
     context = {}
     if request.user.is_authenticated:
-        template_name = 'accounts/index.html'
+        redirect_url = '/index/'
         context['nombre'] = request.user.first_name
     else:
-        template_name = 'accounts/home.html'
-    return TemplateResponse(request, template_name, context)
+        redirect_url = '/login/'
+    return HttpResponseRedirect(redirect_url)
 
 @login_required
 def index(request):
@@ -38,5 +38,6 @@ def index(request):
     """
     context = {
         'nombre': request.user.first_name,
+        'title': 'Home'
     }
     return render(request, '../templates/accounts/index.html',context)

@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 from .models import *
+from usuarios.models import Usuario
 
 
 class CreateProjectForm(forms.ModelForm):
@@ -9,7 +10,7 @@ class CreateProjectForm(forms.ModelForm):
     """
     class Meta:
         model = Proyecto
-        fields = ('nombre', 'fecha_ini_estimada', 'fecha_fin_estimada', 'descripcion')
+        fields = ('nombre', 'descripcion')
 
     widgets = {
         'fecha_ini_estimada': forms.DateField(),
@@ -23,7 +24,7 @@ class UpdateProjectForm(forms.ModelForm):
     """
     class Meta:
         model = Proyecto
-        fields = ('nombre', 'fecha_ini_estimada', 'fecha_fin_estimada', 'descripcion')
+        fields = ('nombre', 'descripcion')
 
     widgets = {
         'fecha_ini_estimada': forms.DateField(),

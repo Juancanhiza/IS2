@@ -1,11 +1,9 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from poliproyecto import settings
 
 """
 Definicion de los estados de User Story
 """
-
 PENDIENTE = 2
 ASIGNADO = 1
 FINALIZADO = 0
@@ -41,7 +39,8 @@ Se define el modelo User Story
 """
 class UserStory(models.Model):
     """
-    Se definen los campos necesarios para el modelo
+    Modelo de la clase User Story, el cual representa un conjunto de tareas a ser realizadas
+    en un periodo de tiempo especificado
     """
     sprints_asignados = models.ManyToManyField('sprint.Sprint', blank=True, related_name='userstory_sprint_asignado')
     estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE, default='To Do')
@@ -51,7 +50,7 @@ class UserStory(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
     fecha_inicio = models.DateField('Fecha de inicio del User Story', null=True, blank=True)
-    duracion_estimada = models.TimeField()
+    duracion_estimada = models.IntegerField()
     valor_negocio = models.PositiveIntegerField(validators=[rango])
     prioridad = models.PositiveIntegerField(validators=[rango])
     valor_tecnico = models.PositiveIntegerField(validators=[rango])
@@ -67,6 +66,29 @@ class UserStory(models.Model):
         return (2*self.valor_negocio + self.prioridad + 2*self.valor_tecnico)/4
 
     priorizacion = property(set_priorizacion)
+
+    def has_team_member(self):
+        """retorna falso si el user story no esta asignado a ningun team member, en caso contrario
+        retorna verdadero"""
+        if not self.team_member:
+            return False
+        return True
+
+    def has_duracion_estimada(self):
+        """retorna falso si el user story no tiene una duracion estimada o su duracion
+         estimada es 0, en caso contrario retorna verdadero"""
+        if not self.duracion_estimada or self.duracion_estimada == 0:
+            return False
+        return True
+
+    def validate_asignacion(self):
+        """retorna falso si el user story no tiene un team member asignado o si no se le ha
+        asignado una duracion estimada o su duracion estimada es 0"""
+        if not self.has_team_member():
+            raise ValidationError('Debe asignar un team member al user story ' + str(self.nombre))
+        if not self.has_duracion_estimada():
+            raise ValidationError('Se deben estimar las horas de duración del user story ' + str(self.nombre))
+        return True
 
 
 class Nota(models.Model):

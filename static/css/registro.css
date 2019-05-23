@@ -33,7 +33,19 @@
     table-layout: fixed;
 }
 
+.table-dias{
 
+}
+
+.table-dias tbody{
+    display: block;
+}
+
+.table-dias thead,tbody tr{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
 .team-member-title{
     color: whitesmoke;
     width: 700px;

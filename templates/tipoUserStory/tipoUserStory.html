@@ -1,4 +1,4 @@
-{% if 'Modificar Tipos de User Story' in permisos or 'Crear Tipos de User Story' in permisos %}
+{% if 'Crear Tipos de User Story' in permisos and not object.nombre or 'Modificar Tipos de User Story' in permisos and object.nombre %}
 {%include 'base.html'%}
 <html>
 <body>
@@ -22,5 +22,9 @@
 </body>
 </html>
 {% else %}
-Permiso denegado
+    {% if object.nombre %}
+        Permiso denegado (Modificar Tipos de User Story)
+    {% else %}
+        Permiso denegado (Crear Tipos de User Story)
+    {% endif %}
 {% endif %}

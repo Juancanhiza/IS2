@@ -16,6 +16,11 @@ class UserListView(LoginRequiredMixin, ListView):
     model = Usuario
     queryset = Usuario.objects.all()
 
+    def get(self, request, *args, **kwargs):
+        self.object_list = Usuario.objects.all()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Usuarios"
@@ -32,6 +37,11 @@ class CreateUserView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     success_url = '/usuarios/'
     form_class = CreateUserForm
     success_message = 'Se ha creado el usuario'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -50,16 +60,18 @@ class UpdateUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_url = '/usuarios/'
     success_message = 'Los cambios se guardaron correctamente'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Modificar Usuario"
+        context['title'] = "Modificar Usuario " + str(self.object.pk)
         return context
 
     def get_object(self, queryset=None):
         return Usuario.objects.get(pk=self.kwargs['pk'])
-
-    def get_absolute_url(self):
-        return reverse('update_user', kwargs={'pk': self.kwargs['pk']})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -70,9 +82,14 @@ class VerUserDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
     model = Usuario
     template_name = 'usuarios/ver_user.html'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Ver Usuario"
+        context['title'] = "Ver Usuario " + str(self.object.pk)
         return context
 
     def get_object(self, queryset=None):

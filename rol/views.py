@@ -23,7 +23,7 @@ class RolListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Roles"
+        context['title'] = "Administracion de Roles"
         return context
 
 
@@ -47,7 +47,6 @@ class CreateRolView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
         context['title'] = "Crear Rol"
         return context
 
@@ -72,8 +71,7 @@ class UpdateRolView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        context['title'] = "Modificar Rol"
+        context['title'] = "Modificar Rol " + str(self.object.pk)
         return context
 
     def get_object(self, queryset=None):
@@ -94,7 +92,7 @@ class VerRolDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Ver Rol"
+        context['title'] = "Ver Rol "+ str(self.object.pk)
         return context
 
     def get_object(self, queryset=None):

@@ -69,7 +69,7 @@ def login(request, template_name='accounts/login.html',
         redirect_field_name: redirect_to,
         'site': current_site,
         'site_name': current_site.name,
-        'error': error
+        'error': error,
     }
     if extra_context is not None:
         context.update(extra_context)
@@ -80,53 +80,9 @@ def login(request, template_name='accounts/login.html',
     return TemplateResponse(request, template_name, context)
 
 
-def logout(request, next_page=None,
-           template_name='accounts/login.html',
-           redirect_field_name=REDIRECT_FIELD_NAME,
-           current_app=None, extra_context=None):
+def logout(request):
     """
     Logs out the user and displays 'You are logged out' message.
     """
     auth_logout(request)
-
-    if next_page is not None:
-        next_page = resolve_url(next_page)
-
-    if (redirect_field_name in request.POST or
-            redirect_field_name in request.GET):
-        next_page = request.POST.get(redirect_field_name,
-                                     request.GET.get(redirect_field_name))
-        # Security check -- don't allow redirection to a different host.
-        if not is_safe_url(url=next_page, host=request.get_host()):
-            next_page = request.path
-
-    if next_page:
-        # Redirect to this page until the session has been cleared.
-        return HttpResponseRedirect(next_page)
-
-    current_site = get_current_site(request)
-    context = {
-        'site': current_site,
-        'site_name': current_site.name,
-        'title': _('Logged out')
-    }
-    if extra_context is not None:
-        context.update(extra_context)
-
-    if current_app is not None:
-        request.current_app = current_app
-
-    return TemplateResponse(request, template_name, context)
-
-def home(request):
-    """
-    Vista de la pagina de inicio
-    :param request:
-    """
-    context = {}
-    if request.user.is_authenticated:
-        template_name = '/accounts/home.html'
-    else:
-        template_name = '/accounts/index.html'
-    return TemplateResponse(request, template_name, context)
-    #return render(request, '../templates/accounts/home.html')
+    return HttpResponseRedirect('/')

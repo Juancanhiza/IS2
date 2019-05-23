@@ -16,7 +16,6 @@ class CreateUserStoryForm(forms.ModelForm):
                   'valor_tecnico',
                   'tipo_us',
                   'flujo',
-                  'estado',
                   )
 
         widgets = {
@@ -38,9 +37,6 @@ class UpdateUserStoryForm(forms.ModelForm):
                   'valor_tecnico',
                   'tipo_us',
                   'flujo',
-                  'sprint',
-                  'fase',
-                  'estado_fase'
                   )
 
         widgets ={

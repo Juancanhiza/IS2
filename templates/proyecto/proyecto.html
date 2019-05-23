@@ -1,4 +1,4 @@
-{% if 'Modificar Proyectos' in permisos or 'Crear Proyectos' in permisos%}
+{% if 'Crear Proyectos' in permisos and not object or 'Modificar Proyectos' in permisos and object %}
 {%include 'base.html'%}
 <div class="container">
     <div class="head">
@@ -83,5 +83,9 @@
 </script>
 
 {% else %}
-Permiso denegado
+    {% if object %}
+        Permiso denegado (Modificar Proyectos)
+    {% else %}
+        Permiso denegado (Crear Proyectos)
+    {% endif %}
 {% endif %}

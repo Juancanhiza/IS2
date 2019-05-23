@@ -1,6 +1,11 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from proyecto.models import Proyecto
+from django.utils import timezone
+from datetime import timedelta
+
 """
-Definimos los estados de un Sprint
+Estados posibles del sprint
 """
 ESTADOS_SPRINT = (
     ('Pendiente', 'Pendiente'),
@@ -8,23 +13,111 @@ ESTADOS_SPRINT = (
     ('Terminado', 'Terminado')
 )
 
-
-"""
-Se define el modelo Sprint
-"""
 class Sprint(models.Model):
     """
-    Se definen los campos necesarios para el modelo
+    Modelo de la clase sprint, el cual representa un periodo de tiempo  definido dentro del
+    proyecto al que se encuentra relacionado en el que se trabajan una cantidad definida de
+    user stories
     """
     nombre = models.CharField(max_length=20, blank=False, null=False)
     fecha_inicio = models.DateField(blank=True, null=True)
     fecha_fin = models.DateField(blank=True, null=True)
-    duracion = models.DurationField(blank=True, null=True)
     proyecto = models.ForeignKey('proyecto.Proyecto',on_delete=models.CASCADE, null=True)
     estado = models.CharField(max_length=25, choices=ESTADOS_SPRINT, default='Pendiente')
-    fecha_ini_estimada = models.DateField('Fecha de Inicio Estimada', blank=False, null=False)
-    fecha_fin_estimada = models.DateField('Fecha de Fin Estimada', blank=False, null=False)
+    dias_laborales = models.IntegerField(null=False)
+    dias_habiles = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
+        """
+        retorna el nombre del sprint
+        """
         return self.nombre
+
+    def has_dias_habiles(self):
+        """
+        retorna falso si no se ha definido ningun dia habil en el sprint o verdadero en
+        caso de que exista por lo menos un dia habil durante el sprint
+        """
+        if not self.dias_habiles:
+            return False
+        return True
+
+    def get_dias_habiles(self):
+        """
+        retorna la lista de dias habiles definidos para el sprint, siendo
+        1: Lunes
+        2: Martes
+        3: Miercoles
+        4: Jueves
+        5: Viernes
+        6: Sábado
+        7: Domingo
+        """
+        dias_habiles = []
+        dh = self.dias_habiles
+        if dh:
+            for d in dh.split(','):
+                dias_habiles.append(int(d))
+        return dias_habiles
+
+    def validate(self):
+        """
+        Metodo del modelo de Sprint que lanza excepciones de tipo ValidationError en caso de
+        que no se hayan completado todos los campos obligatorios en el sprint (dias hábiles,
+        nombre y días laborales) en caso contrario retorna verdadero
+        """
+        if not self.has_dias_habiles():
+            raise ValidationError('Debe ingresar al menos un dia hábil')
+        if not self.nombre:
+            raise ValidationError('Debe ingresar el nombre del sprint')
+        if not self.dias_laborales or self.dias_laborales == 0:
+            raise ValidationError('Debe ingresar al menos un dia laboral')
+        if not self.proyecto:
+            raise ValidationError('En sprint debe estar relacionado a un proyecto')
+        return True
+
+    def get_duracion_real(self):
+        """
+        metodo del modelo Sprint que retorna la cantidad de dias de duracion del sprint
+        :return:
+        :dias: la cantidad de dias entre la fecha de inicio del sprint y la fecha de finalizacion
+        del sprint, en caso de no tener fecha de finalizacion aun, hasta la fecha de hoy
+        """
+        if not self.fecha_incio: return 0
+        inicio = self.fecha_inicio
+        if self.fecha_fin:
+            fin = self.fecha_fin
+        else:
+            fin = timezone.now().today()
+        date = inicio
+        dias = 0
+        while date <= fin:
+            dias += 1
+            date = date + timedelta(days=1)
+        return dias
+
+
+
+class Horas(models.Model):
+    """
+    Modelo de Horas, el cual es una relacion entre un team member perteneciente al proyecto al
+    que se relaciona el sprint en el que se están asignando las horas laborales
+    """
+    horas_laborales = models.IntegerField(blank=False, null=False)
+    team_member = models.ForeignKey('usuarios.Usuario', on_delete=models.CASCADE, null=True)
+    sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE, null=True)
+
+    def validate(self):
+        """
+        Metodo del modelo de Horas que lanza excepciones de tipo ValidationError en caso de
+        que no se hayan completado dos los campos obligatorios en el sprint (horas laborales,
+        team member, sprint) en caso contrario retorna verdadero
+        """
+        if not self.horas_laborales or self.horas_laborales == 0:
+            raise ValidationError("Debe especificar horas laborales por dia laboral para el team member")
+        if not self.sprint:
+            raise ValidationError("Las horas laborales deben estar relacionadas a un sprint")
+        if not self.team_member:
+            raise ValidationError("Debe especificar un team member")
+        return True
 

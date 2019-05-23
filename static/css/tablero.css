@@ -1,3 +1,7 @@
+.enlace a:hover{
+	color: #4f7bab !important;;
+}
+
 .scrolltable-cc tbody{
     background-color: #c6d0da;
     display: block;
@@ -39,7 +43,7 @@
 	background: #c6d0da;
 	color: #34495e;
 	border-radius: 0.5em;
-	height: 7em;
+	height: 10em;
 }
 
 .kanban-col{

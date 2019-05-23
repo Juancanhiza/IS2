@@ -1,14 +1,12 @@
 from django.conf.urls import url
 from . import views
-# from django.contrib.auth.views import login
-
+from poliproyecto.views import home
 """
 URL para el login, y para cuando se loguea
 """
 
 urlpatterns = [
-	url(r'^$', views.home),
-    #url(r'^login/$',login,{'template_name':'accounts/login.html'})
+	url(r'^$', home),
 	url(r'^login/$',views.login),
     url(r'^logout/$',views.logout),
 ]

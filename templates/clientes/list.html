@@ -28,7 +28,7 @@
                         <td width="34">{{ cliente.ruc }}</td>
                         <td id="acciones" width="8%">
                             <a href="{% url 'ver_cliente' cliente.pk %}"><i class="fas fa-eye"></i></a>
-                            {% if 'Mofificar Clientes' in permisos %}
+                            {% if 'Modificar Clientes' in permisos %}
                             <a href="{% url 'update_client' cliente.pk %}"><i class="fas fa-edit"></i></a>
                             {% endif %}
                         </td>
@@ -40,5 +40,5 @@
     </div>
 </div>
 {% else %}
-Permiso denegado
+Permiso denegado (Ver Clientes)
 {% endif %}

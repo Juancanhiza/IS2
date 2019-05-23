@@ -1,4 +1,4 @@
-{% if 'Modificar Roles' in permisos or 'Modificar Roles' in permisos %}
+{% if 'Crear Roles' in permisos and not object or 'Modificar Roles' in permisos and object %}
 {%include 'base.html'%}
 <html>
 <body>
@@ -21,5 +21,9 @@
 </body>
 </html>
 {% else %}
-Permiso denegado
+    {% if object %}
+        Permiso denegado (Modificar Roles)
+    {% else %}
+        Permiso denegado (Crear Roles)
+    {% endif %}
 {% endif %}

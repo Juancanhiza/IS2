@@ -111,7 +111,7 @@ class UpdateProjectView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Modificar Proyecto"
+        context['title'] = "Modificar Proyecto " + str(self.object.pk)
         return context
 
     def get_object(self, queryset=None):
@@ -169,7 +169,7 @@ class OptionsListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Opciones de Proyectos"
+        context['title'] = "Definiciones de Proyectos"
         return context
 
 
@@ -197,12 +197,11 @@ class UpdateOptionsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         TeamMemberFormSet = inlineformset_factory(Proyecto, TeamMember, form=TeamMemberForm,extra=len(tm_data))
         team_member_formset = TeamMemberFormSet(initial=tm_data)
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
-        print(str(permisos))
         return self.render_to_response(self.get_context_data(permisos=permisos, form=form, team_members=team_member_formset))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Modificar Proyecto"
+        context['title'] = "Definicion de Proyecto"
         return context
 
     def get_object(self, queryset=None):
@@ -295,7 +294,6 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         if 'reiniciar' in request.POST.keys():
             proyecto.estado = "Activo"
             proyecto.save()
-        print(str(request.POST))
         if 'terminar_sprint' in request.POST.keys():
             sprint = Sprint.objects.get(pk=request.POST['terminar_sprint'])
             sprint.estado = 'Terminado'
@@ -307,6 +305,17 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                     us.estado = 2 #pendiente
                     us.sprint = None
                     us.save()
+        if 'iniciar_sprint' in request.POST.keys():
+            sprint = Sprint.objects.get(pk=request.POST['iniciar_sprint'])
+            sprint.estado = 'En Proceso'
+            sprint.fecha_inicio = timezone.now().today()
+            sprint.save()
+            us_list = UserStory.objects.filter(sprint=sprint.pk)
+            for us in us_list:
+                us.sprints_asignados.add(sprint)
+                us.fase = Fase.objects.filter(flujo=us.flujo.pk).order_by('pk')[0]
+                us.estado_fase = 'To Do'
+                us.save()
         return HttpResponseRedirect('./')
 
     def get_context_data(self, **kwargs):
@@ -394,6 +403,7 @@ class UpdateTeamMemberView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             fs_error = "El usuario " + team_member_formset.doble_usuario + " se asignó mas de una vez"
         return self.render_to_response(self.get_context_data(fs_error=fs_error, form=form, team_members=team_member_formset))
 
+
 @method_decorator(login_required, name='dispatch')
 class VerProyectoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
     model = Proyecto
@@ -406,7 +416,7 @@ class VerProyectoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Ver Proyecto"
+        context['title'] = "Ver Proyecto " + str(self.object.pk)
         return context
 
     def get_object(self, queryset=None):

@@ -2,22 +2,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ title }}</title>
+    <title>Login</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--css -->
 	<link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/css/login.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <!-- js-->
-    <script src="{% static '../../sprint/js/classie.js' %}"></script>
-    <script src="{% static '../../sprint/js/gnmenu.js' %}"></script>
-    <script defer src="{% static '/../../sprint/js/fontawesome.js' %}"></script>
-    <script defer src="{% static '/../../sprint/js/brands.js' %}"></script>
-    <script defer src="{% static '/../../sprint/js/solid.js' %}"></script>
-    <script defer src="{% static '/../../sprint/js/regular.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.min.css' %}">
+    <script src="{% static '/js/fontawesome.js' %}"></script>
+    <script src="{% static '/js/brands.js' %}"></script>
+    <script src="{% static '/js/solid.js' %}"></script>
+    <script src="{% static '/js/regular.js' %}"></script>
 </head>
 <body>
 <div class="container">
@@ -42,20 +37,13 @@
 						</div>
 						<input type="password" class="form-control" placeholder="contraseña" name="password">
 					</div>
-					<div class="row align-items-center remember">
-						<input type="checkbox">Recordar
-					</div>
+                    <br><br>
 					<div class="form-group">
 						<input type="submit" value="Iniciar Sesión" class="btn float-right login_btn">
 					</div>
 				</form>
 			</div>
             <div class="error-text">{{ error }}</div>
-			<div class="card-footer">
-				<div class="d-flex justify-content-center">
-					<a href="#">Ha olvidado su contraseña?</a>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>

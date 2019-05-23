@@ -1,14 +1,11 @@
 from django.views.generic import ListView, CreateView, UpdateView, TemplateView, DetailView
 from .forms import *
 from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from proyecto.models import *
 from sprint.models import *
-from userstory.models import *
 from userstory.forms import *
 
 
@@ -26,7 +23,6 @@ class FlujoListView(LoginRequiredMixin, ListView):
         self.object_list = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
-        print(str(permisos))
         return self.render_to_response(self.get_context_data(permisos=permisos, project=proyecto,object_list=self.object_list))
 
     def get_context_data(self, **kwargs):
@@ -63,7 +59,7 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
-        context['title'] = "Modificar Flujo"
+        context['title'] = "Modificar Flujo " + str(self.object.pk)
         return context
 
     def get_object(self, queryset=None):
@@ -177,11 +173,19 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         context['actividad_form'] = ActividadForm()
         context['notas'] = {}
         context['archivos'] = {}
+        context['direccion'] = {}
         context['actividades'] = {}
         for us in context['user_stories']:
             context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
             context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
             context['actividades'][us.pk] = Actividad.objects.filter(us=us.pk)
+        context['direccion']['Ejecuciones'] = (1,"/proyectos/ejecuciones/")
+        context['direccion']['Ejecucion '+str(context['project'].nombre)] = (2,"/proyectos/ejecuciones/"+str(self.kwargs['pk_proyecto'])+"/")
+        link = "/proyectos/ejecuciones/"+str(self.kwargs['pk_proyecto'])+"/"
+        link += "sprint/"+str(self.kwargs['sprint_pk'])+"/tableros/"
+        link += str(self.kwargs['flujo_pk'])
+        context['direccion']['Tablero ' + str(context['flujo'].nombre)] = (3,link)
+        print(context['direccion'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -274,7 +278,7 @@ class VerFlujoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Ver Flujo"
+        context['title'] = "Ver Flujo " + str(self.object.pk)
         return context
 
     def get_object(self, queryset=None):

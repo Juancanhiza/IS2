@@ -89,6 +89,10 @@ class VerClientDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
     model = Cliente
     template_name = 'clientes/ver_cliente.html'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        permisos = request.user.get_nombres_permisos()
+        return self.render_to_response(self.get_context_data(permisos=permisos))
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Ver Cliente"

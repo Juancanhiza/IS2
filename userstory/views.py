@@ -1,7 +1,6 @@
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import UserStory
 from userstory.forms import CreateUserStoryForm, UpdateUserStoryForm
-from django.urls import reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -25,6 +24,11 @@ class UserStoryListView(LoginRequiredMixin, ListView):
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         return self.render_to_response(self.get_context_data(project=proyecto,object_list=self.object_list,permisos=permisos))
 
+    def get_context_data(self, **kwargs):
+        context = super(UserStoryListView,self).get_context_data(**kwargs)
+        context['title'] = 'User Stories'
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class CreateUserStoryView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
@@ -47,7 +51,8 @@ class CreateUserStoryView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        return self.render_to_response(self.get_context_data(form=form))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos, form=form))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -72,6 +77,11 @@ class UpdateUserStoryView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_url = '../'
     success_message = 'Los cambios se guardaron correctamente'
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
@@ -85,9 +95,6 @@ class UpdateUserStoryView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return UserStory.objects.get(pk=self.kwargs['pk'])
-
-    def get_absolute_url(self):
-        return reverse('update_userstory', kwargs={'pk': self.kwargs['pk']})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -120,7 +127,8 @@ class ProductBacklogListView(LoginRequiredMixin, ListView):
             ol.append(us)
         ol.sort(key=lambda x: x.priorizacion, reverse=True)
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
-        return self.render_to_response(self.get_context_data(project=proyecto, ol=ol))
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
+        return self.render_to_response(self.get_context_data(permisos=permisos, project=proyecto, ol=ol))
 
 
     def get_context_data(self, *, object_list=None, **kwargs):
