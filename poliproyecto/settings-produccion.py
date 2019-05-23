@@ -35,16 +35,17 @@ INSTALLED_APPS = (
     'proyecto',
     'usuarios',
     'rol',
+    'flujo',
+    'clientes',
+    'tipoUserStory',
+    'userstory',
+    'sprint',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'clientes',
-    'tipoUserStory',
-    'userstory',
-    'sprint'
 )
 
 MIDDLEWARE = [
@@ -84,7 +85,7 @@ WSGI_APPLICATION = 'poliproyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db-produccion',
+        'NAME': 'db',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
@@ -116,4 +117,18 @@ CSRF_FAILURE_VIEW = 'accounts.views.home'
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static'),
+]
+
+STATICFILES_FINDERS =[
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder'
+]
+
 AUTH_USER_MODEL = 'usuarios.Usuario'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
+
