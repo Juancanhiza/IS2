@@ -60,9 +60,8 @@
                             <td width="13%">
                                 {{ us.priorizacion }}
                             </td>
-                            <td width="15%">
-                                <button class="btn btn-success btn-sm" type="button"
-                                        data-toggle="modal" href="#Asignacion_{{ us.pk }}"
+                            <td width="15%"><button class="btn btn-success btn-sm" type="button" name="botones_asignacion"
+                                        data-toggle="modal" href="#Asignacion_{{ us.pk }}" value="{{ us.pk }}"
                                         id="asignacion_{{ us.pk }}" style="display: none">
                                     Asignar TM
                                 </button>
@@ -93,8 +92,8 @@
                             </td>
                             <td width="15%">
                                 <button class="btn btn-success btn-sm" type="button"
-                                        data-toggle="modal" href="#Asignacion_{{ us.pk }}"
-                                        id="asignacion_{{ us.pk }}">
+                                        data-toggle="modal" href="#Asignacion_{{ us.pk }}" name="botones_asignacion"
+                                        id="asignacion_{{ us.pk }}" value="{{ us.pk }}">
                                     Asignar TM
                                 </button>
                             </td>
@@ -278,6 +277,20 @@
 {% endfor %}
 <script type="text/javascript">
     $(document).ready(function($) {
+        function cambiar_botones(){
+            var boton,asignacion;
+            var botones = document.getElementsByName('botones_asignacion');
+            for (var i=0; i<botones.length; i++){
+                boton = botones[i];
+                asignacion = document.getElementById('id_team_member_'+boton.value);
+                if (asignacion.value == ''){
+                    boton.innerHTML = 'Asignar TM';
+                }else{
+                    boton.innerHTML = 'Reasignar TM';
+                }
+            }
+        }
+        cambiar_botones();
         function calcular_horas() {
             var duracion_us;
             var tm;
@@ -368,6 +381,7 @@
 
         $('.asignar').change(function () {
             calcular_horas();
+            cambiar_botones();
         });
         $('.horas').change(function () {
             calcular_horas();

@@ -102,6 +102,8 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
                                                              permisos=permisos, formularios=formularios))
 
     def post(self, request, *args, **kwargs):
+        dias_habiles = str(request.POST.getlist('dias_habiles'))[1:-1].replace("'", "")
+        dias_habiles = dias_habiles.replace(" ", "")
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         self.object = self.get_object()
         formclass = self.get_form_class()
@@ -146,6 +148,8 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         self.object = None
         context = super().get_context_data(**kwargs)
+        tm_disponibles = []
+        context['tm_disponibles'] = json.dumps(tm_disponibles)
         context['title'] = "Crear Sprint"
         context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['obs'] = "Los sprints se crean por defecto en estado Pendiente, deben iniciarse manualmente"

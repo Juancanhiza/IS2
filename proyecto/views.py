@@ -201,7 +201,7 @@ class UpdateOptionsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = "Definicion de Proyecto"
+        context['title'] = "Definicion "
         return context
 
     def get_object(self, queryset=None):

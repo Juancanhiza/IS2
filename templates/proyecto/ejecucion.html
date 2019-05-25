@@ -6,6 +6,13 @@
         <hr>
     </div>
     <div class="body" style="">
+        <div class="row">
+            <a href="{% url 'update_options' object.pk %}" style="color: white">
+                <button type="button" class="btn btn-success" style="margin-left: 50em">
+                    Ir a Definición
+                </button>
+            </a>
+        </div>
         <div class="options" style="font-size: 1.5em; padding-top: 0em!important;;">
             {% if object.estado == "Activo" %}
                 {% if 'Ver Sprints' in permisos %}

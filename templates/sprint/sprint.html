@@ -236,10 +236,14 @@
                 }
             })
         }
+
         function actualizar_nuevos_tm(){
-            var nuevo_tm, html, html2;
+            var nuevo_tm, html, html2,add_btn;
             if (nuevos_tm == ''){
-                document.getElementById('add_tm').setAttribute('href','#SinNuevos');
+                add_btn = document.getElementById('add_tm');
+                if (add_btn){
+                    add_btn.setAttribute('href','#SinNuevos');
+                }
             }else if (nuevos_tm){
                 html = "<label for='nuevo_tm'>Team Member: </label>";
                 html2 ="<label for='nuevo_tm'>A Team Member: </label>";
@@ -257,6 +261,7 @@
                 document.getElementById('select_new_tm_ra').innerHTML = html2;
             }
         }
+
         actualizar_nuevos_tm();
         function recalcular_string() {
             var checked;
