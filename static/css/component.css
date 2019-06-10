@@ -30,7 +30,7 @@
 		text-transform: none;
 		font-weight: 300;
 		font-family: 'Lato', Arial, sans-serif;
-		line-height: 45px;
+		line-height: 50px;
 }
 
 .gn-menu-main {
@@ -119,9 +119,16 @@
 		transition: transform 0.3s, width 0.3s;
 }
 
+.gn-menu-usuario{
+	margin-left: 45em!important;;
+	padding-left: 2em;
+	border-right: none!important;;
+	border-left: 1px solid #c6d0da!important;;
+}
+
 .gn-scroller {
 		position: absolute;
-		overflow-y: scroll;
+		overflow-y: hidden;
 		width: 370px;
 		height: 100%;
 }
@@ -220,7 +227,7 @@
 }
 
 .gn-menu-wrapper.gn-open-all .gn-submenu li {
-		height: 60px
+		height: 50px;
 }
 
 @media screen and (max-width: 422px) { 

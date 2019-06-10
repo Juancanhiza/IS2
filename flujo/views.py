@@ -12,7 +12,7 @@ from userstory.forms import *
 @method_decorator(login_required, name='dispatch')
 class FlujoListView(LoginRequiredMixin, ListView):
     """
-    Vista de la lista de Flujos
+    Clase de la vista de la lista de Flujos
     """
     template_name = 'flujo/list.html'
     model = Flujo
@@ -28,6 +28,10 @@ class FlujoListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "Flujos de Proyecto"
+        context['direccion'] = {}
+        context['direccion']['Definiciones'] = (1, '/proyectos/definiciones/')
+        context['direccion'][str(kwargs['project'])] = (2, '/proyectos/definiciones/'+str(kwargs['project'].pk)+'/')
+        context['direccion']['Flujos'] = (3, '/proyectos/definiciones/'+str(kwargs['project'].pk)+'/flujos/')
         return context
 
 

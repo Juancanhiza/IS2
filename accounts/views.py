@@ -1,31 +1,24 @@
-import warnings
-
 from django.conf import settings
-# Avoid shadowing the login() and logout() views below.
 from django.contrib.auth import (
-    REDIRECT_FIELD_NAME, get_user_model, login as auth_login,
-    logout as auth_logout, update_session_auth_hash,
+    REDIRECT_FIELD_NAME,login as auth_login,
+    logout as auth_logout
 )
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (
-    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
+    AuthenticationForm
 )
-from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponseRedirect, QueryDict
+from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
 from django.template.response import TemplateResponse
-from django.utils.encoding import force_text
-from django.utils.http import is_safe_url, urlsafe_base64_decode
-from django.utils.translation import ugettext as _
+from django.utils.http import is_safe_url
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
-from django.shortcuts import render, redirect
 
 """
-Vista del Login
+Vista del Login y Logout
 """
+
 
 @sensitive_post_parameters()
 @csrf_protect
@@ -35,7 +28,14 @@ def login(request, template_name='accounts/login.html',
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
     """
-    Muestra la vista de login y la maneja.
+    Muestra la vista de login y maneja los datos enviados para loguearse
+    :param request: consulta recibida
+    :param template_name: nombre del template que utiliza la vista
+    :param redirect_field_name: nombre del campo para redireccion
+    :param authentication_form: formulario de autenticacion
+    :param current_app: aplicacion actual
+    :param extra_context: diccionario de datos adicionales que deben visualizarse en la vista
+    :return:
     """
     redirect_to = request.POST.get(redirect_field_name,
                                    request.GET.get(redirect_field_name, ''))
@@ -58,7 +58,7 @@ def login(request, template_name='accounts/login.html',
 
             return HttpResponseRedirect(redirect_to)
         else:
-            error="El usuario no existe o la contraseña es incorrecta"
+            error = "El usuario no existe o la contraseña es incorrecta"
     else:
         form = authentication_form(request)
 
@@ -82,7 +82,9 @@ def login(request, template_name='accounts/login.html',
 
 def logout(request):
     """
-    Logs out the user and displays 'You are logged out' message.
+    Vista para redireccion a la pagina de login luego de cerrar sesión
+    :param request: consulta recibida
+    :return: redireccion a la pagina de login luego de cerrar sesión
     """
     auth_logout(request)
     return HttpResponseRedirect('/')

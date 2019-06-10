@@ -14,11 +14,11 @@ urlpatterns = [
     url(r'^create/$', views.CreateProjectView.as_view(), name='create_project'),
     path(route='modificar/<int:pk_proyecto>/', view=views.UpdateProjectView.as_view(), name='update_project'),
     # URLs en el modulo de Definicion
-    url(r'^opciones/$', views.OptionsListView.as_view(), name='options_project'),
-    path(route='opciones/<int:pk_proyecto>/', view=views.UpdateOptionsView.as_view(), name='update_options'),
-    path('opciones/<int:pk_proyecto>/flujos/',include('flujo.urls')),
-    path('opciones/<int:pk_proyecto>/tipoUserStory/',include('tipoUserStory.urls'), name='user_story_type_list'),
-    path(route='opciones/<int:pk_proyecto>/asignarRoles/', view=views.UpdateTeamMemberView.as_view(), name='update_roles_proyecto'),
+    url(r'^definiciones/$', views.OptionsListView.as_view(), name='options_project'),
+    path(route='definiciones/<int:pk_proyecto>/', view=views.UpdateOptionsView.as_view(), name='update_options'),
+    path('definiciones/<int:pk_proyecto>/flujos/',include('flujo.urls')),
+    path('definiciones/<int:pk_proyecto>/tipoUserStory/',include('tipoUserStory.urls'), name='user_story_type_list'),
+    path(route='definiciones/<int:pk_proyecto>/asignarRoles/', view=views.UpdateTeamMemberView.as_view(), name='update_roles_proyecto'),
     # URLs en el modulo de Ejecucion
     url(r'^ejecuciones/$', views.EjecucionListView.as_view(), name='options_project'),
     path(route='ejecuciones/<int:pk_proyecto>/', view=views.UpdateEjecucionView.as_view(), name='update_ejecucion'),

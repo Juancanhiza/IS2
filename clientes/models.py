@@ -6,7 +6,8 @@ Definicion del modelo Cliente
 """
 class Cliente(models.Model):
     """
-    Definimos los campos necesarios para el modelo
+    Implementa la clase de clientes, con las informaciones generales de los clientes:
+    nombre, descripcion, direccion, ruc y telefono
     """
     nombre = models.CharField(max_length=100, blank=False, null=False)
     descripcion = models.TextField(max_length=300, blank=True, null=True)
@@ -15,4 +16,8 @@ class Cliente(models.Model):
     telefono = models.CharField(max_length=30, blank=False, null=False)
 
     def __str__(self):
+        """
+        Metodo que retorna el nombre del cliente actual
+        :return: retorna el valor del campo nombre del objeto actual
+        """
         return self.nombre

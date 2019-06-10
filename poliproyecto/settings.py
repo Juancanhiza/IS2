@@ -78,16 +78,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'poliproyecto.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'devdb',
+        'NAME': 'dbdev',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
         'PORT':'5432',
     }

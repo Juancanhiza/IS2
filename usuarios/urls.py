@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 
 """
-URL para Usuarios: crear, listar, modificar
+URL para Usuarios: crear, listar, modificar, ver
 """
 urlpatterns = [
     url(r'^$', views.UserListView.as_view(),name='user_list'),

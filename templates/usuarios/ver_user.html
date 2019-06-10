@@ -13,11 +13,11 @@
             <li>Email: {{ object.email }}</li>
             <li>Nombre/s: {{ object.first_name }}</li>
             <li>Apellido/s: {{ object.last_name }}</li>
-            <li>Estado: {{ object.estado }}</li>
-            <li>CI: {{ object.ci }}</li>
-            <li>Teléfono: {{ object.telefono }}</li>
-            <li>Direccion: {{ object.direccion }}</li>
-            <li>Descripcion: {{ object.descripcion }}</li>
+            <li>Estado: {% if object.estado %}{{ object.estado }}{% endif %}</li>
+            <li>CI: {% if object.ci %}{{ object.ci }}{% endif %}</li>
+            <li>Teléfono: {% if object.telefono %}{{ object.telefono }}{% endif %}</li>
+            <li>Direccion: {% if object.direccion %}{{ object.direccion }}{% endif %}</li>
+            <li>Descripcion: {% if object.descripcion %}{{ object.descripcion }}{% endif %}</li>
             <li>Permisos:</li>
             <div class="container" style="margin-left: 50px">
                 {% for permiso in object.permisos.all %}

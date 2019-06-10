@@ -10,7 +10,7 @@ class CreateSprintForm(forms.ModelForm):
     """
     class Meta:
         """
-        En esta clase se definen los datos necesarios y adicionales para inicializacion y
+        Clase en la que se definen los datos necesarios y adicionales para inicializacion y
         visualizacion del formulario
         """
         model = Sprint

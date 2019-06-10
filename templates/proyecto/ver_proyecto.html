@@ -10,12 +10,10 @@
     <div class="register">
         <div class="container detalle" style="font-size: 25px">
             <li>Nombre: {{ object.nombre }}</li>
-            <li>Fecha de Inicio:{{ object.fecha_inicio }}</li>
-            <li>Fecha de Finalización:{{ object.fecha_fin }}</li>
-            <li>Estado:{{ object.estado }}</li>
+            <li>Estado: {{ object.estado }}</li>
+            <li>Fecha de Inicio:{% if object.fecha_inicio %} {{ object.fecha_inicio }}{% endif %}</li>
+            <li>Fecha de Finalización:{% if object.fecha_fin %} {{ object.fecha_fin }}{% endif %}</li>
             <li>Descripcion:{{ object.descripcion }}</li>
-            <li>F. De Inicio (Estimada): {{ object.fecha_ini_estimada }}</li>
-            <li>F. De Finalización (Estimada): {{ object.fecha_fin_estimada }}</li>
         </div>
         <br>
         <div class="row">

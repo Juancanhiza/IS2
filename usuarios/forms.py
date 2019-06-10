@@ -2,11 +2,16 @@ from django import forms
 from .models import Usuario
 from rol.models import Permiso
 
+
 class CreateUserForm(forms.ModelForm):
     """
     Formulario para la creacion de un  Usuario
     """
     class Meta:
+        """
+        Clase en la que se definen los datos necesarios y adicionales para inicializacion y
+        visualizacion del formulario
+        """
         model = Usuario
         fields = ('username',
                   'email',
@@ -26,6 +31,11 @@ class CreateUserForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """
+        Constructor del formulario
+        :param args: argumentos para inicializacion
+        :param kwargs: diccionario de datos adicionales para inicializacion
+        """
         super(CreateUserForm, self).__init__(*args, **kwargs)
         permisos_all = Permiso.objects.filter(tipo=1)
         p = self.fields['permisos'].widget
@@ -35,6 +45,12 @@ class CreateUserForm(forms.ModelForm):
         p.choices = permisos
 
     def save(self, commit=True):
+        """
+        Metodo para guardar el formulario
+        :param commit: indicador de guardado en la base de datos, True: se debe guardar,
+                                                                  False: No guardar.
+        :return: El objeto creado por el formulario luego de ejecutar el metodo en el formulario
+        """
         user = super(CreateUserForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
         if commit:
@@ -48,6 +64,10 @@ class UpdateUserForm(forms.ModelForm):
     Formulario para la modificacion de un Usuario
     """
     class Meta:
+        """
+        Clase en la que se definen los datos necesarios y adicionales para inicializacion y
+        visualizacion del formulario
+        """
         model = Usuario
         fields = ('username',
                   'email',
@@ -68,6 +88,12 @@ class UpdateUserForm(forms.ModelForm):
         }
 
     def save(self, commit=True):
+        """
+        Metodo para guardar el formulario
+        :param commit: indicador de guardado en la base de datos, True: se debe guardar,
+                                                                  False: No guardar.
+        :return: El objeto creado por el formulario luego de ejecutar el metodo en el formulario
+        """
         user = super(UpdateUserForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password"])
         if commit:
@@ -76,6 +102,11 @@ class UpdateUserForm(forms.ModelForm):
         return user
 
     def __init__(self, *args, **kwargs):
+        """
+        Constructor del formulario
+        :param args: argumentos para inicializacion
+        :param kwargs: diccionario de datos adicionales para inicializacion
+        """
         super(UpdateUserForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
@@ -86,11 +117,3 @@ class UpdateUserForm(forms.ModelForm):
         for permiso in permisos_all:
             permisos.append((permiso.id, permiso.nombre))
         p.choices = permisos
-
-    def clean_username(self):
-        instance = getattr(self, 'instance', None)
-        if instance and instance.pk:
-            return instance.username
-        else:
-            return self.cleaned_data['username']
-

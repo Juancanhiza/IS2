@@ -1,8 +1,6 @@
 from django.conf.urls import url
 from django.urls import path
 from . import views
-# from django.contrib.auth.views import login
-from .models import *
 """
 URL para el ver, crear y modificar roles
 """
