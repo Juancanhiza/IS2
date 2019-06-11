@@ -453,8 +453,14 @@ class EjecucionListView(LoginRequiredMixin, ListView):
         :return: la respuesta a la consulta GET
         """
         self.object_list = Proyecto.objects.all()
+        visibles = []
+        for proyecto in self.object_list:
+            permisos_proyecto = request.user.get_nombres_permisos(proyecto=proyecto.pk)
+            if 'Ver Ejecucion de Proyecto' in permisos_proyecto:
+                visibles.append(proyecto)
+        visibles.sort(key=lambda x: x.pk, reverse=True)
         permisos = request.user.get_nombres_permisos()
-        return self.render_to_response(self.get_context_data(object_list=self.object_list, permisos=permisos))
+        return self.render_to_response(self.get_context_data(visibles=visibles, permisos=permisos))
 
     def get_context_data(self, **kwargs):
         """
@@ -464,6 +470,8 @@ class EjecucionListView(LoginRequiredMixin, ListView):
         """
         context = super().get_context_data(**kwargs)
         context['title'] = "Ejecuciones de Proyectos"
+        context['direccion'] = {}
+        context['direccion']['Ejecuciones'] = (1, '/ejecuciones/')
         return context
 
 
@@ -561,6 +569,10 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         flujos = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         context['flujos'] = flujos
         context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        context['direccion'] = {}
+        context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
+        proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        context['direccion'][proyecto.nombre] = (1, '/proyectos/ejecuciones/' + str(proyecto.pk) + '/')
         return context
 
     def get_object(self, queryset=None):

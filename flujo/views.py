@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from sprint.models import *
 from userstory.forms import *
+from django.shortcuts import render
 
 
 @method_decorator(login_required, name='dispatch')
@@ -19,6 +20,13 @@ class FlujoListView(LoginRequiredMixin, ListView):
     queryset = Flujo.objects.all()
 
     def get(self,request,*args,**kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
+        """
         self.object = None
         self.object_list = Flujo.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
@@ -26,6 +34,11 @@ class FlujoListView(LoginRequiredMixin, ListView):
         return self.render_to_response(self.get_context_data(permisos=permisos, project=proyecto,object_list=self.object_list))
 
     def get_context_data(self, **kwargs):
+        """
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
+        """
         context = super().get_context_data(**kwargs)
         context['title'] = "Flujos de Proyecto"
         context['direccion'] = {}
@@ -42,11 +55,18 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     """
     template_name = 'flujo/flujo.html'
     model = Flujo
-    success_url = '../'
+    success_url = '../../'
     form_class = UpdateFlujoForm
     success_message = 'Se ha modificado el flujo'
 
     def get(self,request,*args,**kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
+        """
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -61,15 +81,37 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return self.render_to_response(self.get_context_data(permisos=permisos,form=form, fases=fases_orden_formset))
 
     def get_context_data(self, **kwargs):
+        """
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
+        """
         context = super().get_context_data(**kwargs)
         context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['title'] = "Modificar Flujo " + str(self.object.pk)
+        context['direccion'] = {}
+        context['direccion']['Definiciones'] = (1, '/proyectos/definiciones/')
+        context['direccion'][str(context['project'])] = (2, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/')
+        context['direccion']['Flujos'] = (3, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/flujos/')
+        context['direccion']['Modificar:'+self.object.nombre] = (4, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/flujos/modificar/' + str(self.object.pk))
         return context
 
     def get_object(self, queryset=None):
+        """
+        Metodo que retorna el objeto a ser modificado
+        :param queryset:
+        :return: El proyecto a ser modificado
+        """
         return Flujo.objects.get(pk=self.kwargs['pk'])
 
     def post(self,request,*args,**kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta POST
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta POST
+        """
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -80,6 +122,13 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             return self.form_invalid(form, fases_formset)
 
     def form_valid(self, form, fases_formset):
+        """
+        Metodo que se ejecuta si el formulario recibido en la consulta POST
+        es valido
+        :param form: formulario a ser guardado
+        :param team_member_formset: grupo de team members del proyecto
+        :return: redireccion a la direccion definida en el atributo success_url de la clase
+        """
         self.object = form.save()
         fases_formset.instance = self.object
         Fase.objects.filter(flujo=self.object).delete()
@@ -87,6 +136,13 @@ class UpdateFlujoView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form,fases_formset):
+        """
+        Metodo que se ejecuta si el formulario recibido en la consulta POST
+        es invalido
+        :param form: formulario a ser guardado
+        :param team_member_formset: grupo de team members del proyecto
+        :return: redireccion a la pagina actual con los errores de validacion
+        """
         fs_error = None
         if fases_formset.vacio:
             fs_error = "El flujo debe tener al menos una fase"
@@ -102,17 +158,29 @@ class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     """
     template_name = 'flujo/flujo.html'
     model = Flujo
-    success_url = '../'
+    success_url = '../../'
     form_class = CreateFlujoForm
     success_message = 'Se ha creado el flujo'
 
     def get_object(self, queryset=None):
+        """
+        Metodo que retorna el objeto a ser visualizado
+        :param queryset:
+        :return: Retorna el proyecto a ser visualizado
+        """
         obj = Flujo()
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         obj.proyecto = proyecto
         return obj
 
     def get(self,request,*args,**kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
+        """
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -121,12 +189,29 @@ class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         return self.render_to_response(self.get_context_data(permisos=permisos, form=form, fases=fases_orden_formset))
 
     def get_context_data(self, **kwargs):
+        """
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
+        """
         context = super(CreateFlujoView,self).get_context_data(**kwargs)
         context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['title'] = "Crear Flujo"
+        context['direccion'] = {}
+        context['direccion']['Definiciones'] = (1, '/proyectos/definiciones/')
+        context['direccion'][str(context['project'])] = (2, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/')
+        context['direccion']['Flujos'] = (3, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/flujos/')
+        context['direccion']['Crear'] = (4, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/flujos/create/')
         return context
 
     def post(self,request,*args,**kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta POST
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta POST
+        """
         self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
@@ -137,12 +222,26 @@ class CreateFlujoView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
             return self.form_invalid(form,fases_formset)
 
     def form_valid(self, form, fases_formset):
+        """
+        Metodo que se ejecuta si el formulario recibido en la consulta POST
+        es valido
+        :param form: formulario a ser guardado
+        :param team_member_formset: grupo de team members del proyecto
+        :return: redireccion a la direccion definida en el atributo success_url de la clase
+        """
         self.object = form.save()
         fases_formset.instance = self.object
         fases_formset.save()
         return HttpResponseRedirect(self.success_url)
 
     def form_invalid(self, form,fases_formset):
+        """
+        Metodo que se ejecuta si el formulario recibido en la consulta POST
+        es invalido
+        :param form: formulario a ser guardado
+        :param team_member_formset: grupo de team members del proyecto
+        :return: redireccion a la pagina actual con los errores de validacion
+        """
         fs_error = None
         if fases_formset.vacio:
             fs_error = "El flujo debe tener al menos una fase"
@@ -159,12 +258,24 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
     template_name = 'flujo/tablero.html'
 
     def get(self,request,*args,**kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
+        """
         self.object = None
         usuario = request.user
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         return self.render_to_response(self.get_context_data(usuario=usuario, permisos=permisos))
 
     def get_context_data(self, **kwargs):
+        """
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
+        """
         context = super(TableroTemplateView, self).get_context_data(**kwargs)
         context['title'] = "Tableros de Proyecto"
         context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
@@ -184,12 +295,11 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
             context['actividades'][us.pk] = Actividad.objects.filter(us=us.pk)
         context['direccion']['Ejecuciones'] = (1,"/proyectos/ejecuciones/")
-        context['direccion']['Ejecucion '+str(context['project'].nombre)] = (2,"/proyectos/ejecuciones/"+str(self.kwargs['pk_proyecto'])+"/")
+        context['direccion'][str(context['project'].nombre)] = (2,"/proyectos/ejecuciones/"+str(self.kwargs['pk_proyecto'])+"/")
         link = "/proyectos/ejecuciones/"+str(self.kwargs['pk_proyecto'])+"/"
         link += "sprint/"+str(self.kwargs['sprint_pk'])+"/tableros/"
         link += str(self.kwargs['flujo_pk'])
         context['direccion']['Tablero ' + str(context['flujo'].nombre)] = (3,link)
-        print(context['direccion'])
         return context
 
     def post(self, request, *args, **kwargs):
@@ -199,7 +309,13 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         US a una fase especifica si no paso el control de calidad o pasa a finalizado si es
         que paso el control de calidad, se toma una y solo una de las acciones mecionadas
         segun la consulta POST recibida
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta POST
         """
+        usuario = request.user
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         if 'tipo-adjunto' in request.POST.keys():
             if request.POST['tipo-adjunto'] == 'nota':
                 adjunto = GuardarNotaForm(request.POST)
@@ -236,6 +352,8 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     us.fase = None
                     us.estado_fase = 'Control de Calidad'
                 us.save()
+            print(us.fase)
+            return render(request,'flujo/tablero.html',self.get_context_data(s_fase=us.fase,usuario=usuario, permisos=permisos))
         if 'anterior' in request.POST.keys():
             us = UserStory.objects.get(id=request.POST['anterior'])
             if us.estado_fase == 'Done':
@@ -256,6 +374,8 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 us.fase = fases[idx_fase - 1]
                 us.estado_fase = 'To Do'
                 us.save()
+            return render(request, 'flujo/tablero.html',
+                          self.get_context_data(s_fase=us.fase, usuario=usuario, permisos=permisos))
         if 'finalizar' in request.POST.keys():
             us = UserStory.objects.get(id=request.POST['finalizar'])
             us.fase = None
@@ -272,18 +392,44 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
 
 @method_decorator(login_required, name='dispatch')
 class VerFlujoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    """
+    Vista para ver un flujo, sin opciones de modificación
+    """
     model = Flujo
     template_name = 'flujo/ver_flujo.html'
 
     def get(self,request,*args,**kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
+        """
         self.object = self.get_object()
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         return self.render_to_response(self.get_context_data(permisos=permisos))
 
     def get_context_data(self, **kwargs):
+        """
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
+        """
         context = super().get_context_data(**kwargs)
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['title'] = "Ver Flujo " + str(self.object.pk)
+        context['direccion'] = {}
+        context['direccion']['Definiciones'] = (1, '/proyectos/definiciones/')
+        context['direccion'][str(context['project'])] = (2, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/')
+        context['direccion']['Flujos'] = (3, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/flujos/')
+        context['direccion']['Ver: ' + self.object.nombre] = (4, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/flujos/ver/' + str(self.object.pk))
         return context
 
     def get_object(self, queryset=None):
+        """
+        Metodo que retorna el objeto a ser visualizado
+        :param queryset:
+        :return: El proyecto a ser modificado
+        """
         return Flujo.objects.get(pk=self.kwargs['pk'])

@@ -70,7 +70,7 @@
         <ul class="gn-menu-main gn-menu-second" style="z-index: 1!important;;">
             Direccion actual: <a href="/">Inicio</a>
             {% for key,value in direccion.items %}
-                 > <a href={{ value.1 }}>{{ key }}</a>
+                > <a href="{{ value.1 }}">{{ key }}</a>
             {% endfor %}
         </ul>
     </div><!-- /container -->

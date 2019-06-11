@@ -60,6 +60,10 @@ class UserStory(models.Model):
     sprint = models.ForeignKey('sprint.Sprint', on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):
+        """
+        Retorna el nombre del User Story actual
+        :return: nombre del objeto actual
+        """
         return self.nombre
 
     def set_priorizacion(self):
@@ -68,22 +72,31 @@ class UserStory(models.Model):
     priorizacion = property(set_priorizacion)
 
     def has_team_member(self):
-        """retorna falso si el user story no esta asignado a ningun team member, en caso contrario
-        retorna verdadero"""
+        """
+        retorna falso si el user story no esta asignado a ningun team member, en caso contrario
+        retorna verdadero
+        :return: True o False
+        """
         if not self.team_member:
             return False
         return True
 
     def has_duracion_estimada(self):
-        """retorna falso si el user story no tiene una duracion estimada o su duracion
-         estimada es 0, en caso contrario retorna verdadero"""
+        """
+        retorna falso si el user story no tiene una duracion estimada o su duracion
+         estimada es 0, en caso contrario retorna verdadero
+        :return: True o False
+        """
         if not self.duracion_estimada or self.duracion_estimada == 0:
             return False
         return True
 
     def validate_asignacion(self):
-        """retorna falso si el user story no tiene un team member asignado o si no se le ha
-        asignado una duracion estimada o su duracion estimada es 0"""
+        """
+        retorna falso si el user story no tiene un team member asignado o si no se le ha
+        asignado una duracion estimada o su duracion estimada es 0
+        :return: True o Excepcion
+        """
         if not self.has_team_member():
             raise ValidationError('Debe asignar un team member al user story ' + str(self.nombre))
         if not self.has_duracion_estimada():
@@ -100,37 +113,50 @@ class Nota(models.Model):
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
     usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
+    sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
 
     def __str__(self):
+        """
+        Retorna el contenido de la nota actual
+        :return: campo nota del objeto actual
+        """
         return self.nota
 
 
 class Archivo(models.Model):
     """
-        Clase para adjuntar un archivo a un US
+    Clase para adjuntar un archivo a un US
     """
-    """Campos:"""
     titulo = models.CharField(max_length=255, blank=True)
     archivo = models.FileField(upload_to='')
     fecha = models.DateTimeField(auto_now_add=True)
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
     usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT, null=True)
+    sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
 
     def __str__(self):
+        """
+        Retorna el titulo del Archivo actual
+        :return: titulo del objeto actual
+        """
         return self.titulo
 
 
 class Actividad(models.Model):
     """
-        Clase para agregar una actividad a un User Story
+    Clase para agregar una actividad a un User Story
     """
-    """Campos:"""
     nombre = models.CharField(max_length=20)
     descripcion = models.TextField()
     duracion = models.TimeField()
     usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT, null=True)
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
+    sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
 
     def __str__(self):
+        """
+        Retorna el nombre del User Story actual
+        :return: nombre del objeto actual
+        """
         return self.nombre

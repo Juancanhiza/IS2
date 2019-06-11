@@ -1,18 +1,19 @@
-{% if 'Ver Proyectos' in permisos %}
+{% if 'Ver Ejecucion de Proyecto' in permisos %}
 {%include 'base.html'%}
 <div class="container">
     <div class="head">
         <h1 align="center"> Ejecucion {{ object.nombre }} </h1>
         <hr>
+        <h3 style="text-align: center">Proyecto: {{ project.nombre }}</h3>
     </div>
     <div class="body" style="">
-        <div class="row">
-            <a href="{% url 'update_options' object.pk %}" style="color: white">
-                <button type="button" class="btn btn-success" style="margin-left: 50em">
-                    Ir a Definición
-                </button>
-            </a>
-        </div>
+        {% if 'Ver Definiciones de Proyecto' in permisos %}
+        <a href="{% url 'update_options' object.pk %}" style="color: white">
+            <button type="button" class="btn btn-success" style="margin-left: 50em">
+                Ir a Definición
+            </button>
+        </a>
+        {% endif %}
         <div class="options" style="font-size: 1.5em; padding-top: 0em!important;;">
             {% if object.estado == "Activo" %}
                 {% if 'Ver Sprints' in permisos %}
@@ -84,11 +85,13 @@
                 <form method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="iniciar" >
+                    {% if 'Iniciar Proyecto' in permisos %}
                     <div class="container" align="right">
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-play-circle"></i> Iniciar Proyecto
                         </button>
                     </div>
+                    {% endif %}
                 </form>
             {% elif object.estado == "Suspendido" %}
                 <li>
@@ -100,28 +103,23 @@
                 <form method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="reiniciar" >
+                    {% if 'Reiniciar Proyecto' in permisos %}
                     <div class="container" align="right">
                         <button type="submit" class="btn btn-success">
                             <i class="fas fa-play-circle"></i> Reiniciar Proyecto
                         </button>
                     </div>
+                    {% endif %}
                 </form>
             {% elif object.estado == "Terminado" %}
+                <h4>El proyecto se encuentra terminado.</h4>
+                <br>
+                {% if 'Ver Product Backlog' in permisos %}
                 <li>
                     <a href="{% url 'product_backlog' object.pk%}">Product Backlog</a>
                 </li>
-                <br>
-                <h4>El proyecto se encuentra suspendido, puede reiniciar el proyecto.</h4>
+                {% endif %}
                 <br><br>
-                <form method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="reiniciar" >
-                    <div class="container" align="right">
-                        <button type="submit" class="btn btn-success">
-                            <i class="fas fa-play-circle"></i>Reiniciar Proyecto
-                        </button>
-                    </div>
-                </form>
             {% endif %}
         </div>
         <br><br><br>
@@ -141,7 +139,7 @@
             </div>
             {% if 'Crear Sprints' in permisos %}
             <div class="modal-footer">
-                <a href="./sprint/create/"><button type="button" class="btn btn-success">
+                <a href="./sprints/create/"><button type="button" class="btn btn-success">
                     Crear Sprint</button></a>
             </div>
             {% endif %}
@@ -165,7 +163,7 @@
             </div>
             {% endif %}
             {% if sprint_pendiente %}
-            {% if 'Iniciar Sprint' in permisos %}
+            {% if 'Iniciar Sprints' in permisos %}
             <div class="modal-footer">
                 <form method="POST">
                     {% csrf_token %}
@@ -212,5 +210,5 @@
     </div>
 </div>
 {% else %}
-Permiso denegado (Ver Proyectos)
+Permiso denegado (Ver Ejecucion de Proyecto)
 {% endif %}

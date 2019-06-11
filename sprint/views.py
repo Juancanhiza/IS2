@@ -27,8 +27,9 @@ class SprintListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         """
-        :param kwargs: diccionario de datos adicionales a ser pasados a la vista
-        :return context: contexto necesario para la visualizacion de datos en la vista
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
         """
         context = super().get_context_data(**kwargs)
         context['title'] = "Sprints de Proyecto"
@@ -36,14 +37,20 @@ class SprintListView(LoginRequiredMixin, ListView):
             context['sprint_pendiente'] = Sprint.objects.get(proyecto=self.kwargs['pk_proyecto'],estado='Pendiente')
         except:
             pass
+        context['direccion'] = {}
+        context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
+        proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        context['direccion'][proyecto.nombre] = (1, '/proyectos/ejecuciones/' + str(proyecto.pk) + '/')
+        context['direccion']['Sprints'] = (1, '/proyectos/ejecuciones/' + str(proyecto.pk) + '/sprints/')
         return context
 
     def get(self,request,*args,**kwargs):
         """
-        :param request: consulta realizada
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
         :param args: argumentos adicionales
-        :param kwargs: diccionario adicional de la consulta
-        :return: el contexto necesario para la visualizacion completa de los datos necesarios
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
         """
         self.object = None
         self.object_list = Sprint.objects.filter(proyecto=self.kwargs['pk_proyecto']).order_by('-pk')
@@ -65,8 +72,9 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get_object(self, queryset=None):
         """
+        Metodo que retorna el objeto a ser creado con el proyecto actual asignado
         :param queryset:
-        :return: el objeto con el proyecto seleccionado pre-asignado
+        :return: el objeto actual con el proyecto seleccionado pre-asignado
         """
         obj = Sprint()
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
@@ -75,11 +83,11 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
 
     def get(self,request,*args,**kwargs):
         """
-        consulta GET
-        :param request: datos de la consulta recibida
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
         :param args: argumentos adicionales
-        :param kwargs: diccionario de datos adicional de la consulta
-        :return: el contexto necesario para la visualizacion correcta de todos los datos
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
         """
         self.object = self.get_object()
         form_class = self.get_form_class()
@@ -102,6 +110,13 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
                                                              permisos=permisos, formularios=formularios))
 
     def post(self, request, *args, **kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta POST
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta POST
+        """
         dias_habiles = str(request.POST.getlist('dias_habiles'))[1:-1].replace("'", "")
         dias_habiles = dias_habiles.replace(" ", "")
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
@@ -146,6 +161,11 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
                                                                  permisos=permisos, formularios=formularios))
 
     def get_context_data(self, **kwargs):
+        """
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
+        """
         self.object = None
         context = super().get_context_data(**kwargs)
         tm_disponibles = []
@@ -153,6 +173,11 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         context['title'] = "Crear Sprint"
         context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['obs'] = "Los sprints se crean por defecto en estado Pendiente, deben iniciarse manualmente"
+        context['direccion'] = {}
+        context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
+        context['direccion'][str(context['project'])] = (2, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/')
+        context['direccion']['Sprints'] = (3, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/')
+        context['direccion']['Crear'] = (4, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/create/')
         return context
 
 
@@ -168,11 +193,23 @@ class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_message = 'Los cambios se guardaron correctamente'
 
     def get(self, request, *args, **kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
+        """
         self.object = self.get_object()
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         return self.render_to_response(self.get_context_data(permisos=permisos))
 
     def get_context_data(self, **kwargs):
+        """
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
+        """
         context = super().get_context_data(**kwargs)
         context['title'] = "Modificar Sprint" + str(self.object.pk)
         context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
@@ -215,12 +252,29 @@ class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         context['team_actual'] = team_actual
         context['horas_formset'] = horas_formset
         context['formularios'] = formularios
+        context['direccion'] = {}
+        context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
+        context['direccion'][str(context['project'])] = (2, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/')
+        context['direccion']['Sprints'] = (3, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/')
+        context['direccion']['Modificar: '+self.object.nombre] = (4, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/modificar/'+str(self.object.pk)+'/')
         return context
 
     def get_object(self, queryset=None):
+        """
+        Metodo que retorna el objeto a ser modificado
+        :param queryset:
+        :return: el objeto actual
+        """
         return Sprint.objects.get(pk=self.kwargs['sprint_pk'])
 
     def post(self, request, *args, **kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta POST
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta POST
+        """
         from usuarios.models import Usuario
         dias_habiles = str(request.POST.getlist('dias_habiles'))[1:-1].replace("'","")
         dias_habiles = dias_habiles.replace(" ","")
@@ -318,13 +372,23 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
 
     def get(self,request,*args,**kwargs):
         """retorna el contexto y permisos de usuario que constituyen la respuesta a las
-         consulta GET"""
+        consultas GET
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
+        """
         self.object_list = self.get_queryset()
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         return self.render_to_response(self.get_context_data(permisos=permisos))
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """retorna el contexto necesario para la visualizacion de la la vista"""
+        """
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
+        """
         context = super(AsignarUSUpdateView,self).get_context_data(**kwargs)
         context['notas'] = {}
         context['archivos'] = {}
@@ -356,12 +420,23 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
         context['capacidad_sprint'] = capacidad * sprint.dias_laborales
         context['proyecto'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['sprint'] = Sprint.objects.get(pk=self.kwargs['sprint_pk'])
+        proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        context['direccion'] = {}
+        context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
+        context['direccion'][proyecto.nombre] = (2, '/proyectos/ejecuciones/' + str(proyecto.pk) + '/')
+        context['direccion']['Planificar Sprint: '+ context['sprint'].nombre] = (3,
+            '/proyectos/ejecuciones/' + str(proyecto.pk) + '/sprints/'+str(context['sprint'].pk)+'/asignarus/')
         return context
 
     def post(self,request,*args,**kwargs):
-        """valida las asignaciones realizadas por el usuario, de ser validas guarda el user
+        """Metodo que valida las asignaciones realizadas por el usuario, de ser validas guarda el user
         story asignado al sprint pendiente, de no ser validas regresa a la vista de asignacion
-        para visualizar los errores"""
+        para visualizar los errores
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta POST
+        """
         self.object_list = self.get_queryset()
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         asigned = request.POST.getlist('user_stories')
@@ -404,13 +479,26 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
     template_name = 'sprint/ver_sprint.html'
 
     def get(self, request, *args, **kwargs):
+        """
+        Metodo que es ejecutado al darse una consulta GET
+        :param request: consulta recibida
+        :param args: argumentos adicionales
+        :param kwargs: diccionario de datos adicionales
+        :return: la respuesta a la consulta GET
+        """
         self.object = self.get_object()
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         return self.render_to_response(self.get_context_data(permisos=permisos))
 
     def get_context_data(self, **kwargs):
+        """
+        Metodo que retorna un diccionario utilizado para pasar datos a las vistas
+        :param kwargs: Diccionario de datos adicionales para el contexto
+        :return: diccionario de contexto necesario para la correcta visualizacion de los datos
+        """
         context = super().get_context_data(**kwargs)
         context['title'] = "Ver Sprint" + str(self.object.pk)
+        context['project'] = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         all_us = UserStory.objects.filter(sprints_asignados__id=self.object.pk)
         context['sprint_backlog'] = []
         for us in all_us:
@@ -423,7 +511,17 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
             context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
             context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
             context['actividades'][us.pk] = Actividad.objects.filter(us=us.pk)
+        context['direccion'] = {}
+        context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
+        context['direccion'][str(context['project'])] = (2, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/')
+        context['direccion']['Sprints'] = (3, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/')
+        context['direccion']['Ver: ' + self.object.nombre] = (4, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/ver/' + str(self.object.pk) + '/')
         return context
 
     def get_object(self, queryset=None):
+        """
+        Metodo que retorna el objeto actual
+        :param queryset:
+        :return: el objeto actual
+        """
         return Sprint.objects.get(pk=self.kwargs['pk'])

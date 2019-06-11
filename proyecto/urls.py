@@ -22,8 +22,8 @@ urlpatterns = [
     # URLs en el modulo de Ejecucion
     url(r'^ejecuciones/$', views.EjecucionListView.as_view(), name='options_project'),
     path(route='ejecuciones/<int:pk_proyecto>/', view=views.UpdateEjecucionView.as_view(), name='update_ejecucion'),
-    path('ejecuciones/<int:pk_proyecto>/userstory/', include('userstory.urls')),
+    path('ejecuciones/<int:pk_proyecto>/userstories/', include('userstory.urls')),
     path(route='ejecuciones/<int:pk_proyecto>/productbacklog/',view=ProductBacklogListView.as_view(), name = 'product_backlog'),
-    path('ejecuciones/<int:pk_proyecto>/sprint/', include('sprint.urls')),
+    path('ejecuciones/<int:pk_proyecto>/sprints/', include('sprint.urls')),
     path(route='ver/<int:pk>/', view=views.VerProyectoDetailView.as_view(), name='ver_project')
 ]

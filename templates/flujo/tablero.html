@@ -10,14 +10,16 @@
                 <div class="fases-dinamicas" style="display: inline;">
                     {% for fase in fases %}
                         {% if fase.pk == fases.0.pk %}
-                        <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-light fases-btn">{{ fase.nombre }}</button>
+                        <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-light fases-btn btn-sm">{{ fase.nombre }}</button>
                         {% else %}
-                        <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-dark fases-btn">{{ fase.nombre }}</button>
+                        <button type="button" value="{{ fase.pk }}" id="btn_{{ fase.pk }}" class="btn btn-dark fases-btn btn-sm">{{ fase.nombre }}</button>
                         {% endif %}
                     {% endfor %}
                 </div>
-                <button type="button" class="btn btn-dark fases-btn" id="cc-btn">Control de Calidad</button>
-                <button type="button" class="btn btn-dark fases-btn" id="finalizados-btn">Finalizados</button>
+                {% if 'Ver Control de Calidad' in permisos %}
+                <button type="button" class="btn btn-dark fases-btn btn-sm" id="cc-btn">Control de Calidad</button>
+                {% endif %}
+                <button type="button" class="btn btn-dark fases-btn btn-sm" id="finalizados-btn">Finalizados</button>
             </div>
             <div class="container tablero" id="tablero_actual">
                 <div class="row">
@@ -31,7 +33,7 @@
                                             <form method="POST" style="display: inline">
                                                 {% csrf_token %}
                                                 {% if us.fase != fases.0 %}
-                                                <button type="submit" class="btn btn-sm btn-danger change-status">
+                                                <button type="submit" class="btn btn-sm btn-danger">
                                                     <i class="fas fa-arrow-left"></i>
                                                     Anterior
                                                 </button>
@@ -67,7 +69,7 @@
                                             <form method="POST" style="display: inline">
                                                 {% csrf_token %}
                                                 {% if us.fase != fases.0 %}
-                                                <button type="submit" class="btn btn-sm btn-danger change-status">
+                                                <button type="submit" class="btn btn-sm btn-danger">
                                                     <i class="fas fa-arrow-left"></i>
                                                     Anterior
                                                 </button>
@@ -103,7 +105,7 @@
                                             <form method="POST" style="display: inline">
                                                 {% csrf_token %}
                                                 {% if us.fase != fases.0 %}
-                                                <button type="submit" class="btn btn-sm btn-danger change-status">
+                                                <button type="submit" class="btn btn-sm btn-danger">
                                                     <i class="fas fa-arrow-left"></i>
                                                     Anterior
                                                 </button>
@@ -149,7 +151,7 @@
                                     <form method="POST" style="display: inline">
                                         {% csrf_token %}
                                         {% if us.fase != fases.0 %}
-                                        <button type="submit" class="btn btn-sm btn-danger change-status">
+                                        <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="fas fa-arrow-left"></i>
                                             Anterior
                                         </button>
@@ -185,7 +187,7 @@
                                     <form method="POST" style="display: inline">
                                         {% csrf_token %}
                                         {% if us.fase != fases.0 %}
-                                        <button type="submit" class="btn btn-sm btn-danger change-status">
+                                        <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="fas fa-arrow-left"></i>
                                             Anterior
                                         </button>
@@ -221,7 +223,7 @@
                                     <form method="POST" style="display: inline">
                                         {% csrf_token %}
                                         {% if us.fase != fases.0 %}
-                                        <button type="submit" class="btn btn-sm btn-danger change-status">
+                                        <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="fas fa-arrow-left"></i>
                                             Anterior
                                         </button>
@@ -264,7 +266,10 @@
             {% for us in user_stories %}
                 {% if us.estado_fase == 'Control de Calidad' %}
                     <tr>
-                    <td width="30%">{{ us.nombre }}</td>
+                    <td width="30%">
+                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
+                        {{ us.nombre }}</a>
+                    </td>
                     <td width="50%">{{ us.descripcion }}</td>
                     <td width="20%">
                         <button type="button" href="#Mover_{{ us.pk }}" data-toggle="modal" class="btn btn-danger">No OK</button>
@@ -473,15 +478,27 @@
 </div>
 <!-- fin formulario de actividad -->
 
+<input type="hidden" value="{{ s_fase.pk }}" id="fase_actual">
 <script type="text/javascript">
     $(document).ready(function($) {
+        {% if s_fase %}
+            var pk_fase = document.getElementById('fase_actual').value;
+            var tablero_id = '#tablero_'.concat(pk_fase);
+            var tablero =  $(tablero_id).html();
+            var ex_select = document.getElementsByClassName("fases-btn");
+            for (var i=0; i< ex_select.length; i++){
+                 ex_select[i].setAttribute('class','btn btn-dark fases-btn btn-sm');
+            }
+            document.getElementById('btn_'+pk_fase).className = "btn btn-light fases-btn btn-sm";
+            document.getElementById('tablero_actual').innerHTML = tablero;
+        {% endif %}
         $('#finalizados-btn').click(function() {
             var finalizados =  $('#finalizados').html();
             var ex_select = document.getElementsByClassName("fases-btn");
             for (var i=0; i< ex_select.length; i++){
-                 ex_select[i].setAttribute('class','btn btn-dark fases-btn');
+                 ex_select[i].setAttribute('class','btn btn-dark fases-btn btn-sm');
             }
-            document.getElementById(this.id).className = "btn btn-light fases-btn";
+            document.getElementById(this.id).className = "btn btn-light fases-btn btn-sm";
             document.getElementById('tablero_actual').innerHTML = finalizados;
         });
 
@@ -489,9 +506,9 @@
             var cc =  $('#control-calidad').html();
             var ex_select = document.getElementsByClassName("fases-btn");
             for (var i=0; i< ex_select.length; i++){
-                 ex_select[i].setAttribute('class','btn btn-dark fases-btn');
+                 ex_select[i].setAttribute('class','btn btn-dark fases-btn btn-sm');
             }
-            document.getElementById(this.id).className = "btn btn-light fases-btn";
+            document.getElementById(this.id).className = "btn btn-light fases-btn btn-sm";
             document.getElementById('tablero_actual').innerHTML = cc;
         });
 
@@ -500,9 +517,9 @@
             var tablero =  $(tablero_id).html();
             var ex_select = document.getElementsByClassName("fases-btn");
             for (var i=0; i< ex_select.length; i++){
-                 ex_select[i].setAttribute('class','btn btn-dark fases-btn');
+                 ex_select[i].setAttribute('class','btn btn-dark fases-btn btn-sm');
             }
-            document.getElementById(this.id).className = "btn btn-light fases-btn";
+            document.getElementById(this.id).className = "btn btn-light fases-btn btn-sm";
             document.getElementById('tablero_actual').innerHTML = tablero;
         });
 
