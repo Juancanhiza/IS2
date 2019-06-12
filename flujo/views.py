@@ -7,6 +7,9 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from sprint.models import *
 from userstory.forms import *
+from proyecto.models import TeamMember
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 
 
 @method_decorator(login_required, name='dispatch')
@@ -212,9 +215,66 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             if us.estado_fase == 'To Do':
                 us.estado_fase = 'Doing'
                 us.save()
+                # Notificación al SCRUM por correo
+                for member in TeamMember.objects.filter(proyecto=us.proyecto):
+                    if member.rol.nombre == 'Scrum Master':
+                        scrum_mail = member.usuario.email
+                        scrum_nombre = member.usuario.first_name
+                        break
+                body = render_to_string(
+                    '../templates/notificaciones/cambio_estado.html', {
+                        # Poner los parámetros requeridos del correo
+                        'nombre_scrum': scrum_nombre,
+                        'nombre_us': us.nombre,
+                        'proyecto': us.proyecto.nombre,
+                        'sprint': us.sprint.nombre,
+                        'estado_actual': 'To Do',
+                        'estado_nuevo': us.estado_fase,
+                        'team_member': us.team_member,
+                        'fase': us.fase.nombre,
+                        'horas_restantes': us.duracion_estimada,  # ESTE DEBE SER LA DURACIÓN REAL
+                    },
+                )
+                email_msg = EmailMessage(
+                    subject='Cambio de Estado US',
+                    body=body,
+                    from_email=['PoliProyectos-noreply'],
+                    to=[scrum_mail],
+                )
+                email_msg.content_subtype = 'html'
+                email_msg.send()
+
             elif us.estado_fase == 'Doing':
                 us.estado_fase = "Done"
                 us.save()
+                # Notificación al SCRUM por correo
+                for member in TeamMember.objects.filter(proyecto=us.proyecto):
+                    if member.rol.nombre == 'Scrum Master':
+                        scrum_mail = member.usuario.email
+                        scrum_nombre = member.usuario.first_name
+                        break
+                body = render_to_string(
+                    '../templates/notificaciones/cambio_estado.html', {
+                        # Poner los parámetros requeridos del correo
+                        'nombre_scrum': scrum_nombre,
+                        'nombre_us': us.nombre,
+                        'proyecto': us.proyecto.nombre,
+                        'sprint': us.sprint.nombre,
+                        'fase': us.fase.nombre,
+                        'estado_actual': 'Doing',
+                        'estado_nuevo': us.estado_fase,
+                        'team_member': us.team_member,
+                        'horas_restantes': us.duracion_estimada,  # ESTE DEBE SER LA DURACIÓN REAL
+                    },
+                )
+                email_msg = EmailMessage(
+                    subject='Cambio de Estado US',
+                    body=body,
+                    from_email=['PoliProyectos-noreply'],
+                    to=[scrum_mail],
+                )
+                email_msg.content_subtype = 'html'
+                email_msg.send()
             elif us.estado_fase == 'Done':
                 fases = Fase.objects.filter(flujo=self.kwargs['flujo_pk']).order_by('pk')
                 idx_fase = None
@@ -228,18 +288,126 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     us.fase = fases[idx_fase + 1]
                     us.estado_fase = 'To Do'
                     us.save()
+                    # Notificación al SCRUM por correo
+                    for member in TeamMember.objects.filter(proyecto=us.proyecto):
+                        if member.rol.nombre == 'Scrum Master':
+                            scrum_mail = member.usuario.email
+                            scrum_nombre = member.usuario.first_name
+                            break
+                    body = render_to_string(
+                        '../templates/notificaciones/cambio_fase.html', {
+                            # Poner los parámetros requeridos del correo
+                            'nombre_scrum': scrum_nombre,
+                            'nombre_us': us.nombre,
+                            'proyecto': us.proyecto.nombre,
+                            'sprint': us.sprint.nombre,
+                            'team_member': us.team_member,
+                            'fase_actual': fases[idx_fase].nombre,
+                            'fase_nueva': us.fase.nombre,
+                            'horas_restantes': us.duracion_estimada,  # ESTE DEBE SER LA DURACIÓN REAL
+                        },
+                    )
+                    email_msg = EmailMessage(
+                        subject='Cambio de Fase US',
+                        body=body,
+                        from_email=['PoliProyectos-noreply'],
+                        to=[scrum_mail],
+                    )
+                    email_msg.content_subtype = 'html'
+                    email_msg.send()
                 else: #es la ultima fase, pasa a control de calidad
                     us.fase = None
                     us.estado_fase = 'Control de Calidad'
+                    # Notificación al SCRUM por correo
+                    for member in TeamMember.objects.filter(proyecto=us.proyecto):
+                        if member.rol.nombre == 'Scrum Master':
+                            scrum_mail = member.usuario.email
+                            scrum_nombre = member.usuario.first_name
+                            break
+                    body = render_to_string(
+                        '../templates/notificaciones/control_de_calidad.html', {
+                            # Poner los parámetros requeridos del correo
+                            'nombre_scrum': scrum_nombre,
+                            'nombre_us': us.nombre,
+                            'proyecto': us.proyecto.nombre,
+                            'sprint': us.sprint.nombre,
+                            'team_member': us.team_member,
+                            'horas_restantes': us.duracion_estimada,  # ESTE DEBE SER LA DURACIÓN REAL
+                        },
+                    )
+                    email_msg = EmailMessage(
+                        subject='US para Control de Calidad',
+                        body=body,
+                        from_email=['PoliProyectos-noreply'],
+                        to=[scrum_mail],
+                    )
+                    email_msg.content_subtype = 'html'
+                    email_msg.send()
                 us.save()
         if 'anterior' in request.POST.keys():
             us = UserStory.objects.get(id=request.POST['anterior'])
             if us.estado_fase == 'Done':
                 us.estado_fase = 'Doing'
                 us.save()
+                # Notificación al SCRUM por correo
+                for member in TeamMember.objects.filter(proyecto=us.proyecto):
+                    if member.rol.nombre == 'Scrum Master':
+                        scrum_mail = member.usuario.email
+                        scrum_nombre = member.usuario.first_name
+                        break
+                body = render_to_string(
+                    '../templates/notificaciones/cambio_estado.html', {
+                        # Poner los parámetros requeridos del correo
+                        'nombre_scrum': scrum_nombre,
+                        'nombre_us': us.nombre,
+                        'proyecto': us.proyecto.nombre,
+                        'sprint': us.sprint.nombre,
+                        'estado_actual': 'Done',
+                        'estado_nuevo': us.estado_fase,
+                        'team_member': us.team_member,
+                        'fase': us.fase.nombre,
+                        'horas_restantes': us.duracion_estimada,  # ESTE DEBE SER LA DURACIÓN REAL
+                    },
+                )
+                email_msg = EmailMessage(
+                    subject='Cambio de Estado US',
+                    body=body,
+                    from_email=['PoliProyectos-noreply'],
+                    to=[scrum_mail],
+                )
+                email_msg.content_subtype = 'html'
+                email_msg.send()
             elif us.estado_fase == 'Doing':
                 us.estado_fase = "To Do"
                 us.save()
+                # Notificación al SCRUM por correo
+                for member in TeamMember.objects.filter(proyecto=us.proyecto):
+                    if member.rol.nombre == 'Scrum Master':
+                        scrum_mail = member.usuario.email
+                        scrum_nombre = member.usuario.first_name
+                        break
+                body = render_to_string(
+                    '../templates/notificaciones/cambio_estado.html', {
+                        # Poner los parámetros requeridos del correo
+                        'nombre_scrum': scrum_nombre,
+                        'nombre_us': us.nombre,
+                        'proyecto': us.proyecto.nombre,
+                        'sprint': us.sprint.nombre,
+                        'estado_actual': 'Doing',
+                        'estado_nuevo': us.estado_fase,
+                        'team_member': us.team_member,
+                        'fase': us.fase.nombre,
+                        'horas_restantes': us.duracion_estimada,  # ESTE DEBE SER LA DURACIÓN REAL
+                    },
+                )
+                email_msg = EmailMessage(
+                    subject='Cambio de Estado US',
+                    body=body,
+                    from_email=['PoliProyectos-noreply'],
+                    to=[scrum_mail],
+                )
+                email_msg.content_subtype = 'html'
+                email_msg.send()
             elif us.estado_fase == 'To Do':
                 fases = Fase.objects.filter(flujo=self.kwargs['flujo_pk']).order_by('pk')
                 idx_fase = None
@@ -252,18 +420,82 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 us.fase = fases[idx_fase - 1]
                 us.estado_fase = 'To Do'
                 us.save()
+                # Notificación al SCRUM por correo
+                for member in TeamMember.objects.filter(proyecto=us.proyecto):
+                    if member.rol.nombre == 'Scrum Master':
+                        scrum_mail = member.usuario.email
+                        scrum_nombre = member.usuario.first_name
+                        break
+                body = render_to_string(
+                    '../templates/notificaciones/cambio_fase.html', {
+                        # Poner los parámetros requeridos del correo
+                        'nombre_scrum': scrum_nombre,
+                        'nombre_us': us.nombre,
+                        'proyecto': us.proyecto.nombre,
+                        'sprint': us.sprint.nombre,
+                        'team_member': us.team_member,
+                        'fase_actual': fases[idx_fase].nombre,
+                        'fase_nueva': us.fase.nombre,
+                        'horas_restantes': us.duracion_estimada,  # ESTE DEBE SER LA DURACIÓN REAL
+                    },
+                )
+                email_msg = EmailMessage(
+                    subject='Cambio de Fase US',
+                    body=body,
+                    from_email=['PoliProyectos-noreply'],
+                    to=[scrum_mail],
+                )
+                email_msg.content_subtype = 'html'
+                email_msg.send()
         if 'finalizar' in request.POST.keys():
             us = UserStory.objects.get(id=request.POST['finalizar'])
             us.fase = None
             us.estado_fase = 'Done'
             us.estado = 0
             us.save()
+            # Notificación al Desarrollador por correo
+            body = render_to_string(
+                '../templates/notificaciones/control_calidad_aceptado.html', {
+                    # Poner los parámetros requeridos del correo
+                    'nombre_us': us.nombre,
+                    'proyecto': us.proyecto.nombre,
+                    'sprint': us.sprint.nombre,
+                    'team_member': us.team_member.first_name,
+                },
+            )
+            email_msg = EmailMessage(
+                subject='QA: Finalización Aprobada de US',
+                body=body,
+                from_email=['PoliProyectos-noreply'],
+                to=[us.team_member.email],
+            )
+            email_msg.content_subtype = 'html'
+            email_msg.send()
         if 'fase' in request.POST.keys():
             us = UserStory.objects.get(id=request.POST['us'])
             fase = Fase.objects.get(id=request.POST['fase'])
             us.fase = fase
             us.estado_fase = 'To Do'
             us.save()
+            # Notificación al Desarrollador por correo
+            body = render_to_string(
+                '../templates/notificaciones/control_calidad_rechazado.html', {
+                    # Poner los parámetros requeridos del correo
+                    'nombre_us': us.nombre,
+                    'proyecto': us.proyecto.nombre,
+                    'sprint': us.sprint.nombre,
+                    'team_member': us.team_member.first_name,
+                    'fase_nueva': us.fase.nombre,
+                },
+            )
+            email_msg = EmailMessage(
+                subject='QA: Se necesitan realizar modificaciones a US',
+                body=body,
+                from_email=['PoliProyectos-noreply'],
+                to=[us.team_member.email],
+            )
+            email_msg.content_subtype = 'html'
+            email_msg.send()
         return HttpResponseRedirect('./')
 
 @method_decorator(login_required, name='dispatch')
