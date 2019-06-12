@@ -81,7 +81,7 @@ class GuardarNotaForm(forms.ModelForm):
     class Meta:
         model = Nota
         """Campos a ingresar"""
-        fields = ('us', 'usuario', 'nota',)
+        fields = ('us', 'usuario', 'nota','sprint')
 
 
 class GuardarArchivoForm(forms.ModelForm):
@@ -91,7 +91,7 @@ class GuardarArchivoForm(forms.ModelForm):
     class Meta:
         model = Archivo
         """Campos a ingresar"""
-        fields = ('titulo', 'archivo','us','usuario')
+        fields = ('titulo', 'archivo','us','usuario','sprint')
 
 
 class GuardarActividadForm(forms.ModelForm):
@@ -101,4 +101,4 @@ class GuardarActividadForm(forms.ModelForm):
     class Meta:
         model = Actividad
         """Campos a ingresar"""
-        fields = ('nombre','descripcion','duracion','us','usuario')
+        fields = ('nombre','descripcion','duracion','us','usuario','sprint')

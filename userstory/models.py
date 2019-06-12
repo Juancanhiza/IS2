@@ -147,7 +147,7 @@ class Actividad(models.Model):
     """
     nombre = models.CharField(max_length=20)
     descripcion = models.TextField()
-    duracion = models.TimeField()
+    duracion = models.IntegerField()
     usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT)
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
     fecha = models.DateTimeField(auto_now_add=True)

@@ -510,7 +510,16 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         for us in all_us:
             context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
             context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
-            context['actividades'][us.pk] = Actividad.objects.filter(us=us.pk)
+            actividades = Actividad.objects.filter(us=us.pk)
+            cambios = CambioEstado.objects.filter(us=us.pk)
+            context['actividades'][us.pk] = []
+            for a in actividades:
+                a.tipo = 'actividad'
+                context['actividades'][us.pk].append(a)
+            for c in cambios:
+                c.tipo = 'cambio'
+                context['actividades'][us.pk].append(c)
+            context['actividades'][us.pk].sort(key=lambda x: x.fecha, reverse=True)
         context['direccion'] = {}
         context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
         context['direccion'][str(context['project'])] = (2, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/')

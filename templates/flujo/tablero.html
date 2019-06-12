@@ -471,6 +471,7 @@
     <hr>
     {{ nota_form.as_p }}
     <input type="hidden" name="tipo-adjunto" value="nota">
+    <input type="hidden" name="sprint" value={{ sprint_actual.pk }}>
 </div>
 <!-- fin formulario de nota -->
 
@@ -479,6 +480,7 @@
     <hr>
     {{ archivo_form.as_p }}
     <input type="hidden" name="tipo-adjunto" value="archivo">
+    <input type="hidden" name="sprint" value={{ sprint_actual.pk }}>
 </div>
 <!-- fin formulario de archivo -->
 
@@ -487,8 +489,25 @@
     <hr>
     {{ actividad_form.as_p }}
     <input type="hidden" name="tipo-adjunto" value="actividad">
+    <input type="hidden" name="sprint" value={{ sprint_actual.pk }}>
 </div>
 <!-- fin formulario de actividad -->
+
+<!-- sin actividad al pasar al done -->
+<div id="SinActividad" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">User story sin actividades</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Debe cargar al menos una actividad para dar por terminado el user story en esta fase
+            </div>
+        </div>
+    </div>
+</div>
+<!--fin sin actividad al pasar al done -->
 
 <input type="hidden" value="{{ s_fase.pk }}" id="fase_actual">
 <script type="text/javascript">
@@ -503,6 +522,11 @@
             }
             document.getElementById('btn_'+pk_fase).className = "btn btn-light fases-btn btn-sm";
             document.getElementById('tablero_actual').innerHTML = tablero;
+        {% endif %}
+        {% if error %}
+            {% if error == 'sinactividad' %}
+                $("#SinActividad").modal("show");
+            {% endif %}
         {% endif %}
         $('#finalizados-btn').click(function() {
             var finalizados =  $('#finalizados').html();
