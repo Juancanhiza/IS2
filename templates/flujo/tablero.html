@@ -359,6 +359,7 @@
                         {% if key == us.pk %}
                             {% for nota in notas %}
                                 {{ nota.nota }}<br>
+                                Sprint: {{ nota.sprint }} <br>
                                 Autor: {{ nota.usuario }}, {{ nota.fecha }}
                                 <div class="container" style="width: 600px;">
                                     <hr>
@@ -372,6 +373,7 @@
                         {% if key == us.pk %}
                             {% for archivo in archivos %}
                                 {{ archivo.titulo }}: <a href="/media/{{ archivo.nombre }}">{{ archivo.archivo }}</a><br>
+                                Sprint: {{ archivo.sprint }} <br>
                                 Autor: {{ archivo.usuario }}, {{ archivo.fecha }}
                                 <div class="container" style="width: 600px;">
                                     <hr>
@@ -384,12 +386,22 @@
                     {% for key, actividades in actividades.items %}
                         {% if key == us.pk %}
                             {% for actividad in actividades %}
-                                {{ actividad.nombre }}: {{ actividad.descripcion }}<br>
-                                Duracion: {{ actividad.duracion }}<br>
-                                Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
-                                <div class="container" style="width: 600px;">
-                                    <hr>
-                                </div>
+                                {% if actividad.tipo == 'actividad' %}
+                                    {{ actividad.nombre }}: {{ actividad.descripcion }}<br>
+                                    Duracion: {{ actividad.duracion }}<br>
+                                    Sprint: {{ actividad.sprint }} <br>
+                                    Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
+                                    <div class="container" style="width: 600px;">
+                                        <hr>
+                                    </div>
+                                {% elif actividad.tipo == 'cambio' %}
+                                    {{ actividad.descripcion }} <br>
+                                    Sprint: {{ actividad.sprint }} <br>
+                                    Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
+                                    <div class="container" style="width: 600px;">
+                                        <hr>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         {% endif %}
                     {% endfor %}

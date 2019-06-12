@@ -108,7 +108,6 @@ class Nota(models.Model):
     """
         Clase para adjuntar una nota a un US
     """
-    """Campos:"""
     nota = models.TextField()
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
     usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT, null=True)
@@ -149,14 +148,30 @@ class Actividad(models.Model):
     nombre = models.CharField(max_length=20)
     descripcion = models.TextField()
     duracion = models.TimeField()
-    usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT, null=True)
+    usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT)
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
     sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
 
     def __str__(self):
         """
-        Retorna el nombre del User Story actual
+        Retorna el nombre del objeto actual
         :return: nombre del objeto actual
         """
         return self.nombre
+
+class CambioEstado(models.Model):
+    descripcion = models.TextField()
+    usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT)
+    us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
+    fase = models.ForeignKey('flujo.Fase', on_delete=models.CASCADE)
+    estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE)
+
+    def __str__(self):
+        """
+        Retorna la descripcion del objeto actual
+        :return: descripcion del objeto actual
+        """
+        return self.descripcion

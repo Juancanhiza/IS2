@@ -293,7 +293,16 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         for us in context['user_stories']:
             context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
             context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
-            context['actividades'][us.pk] = Actividad.objects.filter(us=us.pk)
+            actividades = Actividad.objects.filter(us=us.pk)
+            cambios = CambioEstado.objects.filter(us=us.pk)
+            context['actividades'][us.pk] = []
+            for a in actividades:
+                a.tipo = 'actividad'
+                context['actividades'][us.pk].append(a)
+            for c in cambios:
+                c.tipo = 'cambio'
+                context['actividades'][us.pk].append(c)
+            context['actividades'][us.pk].sort(key=lambda x: x.fecha, reverse=True)
         context['direccion']['Ejecuciones'] = (1,"/proyectos/ejecuciones/")
         context['direccion'][str(context['project'].nombre)] = (2,"/proyectos/ejecuciones/"+str(self.kwargs['pk_proyecto'])+"/")
         link = "/proyectos/ejecuciones/"+str(self.kwargs['pk_proyecto'])+"/"
@@ -352,7 +361,14 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     us.fase = None
                     us.estado_fase = 'Control de Calidad'
                 us.save()
-            print(us.fase)
+            ce = CambioEstado()
+            ce.us = us
+            ce.fase = us.fase
+            ce.sprint = us.sprint
+            ce.usuario = request.user
+            ce.estado_fase = us.estado_fase
+            ce.descripcion = "Cambio de estado a " + us.estado_fase + " de la fase " + us.fase.nombre
+            ce.save()
             return render(request,'flujo/tablero.html',self.get_context_data(s_fase=us.fase,usuario=usuario, permisos=permisos))
         if 'anterior' in request.POST.keys():
             us = UserStory.objects.get(id=request.POST['anterior'])
@@ -374,6 +390,14 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 us.fase = fases[idx_fase - 1]
                 us.estado_fase = 'To Do'
                 us.save()
+            ce = CambioEstado()
+            ce.us = us
+            ce.fase = us.fase
+            ce.sprint = us.sprint
+            ce.usuario = request.user
+            ce.estado_fase = us.estado_fase
+            ce.descripcion = "Cambio de estado a " + us.estado_fase + " de la fase" + us.fase.nombre
+            ce.save()
             return render(request, 'flujo/tablero.html',
                           self.get_context_data(s_fase=us.fase, usuario=usuario, permisos=permisos))
         if 'finalizar' in request.POST.keys():
