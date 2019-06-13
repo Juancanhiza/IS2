@@ -11,6 +11,8 @@ from flujo.models import *
 from django.utils import timezone
 from userstory.models import *
 from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 
 """
 Vistas del Proyecto
@@ -549,6 +551,25 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             sprint.save()
             us_list = UserStory.objects.filter(sprint=sprint.pk)
             for us in us_list:
+                # Notificación al Desarrollador por correo
+                body = render_to_string(
+                    '../templates/notificaciones/finalizacion_sprint.html', {
+                        # Poner los parámetros requeridos del correo
+                        'nombre_us': us.nombre,
+                        'proyecto': us.proyecto.nombre,
+                        'sprint': us.sprint.nombre,
+                        'team_member': us.team_member,
+                    },
+                )
+                email_msg = EmailMessage(
+                    subject='Finalización de Sprint',
+                    body=body,
+                    from_email=['PoliProyectos-noreply'],
+                    to=[us.team_member.email],
+                )
+                email_msg.content_subtype = 'html'
+                email_msg.send()
+                # Desasignacion de US no finalizados
                 if us.estado != 0: #terminado
                     us.estado = 2 #pendiente
                     us.sprint = None
@@ -566,6 +587,24 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                     us.fase = Fase.objects.filter(flujo=us.flujo.pk).order_by('pk')[0]
                     us.estado_fase = 'To Do'
                     us.save()
+                    # Notificación al Desarrollador por correo
+                    body = render_to_string(
+                        '../templates/notificaciones/inicio_sprint.html', {
+                            # Poner los parámetros requeridos del correo
+                            'nombre_us': us.nombre,
+                            'proyecto': us.proyecto.nombre,
+                            'sprint': us.sprint.nombre,
+                            'team_member': us.team_member,
+                        },
+                    )
+                    email_msg = EmailMessage(
+                        subject='Inicio de Sprint',
+                        body=body,
+                        from_email=['PoliProyectos-noreply'],
+                        to=[us.team_member.email],
+                    )
+                    email_msg.content_subtype = 'html'
+                    email_msg.send()
             else:
                 return render(self.get_context_data(error='sinus',permisos=permisos))
         return HttpResponseRedirect('./')
