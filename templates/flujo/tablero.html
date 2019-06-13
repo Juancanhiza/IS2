@@ -310,7 +310,7 @@
         </tbody>
     </table>
 </div>
-<!-- fin finalizados
+<!-- fin finalizados -->
 
 <!-- modales de los us -->
 {% for us in user_stories %}
@@ -369,6 +369,7 @@
                     {% endfor %}
                 </div>
                 <div class="container" id="archivos-us-{{ us.pk }}" style="display: none">
+                    <!-- AGREGAR EL ARCHIVO BINARIO -->
                     {% for key, archivos in archivos.items %}
                         {% if key == us.pk %}
                             {% for archivo in archivos %}

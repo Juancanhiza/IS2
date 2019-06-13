@@ -19,5 +19,5 @@ echo "Se ha creado devdb"
 
 source venv/bin/activate
 PGPASSWORD="admin"
-psql -h localhost -p 5432 -U postgres -d devdb -f PERMISOS.backup
+psql -h localhost -p 5432 -U postgres -d devdb -f backup_dev
 echo "devdb se cargó exitosamente."
