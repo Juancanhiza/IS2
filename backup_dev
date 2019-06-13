@@ -5,7 +5,7 @@
 -- Dumped from database version 11.2 (Ubuntu 11.2-1.pgdg16.04+1)
 -- Dumped by pg_dump version 11.2 (Ubuntu 11.2-1.pgdg16.04+1)
 
--- Started on 2019-06-12 16:20:10 -04
+-- Started on 2019-06-12 23:55:33 -04
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -51,7 +51,7 @@ CREATE SEQUENCE public.auth_group_id_seq
 ALTER TABLE public.auth_group_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3377 (class 0 OID 0)
+-- TOC entry 3379 (class 0 OID 0)
 -- Dependencies: 208
 -- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -90,7 +90,7 @@ CREATE SEQUENCE public.auth_group_permissions_id_seq
 ALTER TABLE public.auth_group_permissions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3378 (class 0 OID 0)
+-- TOC entry 3380 (class 0 OID 0)
 -- Dependencies: 210
 -- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -130,7 +130,7 @@ CREATE SEQUENCE public.auth_permission_id_seq
 ALTER TABLE public.auth_permission_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3379 (class 0 OID 0)
+-- TOC entry 3381 (class 0 OID 0)
 -- Dependencies: 206
 -- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -172,7 +172,7 @@ CREATE SEQUENCE public.clientes_cliente_id_seq
 ALTER TABLE public.clientes_cliente_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3380 (class 0 OID 0)
+-- TOC entry 3382 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: clientes_cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -217,7 +217,7 @@ CREATE SEQUENCE public.django_admin_log_id_seq
 ALTER TABLE public.django_admin_log_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3381 (class 0 OID 0)
+-- TOC entry 3383 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -256,7 +256,7 @@ CREATE SEQUENCE public.django_content_type_id_seq
 ALTER TABLE public.django_content_type_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3382 (class 0 OID 0)
+-- TOC entry 3384 (class 0 OID 0)
 -- Dependencies: 204
 -- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -296,7 +296,7 @@ CREATE SEQUENCE public.django_migrations_id_seq
 ALTER TABLE public.django_migrations_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3383 (class 0 OID 0)
+-- TOC entry 3385 (class 0 OID 0)
 -- Dependencies: 196
 -- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -349,7 +349,7 @@ CREATE SEQUENCE public.flujo_fase_id_seq
 ALTER TABLE public.flujo_fase_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3384 (class 0 OID 0)
+-- TOC entry 3386 (class 0 OID 0)
 -- Dependencies: 228
 -- Name: flujo_fase_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -389,7 +389,7 @@ CREATE SEQUENCE public.flujo_flujo_id_seq
 ALTER TABLE public.flujo_flujo_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3385 (class 0 OID 0)
+-- TOC entry 3387 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: flujo_flujo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -432,7 +432,7 @@ CREATE SEQUENCE public.proyecto_proyecto_id_seq
 ALTER TABLE public.proyecto_proyecto_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3386 (class 0 OID 0)
+-- TOC entry 3388 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: proyecto_proyecto_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -472,7 +472,7 @@ CREATE SEQUENCE public.proyecto_teammember_id_seq
 ALTER TABLE public.proyecto_teammember_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3387 (class 0 OID 0)
+-- TOC entry 3389 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: proyecto_teammember_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -511,7 +511,7 @@ CREATE SEQUENCE public.rol_permiso_id_seq
 ALTER TABLE public.rol_permiso_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3388 (class 0 OID 0)
+-- TOC entry 3390 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: rol_permiso_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -551,7 +551,7 @@ CREATE SEQUENCE public.rol_rol_id_seq
 ALTER TABLE public.rol_rol_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3389 (class 0 OID 0)
+-- TOC entry 3391 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: rol_rol_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -590,7 +590,7 @@ CREATE SEQUENCE public.rol_rol_permisos_id_seq
 ALTER TABLE public.rol_rol_permisos_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3390 (class 0 OID 0)
+-- TOC entry 3392 (class 0 OID 0)
 -- Dependencies: 202
 -- Name: rol_rol_permisos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -630,7 +630,7 @@ CREATE SEQUENCE public.sprint_horas_id_seq
 ALTER TABLE public.sprint_horas_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3391 (class 0 OID 0)
+-- TOC entry 3393 (class 0 OID 0)
 -- Dependencies: 233
 -- Name: sprint_horas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -674,7 +674,7 @@ CREATE SEQUENCE public.sprint_sprint_id_seq
 ALTER TABLE public.sprint_sprint_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3392 (class 0 OID 0)
+-- TOC entry 3394 (class 0 OID 0)
 -- Dependencies: 235
 -- Name: sprint_sprint_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -728,7 +728,7 @@ CREATE SEQUENCE public."tipoUserStory_tipouserstory_flujos_id_seq"
 ALTER TABLE public."tipoUserStory_tipouserstory_flujos_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3393 (class 0 OID 0)
+-- TOC entry 3395 (class 0 OID 0)
 -- Dependencies: 239
 -- Name: tipoUserStory_tipouserstory_flujos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -753,7 +753,7 @@ CREATE SEQUENCE public."tipoUserStory_tipouserstory_id_seq"
 ALTER TABLE public."tipoUserStory_tipouserstory_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3394 (class 0 OID 0)
+-- TOC entry 3396 (class 0 OID 0)
 -- Dependencies: 237
 -- Name: tipoUserStory_tipouserstory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -774,7 +774,9 @@ CREATE TABLE public.userstory_actividad (
     us_id integer,
     usuario_id integer NOT NULL,
     sprint_id integer NOT NULL,
-    duracion integer
+    duracion integer,
+    fase_us_id integer,
+    estado_fase character varying(30) NOT NULL
 );
 
 
@@ -797,7 +799,7 @@ CREATE SEQUENCE public.userstory_actividad_id_seq
 ALTER TABLE public.userstory_actividad_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3395 (class 0 OID 0)
+-- TOC entry 3397 (class 0 OID 0)
 -- Dependencies: 241
 -- Name: userstory_actividad_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -817,7 +819,8 @@ CREATE TABLE public.userstory_archivo (
     fecha timestamp with time zone NOT NULL,
     us_id integer,
     usuario_id integer,
-    sprint_id integer NOT NULL
+    sprint_id integer NOT NULL,
+    fase_us_id integer
 );
 
 
@@ -840,7 +843,7 @@ CREATE SEQUENCE public.userstory_archivo_id_seq
 ALTER TABLE public.userstory_archivo_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3396 (class 0 OID 0)
+-- TOC entry 3398 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: userstory_archivo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -858,7 +861,7 @@ CREATE TABLE public.userstory_cambioestado (
     descripcion text NOT NULL,
     fecha timestamp with time zone NOT NULL,
     estado_fase character varying(30) NOT NULL,
-    fase_id integer NOT NULL,
+    fase_id integer,
     sprint_id integer NOT NULL,
     us_id integer,
     usuario_id integer NOT NULL
@@ -884,7 +887,7 @@ CREATE SEQUENCE public.userstory_cambioestado_id_seq
 ALTER TABLE public.userstory_cambioestado_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3397 (class 0 OID 0)
+-- TOC entry 3399 (class 0 OID 0)
 -- Dependencies: 251
 -- Name: userstory_cambioestado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -926,7 +929,7 @@ CREATE SEQUENCE public.userstory_nota_id_seq
 ALTER TABLE public.userstory_nota_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3398 (class 0 OID 0)
+-- TOC entry 3400 (class 0 OID 0)
 -- Dependencies: 245
 -- Name: userstory_nota_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -982,7 +985,7 @@ CREATE SEQUENCE public.userstory_userstory_id_seq
 ALTER TABLE public.userstory_userstory_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3399 (class 0 OID 0)
+-- TOC entry 3401 (class 0 OID 0)
 -- Dependencies: 247
 -- Name: userstory_userstory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1021,7 +1024,7 @@ CREATE SEQUENCE public.userstory_userstory_sprints_asignados_id_seq
 ALTER TABLE public.userstory_userstory_sprints_asignados_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3400 (class 0 OID 0)
+-- TOC entry 3402 (class 0 OID 0)
 -- Dependencies: 249
 -- Name: userstory_userstory_sprints_asignados_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1087,7 +1090,7 @@ CREATE SEQUENCE public.usuarios_usuario_groups_id_seq
 ALTER TABLE public.usuarios_usuario_groups_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3401 (class 0 OID 0)
+-- TOC entry 3403 (class 0 OID 0)
 -- Dependencies: 214
 -- Name: usuarios_usuario_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1112,7 +1115,7 @@ CREATE SEQUENCE public.usuarios_usuario_id_seq
 ALTER TABLE public.usuarios_usuario_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3402 (class 0 OID 0)
+-- TOC entry 3404 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: usuarios_usuario_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1151,7 +1154,7 @@ CREATE SEQUENCE public.usuarios_usuario_permisos_id_seq
 ALTER TABLE public.usuarios_usuario_permisos_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3403 (class 0 OID 0)
+-- TOC entry 3405 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: usuarios_usuario_permisos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1190,7 +1193,7 @@ CREATE SEQUENCE public.usuarios_usuario_user_permissions_id_seq
 ALTER TABLE public.usuarios_usuario_user_permissions_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3404 (class 0 OID 0)
+-- TOC entry 3406 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: usuarios_usuario_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -1423,7 +1426,7 @@ ALTER TABLE ONLY public.usuarios_usuario_user_permissions ALTER COLUMN id SET DE
 
 
 --
--- TOC entry 3328 (class 0 OID 75610)
+-- TOC entry 3330 (class 0 OID 75610)
 -- Dependencies: 209
 -- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1433,7 +1436,7 @@ COPY public.auth_group (id, name) FROM stdin;
 
 
 --
--- TOC entry 3330 (class 0 OID 75620)
+-- TOC entry 3332 (class 0 OID 75620)
 -- Dependencies: 211
 -- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1443,7 +1446,7 @@ COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
 
 
 --
--- TOC entry 3326 (class 0 OID 75602)
+-- TOC entry 3328 (class 0 OID 75602)
 -- Dependencies: 207
 -- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1516,7 +1519,7 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 
 
 --
--- TOC entry 3342 (class 0 OID 75755)
+-- TOC entry 3344 (class 0 OID 75755)
 -- Dependencies: 223
 -- Data for Name: clientes_cliente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1527,7 +1530,7 @@ COPY public.clientes_cliente (id, nombre, descripcion, direccion, ruc, telefono)
 
 
 --
--- TOC entry 3340 (class 0 OID 75731)
+-- TOC entry 3342 (class 0 OID 75731)
 -- Dependencies: 221
 -- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1578,11 +1581,20 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 43	2019-06-10 22:15:25.433623-04	36	Cancelar Proyecto	1	[{"added": {}}]	4	1
 44	2019-06-10 22:15:31.524667-04	37	Terminar Proyecto	1	[{"added": {}}]	4	1
 45	2019-06-12 14:21:09.771671-04	38	Reasignar Team Member	1	[{"added": {}}]	4	1
+46	2019-06-12 17:18:40.090133-04	4	reunion	2	[{"changed": {"fields": ["fase"]}}]	10	1
+47	2019-06-12 17:44:39.288687-04	5	Reunion	2	[{"changed": {"fields": ["fase"]}}]	10	1
+48	2019-06-12 17:59:13.025726-04	6	Minuta de reunion	3		10	1
+49	2019-06-12 18:02:00.313843-04	7	minuta de reunion	3		10	1
+50	2019-06-12 18:04:18.953806-04	5	Reunion	2	[{"changed": {"fields": ["fase_us"]}}]	10	1
+51	2019-06-12 18:04:28.803289-04	4	reunion	2	[{"changed": {"fields": ["fase_us"]}}]	10	1
+52	2019-06-12 23:02:46.99689-04	1	Planilla de Vacaciones	2	[{"changed": {"fields": ["estado_fase", "fase"]}}]	13	1
+53	2019-06-12 23:41:41.828406-04	14	no ok	2	[{"changed": {"fields": ["estado_fase"]}}]	10	1
+54	2019-06-12 23:42:42.90284-04	1	Planilla de Vacaciones	2	[{"changed": {"fields": ["estado_fase", "fase"]}}]	13	1
 \.
 
 
 --
--- TOC entry 3324 (class 0 OID 75592)
+-- TOC entry 3326 (class 0 OID 75592)
 -- Dependencies: 205
 -- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1613,7 +1625,7 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 
 
 --
--- TOC entry 3316 (class 0 OID 75537)
+-- TOC entry 3318 (class 0 OID 75537)
 -- Dependencies: 197
 -- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1654,23 +1666,29 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 33	userstory	0004_auto_20190610_2115	2019-06-10 21:15:17.107653-04
 34	userstory	0005_auto_20190612_0916	2019-06-12 09:36:43.427721-04
 35	userstory	0006_auto_20190612_1557	2019-06-12 16:01:15.922144-04
+36	userstory	0007_actividad_fase	2019-06-12 17:17:55.633929-04
+37	userstory	0008_auto_20190612_1747	2019-06-12 17:47:52.846504-04
+38	userstory	0009_auto_20190612_1752	2019-06-12 17:52:50.459078-04
+39	userstory	0010_auto_20190612_2232	2019-06-12 22:32:21.901911-04
+40	userstory	0011_auto_20190612_2334	2019-06-12 23:34:41.043403-04
+41	userstory	0012_actividad_estado_fase	2019-06-12 23:41:20.418316-04
 \.
 
 
 --
--- TOC entry 3351 (class 0 OID 75835)
+-- TOC entry 3353 (class 0 OID 75835)
 -- Dependencies: 232
 -- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
 qvuo71r87maagsdjbrd88oqhmv37bvy3	ODc0ZDM4MTMyYzkyMDhiMzM4OGU4YzQxZDI2MzBkN2UzYTExNTVmZjp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIyODNiZDhiMWIzYTAyMDlmM2U5MGZlOWYwYTRlNTVhMTU5NmY4NDMzIn0=	2019-06-09 22:01:30.416206-04
-6km6uumbezq2ubq0d189fjvde7zdga6e	NGM4Yjc5N2FjZGEzNDgwNDk0Yzk4YWY5OTljOWQ1NzI2YjlkZWIzZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4YzBhYTJhZWI5MGJkNmViMThjMzA5YmU0NjU2ZTMzNjdlNWVkOTAxIn0=	2019-06-26 15:23:23.347472-04
+303zp6a4xvkfwu2476mqrk4ld81u091a	NGM4Yjc5N2FjZGEzNDgwNDk0Yzk4YWY5OTljOWQ1NzI2YjlkZWIzZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4YzBhYTJhZWI5MGJkNmViMThjMzA5YmU0NjU2ZTMzNjdlNWVkOTAxIn0=	2019-06-26 17:57:23.867055-04
 \.
 
 
 --
--- TOC entry 3348 (class 0 OID 75800)
+-- TOC entry 3350 (class 0 OID 75800)
 -- Dependencies: 229
 -- Data for Name: flujo_fase; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1689,7 +1707,7 @@ COPY public.flujo_fase (id, nombre, flujo_id) FROM stdin;
 
 
 --
--- TOC entry 3350 (class 0 OID 75808)
+-- TOC entry 3352 (class 0 OID 75808)
 -- Dependencies: 231
 -- Data for Name: flujo_flujo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1701,7 +1719,7 @@ COPY public.flujo_flujo (id, nombre, descripcion, proyecto_id) FROM stdin;
 
 
 --
--- TOC entry 3344 (class 0 OID 75769)
+-- TOC entry 3346 (class 0 OID 75769)
 -- Dependencies: 225
 -- Data for Name: proyecto_proyecto; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1712,7 +1730,7 @@ COPY public.proyecto_proyecto (id, nombre, fecha_inicio, fecha_fin, estado, desc
 
 
 --
--- TOC entry 3346 (class 0 OID 75780)
+-- TOC entry 3348 (class 0 OID 75780)
 -- Dependencies: 227
 -- Data for Name: proyecto_teammember; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1725,7 +1743,7 @@ COPY public.proyecto_teammember (id, proyecto_id, rol_id, usuario_id) FROM stdin
 
 
 --
--- TOC entry 3318 (class 0 OID 75548)
+-- TOC entry 3320 (class 0 OID 75548)
 -- Dependencies: 199
 -- Data for Name: rol_permiso; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1773,7 +1791,7 @@ COPY public.rol_permiso (id, nombre, tipo) FROM stdin;
 
 
 --
--- TOC entry 3320 (class 0 OID 75556)
+-- TOC entry 3322 (class 0 OID 75556)
 -- Dependencies: 201
 -- Data for Name: rol_rol; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1785,7 +1803,7 @@ COPY public.rol_rol (id, nombre, descripcion, is_unique) FROM stdin;
 
 
 --
--- TOC entry 3322 (class 0 OID 75569)
+-- TOC entry 3324 (class 0 OID 75569)
 -- Dependencies: 203
 -- Data for Name: rol_rol_permisos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1816,7 +1834,7 @@ COPY public.rol_rol_permisos (id, rol_id, permiso_id) FROM stdin;
 
 
 --
--- TOC entry 3353 (class 0 OID 75847)
+-- TOC entry 3355 (class 0 OID 75847)
 -- Dependencies: 234
 -- Data for Name: sprint_horas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1835,7 +1853,7 @@ COPY public.sprint_horas (id, horas_laborales, sprint_id, team_member_id) FROM s
 
 
 --
--- TOC entry 3355 (class 0 OID 75855)
+-- TOC entry 3357 (class 0 OID 75855)
 -- Dependencies: 236
 -- Data for Name: sprint_sprint; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1848,7 +1866,7 @@ COPY public.sprint_sprint (id, nombre, fecha_inicio, fecha_fin, estado, dias_lab
 
 
 --
--- TOC entry 3357 (class 0 OID 75881)
+-- TOC entry 3359 (class 0 OID 75881)
 -- Dependencies: 238
 -- Data for Name: tipoUserStory_tipouserstory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1859,7 +1877,7 @@ COPY public."tipoUserStory_tipouserstory" (id, nombre, descripcion, proyecto_id)
 
 
 --
--- TOC entry 3359 (class 0 OID 75892)
+-- TOC entry 3361 (class 0 OID 75892)
 -- Dependencies: 240
 -- Data for Name: tipoUserStory_tipouserstory_flujos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1871,28 +1889,38 @@ COPY public."tipoUserStory_tipouserstory_flujos" (id, tipouserstory_id, flujo_id
 
 
 --
--- TOC entry 3361 (class 0 OID 75920)
+-- TOC entry 3363 (class 0 OID 75920)
 -- Dependencies: 242
 -- Data for Name: userstory_actividad; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.userstory_actividad (id, nombre, descripcion, fecha, us_id, usuario_id, sprint_id, duracion) FROM stdin;
-4	reunion	datos obtenidos:\r\n-Las vacaciones se pagan en el mes de aniversario, independiente a si se toman realmente\r\n-Si los dias de vacaciones cruzan el mes, se paga lo correspondiente a cada mes en la liquidacion de cada mes\r\n-Las vacaciones deben figurar como tomadas el siguiente lunes después del día de aniversario laboral\r\n-Las liquidaciones de anticipo no general aciento	2019-06-12 16:14:36.077077-04	1	1	2	4
+COPY public.userstory_actividad (id, nombre, descripcion, fecha, us_id, usuario_id, sprint_id, duracion, fase_us_id, estado_fase) FROM stdin;
+8	asdfsadfa	asdfsadfa	2019-06-12 18:03:12.740409-04	1	1	2	1	12	To Do
+5	Reunion	se realizo una reunion para aclarar dudas	2019-06-12 17:35:16.202822-04	1	1	2	3	12	To Do
+4	reunion	datos obtenidos:\r\n-Las vacaciones se pagan en el mes de aniversario, independiente a si se toman realmente\r\n-Si los dias de vacaciones cruzan el mes, se paga lo correspondiente a cada mes en la liquidacion de cada mes\r\n-Las vacaciones deben figurar como tomadas el siguiente lunes después del día de aniversario laboral\r\n-Las liquidaciones de anticipo no general aciento	2019-06-12 16:14:36.077077-04	1	1	2	4	12	To Do
+9	minuta de reunion	verificacion de datos con el cliente	2019-06-12 18:05:43.92047-04	1	1	2	1	12	To Do
+10	Diseño	Se realizo el diseño	2019-06-12 18:08:29.482211-04	1	1	2	8	13	To Do
+11	Desarrollos	Desarrollos realizados	2019-06-12 22:10:02.893378-04	1	1	2	10	14	To Do
+12	Pruebas realizadas	pruebas realizadas	2019-06-12 22:10:34.631792-04	1	1	2	10	15	To Do
+13	pruebas	pruebas realizadas	2019-06-12 22:11:06.619315-04	1	1	2	10	16	To Do
+14	no ok	no ok	2019-06-12 23:34:51.516279-04	1	1	2	2	\N	Control de Calidad
+15	no ok	:(	2019-06-12 23:46:53.856051-04	1	1	2	2	\N	Control de Calidad
+16	otra prueba	otra prueba	2019-06-12 23:47:28.090018-04	1	1	2	2	16	To Do
 \.
 
 
 --
--- TOC entry 3363 (class 0 OID 75931)
+-- TOC entry 3365 (class 0 OID 75931)
 -- Dependencies: 244
 -- Data for Name: userstory_archivo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.userstory_archivo (id, titulo, archivo, fecha, us_id, usuario_id, sprint_id) FROM stdin;
+COPY public.userstory_archivo (id, titulo, archivo, fecha, us_id, usuario_id, sprint_id, fase_us_id) FROM stdin;
 \.
 
 
 --
--- TOC entry 3371 (class 0 OID 76115)
+-- TOC entry 3373 (class 0 OID 76115)
 -- Dependencies: 252
 -- Data for Name: userstory_cambioestado; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1901,33 +1929,75 @@ COPY public.userstory_cambioestado (id, descripcion, fecha, estado_fase, fase_id
 7	Cambio de estado a Doing de la fase Relevamiento	2019-06-12 14:18:10.863467-04	Doing	12	2	1	1
 8	Cambio de estado a Done de la fase Relevamiento	2019-06-12 16:14:50.898881-04	Done	12	2	1	1
 9	Cambio de estado a Doing de la faseRelevamiento	2019-06-12 16:14:54.257601-04	Doing	12	2	1	1
+10	Cambio de estado a Done de la fase Relevamiento	2019-06-12 17:34:27.074102-04	Done	12	2	1	1
+11	Cambio de estado a Doing de la fase Relevamiento	2019-06-12 17:34:31.290445-04	Doing	12	2	1	1
+12	Cambio de estado a To Do de la fase Relevamiento	2019-06-12 17:34:33.239086-04	To Do	12	2	1	1
+13	Cambio de estado a Doing de la fase Relevamiento	2019-06-12 17:34:38.519437-04	Doing	12	2	1	1
+14	Cambio de estado a Done de la fase Relevamiento	2019-06-12 17:44:46.321224-04	Done	12	2	1	1
+15	Cambio de estado a Doing de la fase Relevamiento	2019-06-12 17:44:48.552633-04	Doing	12	2	1	1
+16	Cambio de estado a To Do de la fase Relevamiento	2019-06-12 17:44:50.534125-04	To Do	12	2	1	1
+17	Cambio de estado a Doing de la fase Relevamiento	2019-06-12 17:45:02.337356-04	Doing	12	2	1	1
+18	Cambio de estado a Doing de la fase Relevamiento	2019-06-12 17:48:34.185221-04	Doing	12	2	1	1
+19	Cambio de estado a Done de la fase Relevamiento	2019-06-12 18:05:04.746985-04	Done	12	2	1	1
+20	Cambio de estado a Doing de la fase Relevamiento	2019-06-12 18:05:07.515369-04	Doing	12	2	1	1
+21	Cambio de estado a To Do de la fase Relevamiento	2019-06-12 18:05:09.648451-04	To Do	12	2	1	1
+22	Cambio de estado a Doing de la fase Relevamiento	2019-06-12 18:05:16.983299-04	Doing	12	2	1	1
+23	Cambio de estado a Done de la fase Relevamiento	2019-06-12 18:05:46.651296-04	Done	12	2	1	1
+24	Cambio de estado a Doing de la fase Relevamiento	2019-06-12 18:05:48.696933-04	Doing	12	2	1	1
+25	Cambio de estado a Done de la fase Relevamiento	2019-06-12 18:05:50.749827-04	Done	12	2	1	1
+26	Cambio de estado a To Do de la fase Diseño	2019-06-12 18:05:58.270225-04	To Do	13	2	1	1
+27	Cambio de estado a Doing de la fase Diseño	2019-06-12 18:06:09.000071-04	Doing	13	2	1	1
+28	Cambio de estado a Done de la fase Diseño	2019-06-12 22:09:25.11915-04	Done	13	2	1	1
+29	Cambio de estado a To Do de la fase Desarrollo Software	2019-06-12 22:09:28.090395-04	To Do	14	2	1	1
+30	Cambio de estado a Doing de la fase Desarrollo Software	2019-06-12 22:09:30.731899-04	Doing	14	2	1	1
+31	Cambio de estado a Done de la fase Desarrollo Software	2019-06-12 22:10:13.206785-04	Done	14	2	1	1
+32	Cambio de estado a To Do de la fase Pruebas Unitarias	2019-06-12 22:10:16.167865-04	To Do	15	2	1	1
+33	Cambio de estado a Doing de la fase Pruebas Unitarias	2019-06-12 22:10:19.021651-04	Doing	15	2	1	1
+34	Cambio de estado a Done de la fase Pruebas Unitarias	2019-06-12 22:10:39.464751-04	Done	15	2	1	1
+35	Cambio de estado a To Do de la fase Prueabas Integradas	2019-06-12 22:10:41.985144-04	To Do	16	2	1	1
+36	Cambio de estado a Doing de la fase Prueabas Integradas	2019-06-12 22:10:45.318706-04	Doing	16	2	1	1
+37	Cambio de estado a Done de la fase Prueabas Integradas	2019-06-12 22:11:15.520321-04	Done	16	2	1	1
+38	Cambio de estado a Doing de la fase Prueabas Integradas	2019-06-12 22:12:01.64608-04	Doing	16	2	1	1
+39	Cambio de estado a Done de la fase Prueabas Integradas	2019-06-12 22:30:16.785131-04	Done	16	2	1	1
+41	El US pasa a control de calidad	2019-06-12 22:32:29.908489-04	Control de Calidad	\N	2	1	1
+42	Cambio de estado a Doing de la fase Prueabas Integradas	2019-06-12 23:00:05.542792-04	Doing	16	2	1	1
+43	Cambio de estado a Done de la fase Prueabas Integradas	2019-06-12 23:00:07.8796-04	Done	16	2	1	1
+44	El US pasa a control de calidad	2019-06-12 23:01:25.391833-04	Control de Calidad	\N	2	1	1
+45	Cambio de estado a Doing de la fase Prueabas Integradas	2019-06-12 23:10:22.857147-04	Doing	16	2	1	1
+46	Cambio de estado a Done de la fase Prueabas Integradas	2019-06-12 23:10:25.372396-04	Done	16	2	1	1
+47	El US pasa a control de calidad	2019-06-12 23:10:27.66893-04	Control de Calidad	\N	2	1	1
+48	El US pasa a control de calidad	2019-06-12 23:42:51.322549-04	Control de Calidad	\N	2	1	1
 \.
 
 
 --
--- TOC entry 3365 (class 0 OID 75939)
+-- TOC entry 3367 (class 0 OID 75939)
 -- Dependencies: 246
 -- Data for Name: userstory_nota; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.userstory_nota (id, nota, fecha, us_id, usuario_id, sprint_id) FROM stdin;
 1	tener en cuenta que si el aniversario laboral cae en los ultimos dias del mes, la fecha de inicio puede ser el primer lunes del siguiente mes	2019-06-12 16:18:36.202654-04	1	1	2
+2	nota	2019-06-12 18:13:10.688043-04	1	1	2
+3	nota	2019-06-12 18:13:35.289837-04	1	1	2
+4	prueba de notas	2019-06-12 23:50:45.409179-04	1	1	2
 \.
 
 
 --
--- TOC entry 3367 (class 0 OID 75950)
+-- TOC entry 3369 (class 0 OID 75950)
 -- Dependencies: 248
 -- Data for Name: userstory_userstory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.userstory_userstory (id, estado_fase, nombre, descripcion, fecha_inicio, duracion_estimada, valor_negocio, prioridad, valor_tecnico, estado, fase_id, flujo_id, proyecto_id, sprint_id, team_member_id, tipo_us_id) FROM stdin;
-1	Doing	Planilla de Vacaciones	Desarrollo de automatización de calculo de vacaciones mediante planillas	\N	80	7	4	8	1	12	1	1	2	2	1
+1	To Do	Planilla de Vacaciones	Desarrollo de automatización de calculo de vacaciones mediante planillas	\N	80	7	4	8	1	16	1	1	2	2	1
+2	To Do	Liquidacion de Salarios	Se debe realizar un reporte de liquidación de salarios, se adjunta especificación en etapa de diseño	\N	30	10	8	7	2	\N	1	1	\N	\N	1
 \.
 
 
 --
--- TOC entry 3369 (class 0 OID 75965)
+-- TOC entry 3371 (class 0 OID 75965)
 -- Dependencies: 250
 -- Data for Name: userstory_userstory_sprints_asignados; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1938,7 +2008,7 @@ COPY public.userstory_userstory_sprints_asignados (id, userstory_id, sprint_id) 
 
 
 --
--- TOC entry 3332 (class 0 OID 75651)
+-- TOC entry 3334 (class 0 OID 75651)
 -- Dependencies: 213
 -- Data for Name: usuarios_usuario; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1946,12 +2016,12 @@ COPY public.userstory_userstory_sprints_asignados (id, userstory_id, sprint_id) 
 COPY public.usuarios_usuario (id, password, last_login, is_superuser, username, first_name, last_name, is_staff, is_active, date_joined, estado, ci, telefono, direccion, descripcion, email) FROM stdin;
 3	pbkdf2_sha256$100000$ImKWUmUOwB2A$+86ogb/E8r2F53fXH8eT+KXPM7xeGTAZ0kGWcH4hlpc=	\N	f	juanca	Juan	Cañiza	f	t	2019-05-26 16:55:39.428548-04	Activo	3276987	0982356261	direccion	developer	juanca@gmail.com
 2	pbkdf2_sha256$100000$pKa36dawiWay$z5hThvr5NbGhB1gxlL6RN+pof2/km/4P9+AZP4uFaU8=	2019-06-10 22:10:40.642442-04	f	sebasrojas	Sebastian	Rojas	f	t	2019-05-26 16:52:59.563047-04	Activo	37777777	0982356261	direccion	Developer	sebas@gmail.com
-1	pbkdf2_sha256$100000$rQ2Bfa6usW76$qOkwvTua1GHxUkx84Fa7evJYDeuu8KFaReMnwvGGM9c=	2019-06-12 15:23:23.327726-04	t	majogrance	Maria Jose	Grance Avila	t	t	2019-05-26 16:41:26-04	Activo	4443908	0982356261	santa lucia y vaporcue	desarrolladora	majo.grance014@gmail.com
+1	pbkdf2_sha256$100000$rQ2Bfa6usW76$qOkwvTua1GHxUkx84Fa7evJYDeuu8KFaReMnwvGGM9c=	2019-06-12 17:57:23.847499-04	t	majogrance	Maria Jose	Grance Avila	t	t	2019-05-26 16:41:26-04	Activo	4443908	0982356261	santa lucia y vaporcue	desarrolladora	majo.grance014@gmail.com
 \.
 
 
 --
--- TOC entry 3334 (class 0 OID 75664)
+-- TOC entry 3336 (class 0 OID 75664)
 -- Dependencies: 215
 -- Data for Name: usuarios_usuario_groups; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1961,7 +2031,7 @@ COPY public.usuarios_usuario_groups (id, usuario_id, group_id) FROM stdin;
 
 
 --
--- TOC entry 3336 (class 0 OID 75672)
+-- TOC entry 3338 (class 0 OID 75672)
 -- Dependencies: 217
 -- Data for Name: usuarios_usuario_permisos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1989,7 +2059,7 @@ COPY public.usuarios_usuario_permisos (id, usuario_id, permiso_id) FROM stdin;
 
 
 --
--- TOC entry 3338 (class 0 OID 75680)
+-- TOC entry 3340 (class 0 OID 75680)
 -- Dependencies: 219
 -- Data for Name: usuarios_usuario_user_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1999,7 +2069,7 @@ COPY public.usuarios_usuario_user_permissions (id, usuario_id, permission_id) FR
 
 
 --
--- TOC entry 3405 (class 0 OID 0)
+-- TOC entry 3407 (class 0 OID 0)
 -- Dependencies: 208
 -- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2008,7 +2078,7 @@ SELECT pg_catalog.setval('public.auth_group_id_seq', 1, false);
 
 
 --
--- TOC entry 3406 (class 0 OID 0)
+-- TOC entry 3408 (class 0 OID 0)
 -- Dependencies: 210
 -- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2017,7 +2087,7 @@ SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
 
 
 --
--- TOC entry 3407 (class 0 OID 0)
+-- TOC entry 3409 (class 0 OID 0)
 -- Dependencies: 206
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2026,7 +2096,7 @@ SELECT pg_catalog.setval('public.auth_permission_id_seq', 63, true);
 
 
 --
--- TOC entry 3408 (class 0 OID 0)
+-- TOC entry 3410 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: clientes_cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2035,16 +2105,16 @@ SELECT pg_catalog.setval('public.clientes_cliente_id_seq', 1, true);
 
 
 --
--- TOC entry 3409 (class 0 OID 0)
+-- TOC entry 3411 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 45, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 54, true);
 
 
 --
--- TOC entry 3410 (class 0 OID 0)
+-- TOC entry 3412 (class 0 OID 0)
 -- Dependencies: 204
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2053,16 +2123,16 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 21, true);
 
 
 --
--- TOC entry 3411 (class 0 OID 0)
+-- TOC entry 3413 (class 0 OID 0)
 -- Dependencies: 196
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 35, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 41, true);
 
 
 --
--- TOC entry 3412 (class 0 OID 0)
+-- TOC entry 3414 (class 0 OID 0)
 -- Dependencies: 228
 -- Name: flujo_fase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2071,7 +2141,7 @@ SELECT pg_catalog.setval('public.flujo_fase_id_seq', 23, true);
 
 
 --
--- TOC entry 3413 (class 0 OID 0)
+-- TOC entry 3415 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: flujo_flujo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2080,7 +2150,7 @@ SELECT pg_catalog.setval('public.flujo_flujo_id_seq', 2, true);
 
 
 --
--- TOC entry 3414 (class 0 OID 0)
+-- TOC entry 3416 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: proyecto_proyecto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2089,7 +2159,7 @@ SELECT pg_catalog.setval('public.proyecto_proyecto_id_seq', 1, true);
 
 
 --
--- TOC entry 3415 (class 0 OID 0)
+-- TOC entry 3417 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: proyecto_teammember_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2098,7 +2168,7 @@ SELECT pg_catalog.setval('public.proyecto_teammember_id_seq', 38, true);
 
 
 --
--- TOC entry 3416 (class 0 OID 0)
+-- TOC entry 3418 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: rol_permiso_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2107,7 +2177,7 @@ SELECT pg_catalog.setval('public.rol_permiso_id_seq', 38, true);
 
 
 --
--- TOC entry 3417 (class 0 OID 0)
+-- TOC entry 3419 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: rol_rol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2116,7 +2186,7 @@ SELECT pg_catalog.setval('public.rol_rol_id_seq', 2, true);
 
 
 --
--- TOC entry 3418 (class 0 OID 0)
+-- TOC entry 3420 (class 0 OID 0)
 -- Dependencies: 202
 -- Name: rol_rol_permisos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2125,7 +2195,7 @@ SELECT pg_catalog.setval('public.rol_rol_permisos_id_seq', 23, true);
 
 
 --
--- TOC entry 3419 (class 0 OID 0)
+-- TOC entry 3421 (class 0 OID 0)
 -- Dependencies: 233
 -- Name: sprint_horas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2134,7 +2204,7 @@ SELECT pg_catalog.setval('public.sprint_horas_id_seq', 9, true);
 
 
 --
--- TOC entry 3420 (class 0 OID 0)
+-- TOC entry 3422 (class 0 OID 0)
 -- Dependencies: 235
 -- Name: sprint_sprint_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2143,7 +2213,7 @@ SELECT pg_catalog.setval('public.sprint_sprint_id_seq', 3, true);
 
 
 --
--- TOC entry 3421 (class 0 OID 0)
+-- TOC entry 3423 (class 0 OID 0)
 -- Dependencies: 239
 -- Name: tipoUserStory_tipouserstory_flujos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2152,7 +2222,7 @@ SELECT pg_catalog.setval('public."tipoUserStory_tipouserstory_flujos_id_seq"', 2
 
 
 --
--- TOC entry 3422 (class 0 OID 0)
+-- TOC entry 3424 (class 0 OID 0)
 -- Dependencies: 237
 -- Name: tipoUserStory_tipouserstory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2161,16 +2231,16 @@ SELECT pg_catalog.setval('public."tipoUserStory_tipouserstory_id_seq"', 1, true)
 
 
 --
--- TOC entry 3423 (class 0 OID 0)
+-- TOC entry 3425 (class 0 OID 0)
 -- Dependencies: 241
 -- Name: userstory_actividad_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userstory_actividad_id_seq', 4, true);
+SELECT pg_catalog.setval('public.userstory_actividad_id_seq', 16, true);
 
 
 --
--- TOC entry 3424 (class 0 OID 0)
+-- TOC entry 3426 (class 0 OID 0)
 -- Dependencies: 243
 -- Name: userstory_archivo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2179,34 +2249,34 @@ SELECT pg_catalog.setval('public.userstory_archivo_id_seq', 1, false);
 
 
 --
--- TOC entry 3425 (class 0 OID 0)
+-- TOC entry 3427 (class 0 OID 0)
 -- Dependencies: 251
 -- Name: userstory_cambioestado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userstory_cambioestado_id_seq', 9, true);
-
-
---
--- TOC entry 3426 (class 0 OID 0)
--- Dependencies: 245
--- Name: userstory_nota_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.userstory_nota_id_seq', 1, true);
-
-
---
--- TOC entry 3427 (class 0 OID 0)
--- Dependencies: 247
--- Name: userstory_userstory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.userstory_userstory_id_seq', 1, true);
+SELECT pg_catalog.setval('public.userstory_cambioestado_id_seq', 48, true);
 
 
 --
 -- TOC entry 3428 (class 0 OID 0)
+-- Dependencies: 245
+-- Name: userstory_nota_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.userstory_nota_id_seq', 4, true);
+
+
+--
+-- TOC entry 3429 (class 0 OID 0)
+-- Dependencies: 247
+-- Name: userstory_userstory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.userstory_userstory_id_seq', 2, true);
+
+
+--
+-- TOC entry 3430 (class 0 OID 0)
 -- Dependencies: 249
 -- Name: userstory_userstory_sprints_asignados_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2215,7 +2285,7 @@ SELECT pg_catalog.setval('public.userstory_userstory_sprints_asignados_id_seq', 
 
 
 --
--- TOC entry 3429 (class 0 OID 0)
+-- TOC entry 3431 (class 0 OID 0)
 -- Dependencies: 214
 -- Name: usuarios_usuario_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2224,7 +2294,7 @@ SELECT pg_catalog.setval('public.usuarios_usuario_groups_id_seq', 1, false);
 
 
 --
--- TOC entry 3430 (class 0 OID 0)
+-- TOC entry 3432 (class 0 OID 0)
 -- Dependencies: 212
 -- Name: usuarios_usuario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2233,7 +2303,7 @@ SELECT pg_catalog.setval('public.usuarios_usuario_id_seq', 3, true);
 
 
 --
--- TOC entry 3431 (class 0 OID 0)
+-- TOC entry 3433 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: usuarios_usuario_permisos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2242,7 +2312,7 @@ SELECT pg_catalog.setval('public.usuarios_usuario_permisos_id_seq', 21, true);
 
 
 --
--- TOC entry 3432 (class 0 OID 0)
+-- TOC entry 3434 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: usuarios_usuario_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -2494,7 +2564,7 @@ ALTER TABLE ONLY public."tipoUserStory_tipouserstory_flujos"
 
 
 --
--- TOC entry 3114 (class 2606 OID 75928)
+-- TOC entry 3115 (class 2606 OID 75928)
 -- Name: userstory_actividad userstory_actividad_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2503,7 +2573,7 @@ ALTER TABLE ONLY public.userstory_actividad
 
 
 --
--- TOC entry 3119 (class 2606 OID 75936)
+-- TOC entry 3120 (class 2606 OID 75936)
 -- Name: userstory_archivo userstory_archivo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2512,7 +2582,7 @@ ALTER TABLE ONLY public.userstory_archivo
 
 
 --
--- TOC entry 3144 (class 2606 OID 76123)
+-- TOC entry 3145 (class 2606 OID 76123)
 -- Name: userstory_cambioestado userstory_cambioestado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2521,7 +2591,7 @@ ALTER TABLE ONLY public.userstory_cambioestado
 
 
 --
--- TOC entry 3124 (class 2606 OID 75947)
+-- TOC entry 3125 (class 2606 OID 75947)
 -- Name: userstory_nota userstory_nota_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2530,7 +2600,7 @@ ALTER TABLE ONLY public.userstory_nota
 
 
 --
--- TOC entry 3131 (class 2606 OID 75962)
+-- TOC entry 3132 (class 2606 OID 75962)
 -- Name: userstory_userstory userstory_userstory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2539,7 +2609,7 @@ ALTER TABLE ONLY public.userstory_userstory
 
 
 --
--- TOC entry 3137 (class 2606 OID 76006)
+-- TOC entry 3138 (class 2606 OID 76006)
 -- Name: userstory_userstory_sprints_asignados userstory_userstory_spri_userstory_id_sprint_id_2b14e3a5_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2548,7 +2618,7 @@ ALTER TABLE ONLY public.userstory_userstory_sprints_asignados
 
 
 --
--- TOC entry 3139 (class 2606 OID 75970)
+-- TOC entry 3140 (class 2606 OID 75970)
 -- Name: userstory_userstory_sprints_asignados userstory_userstory_sprints_asignados_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -2821,7 +2891,15 @@ CREATE INDEX "tipoUserStory_tipouserstory_proyecto_id_b06b1ab8" ON public."tipoU
 
 
 --
--- TOC entry 3115 (class 1259 OID 76080)
+-- TOC entry 3113 (class 1259 OID 76164)
+-- Name: userstory_actividad_fase_us_id_30ab4af4; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX userstory_actividad_fase_us_id_30ab4af4 ON public.userstory_actividad USING btree (fase_us_id);
+
+
+--
+-- TOC entry 3116 (class 1259 OID 76080)
 -- Name: userstory_actividad_sprint_id_1b72ba32; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2829,7 +2907,7 @@ CREATE INDEX userstory_actividad_sprint_id_1b72ba32 ON public.userstory_activida
 
 
 --
--- TOC entry 3116 (class 1259 OID 76045)
+-- TOC entry 3117 (class 1259 OID 76045)
 -- Name: userstory_actividad_us_id_e163dd84; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2837,7 +2915,7 @@ CREATE INDEX userstory_actividad_us_id_e163dd84 ON public.userstory_actividad US
 
 
 --
--- TOC entry 3117 (class 1259 OID 76051)
+-- TOC entry 3118 (class 1259 OID 76051)
 -- Name: userstory_actividad_usuario_id_71c0a10b; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2845,7 +2923,7 @@ CREATE INDEX userstory_actividad_usuario_id_71c0a10b ON public.userstory_activid
 
 
 --
--- TOC entry 3120 (class 1259 OID 76086)
+-- TOC entry 3121 (class 1259 OID 76086)
 -- Name: userstory_archivo_sprint_id_ad918a59; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2853,7 +2931,7 @@ CREATE INDEX userstory_archivo_sprint_id_ad918a59 ON public.userstory_archivo US
 
 
 --
--- TOC entry 3121 (class 1259 OID 76033)
+-- TOC entry 3122 (class 1259 OID 76033)
 -- Name: userstory_archivo_us_id_48105005; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2861,7 +2939,7 @@ CREATE INDEX userstory_archivo_us_id_48105005 ON public.userstory_archivo USING 
 
 
 --
--- TOC entry 3122 (class 1259 OID 76039)
+-- TOC entry 3123 (class 1259 OID 76039)
 -- Name: userstory_archivo_usuario_id_4e32718c; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2869,7 +2947,7 @@ CREATE INDEX userstory_archivo_usuario_id_4e32718c ON public.userstory_archivo U
 
 
 --
--- TOC entry 3142 (class 1259 OID 76149)
+-- TOC entry 3143 (class 1259 OID 76149)
 -- Name: userstory_cambioestado_fase_id_33af288f; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2877,7 +2955,7 @@ CREATE INDEX userstory_cambioestado_fase_id_33af288f ON public.userstory_cambioe
 
 
 --
--- TOC entry 3145 (class 1259 OID 76150)
+-- TOC entry 3146 (class 1259 OID 76150)
 -- Name: userstory_cambioestado_sprint_id_247ca494; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2885,7 +2963,7 @@ CREATE INDEX userstory_cambioestado_sprint_id_247ca494 ON public.userstory_cambi
 
 
 --
--- TOC entry 3146 (class 1259 OID 76151)
+-- TOC entry 3147 (class 1259 OID 76151)
 -- Name: userstory_cambioestado_us_id_7eb6013a; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2893,7 +2971,7 @@ CREATE INDEX userstory_cambioestado_us_id_7eb6013a ON public.userstory_cambioest
 
 
 --
--- TOC entry 3147 (class 1259 OID 76152)
+-- TOC entry 3148 (class 1259 OID 76152)
 -- Name: userstory_cambioestado_usuario_id_8882d52e; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2901,7 +2979,7 @@ CREATE INDEX userstory_cambioestado_usuario_id_8882d52e ON public.userstory_camb
 
 
 --
--- TOC entry 3125 (class 1259 OID 76092)
+-- TOC entry 3126 (class 1259 OID 76092)
 -- Name: userstory_nota_sprint_id_0bad6166; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2909,7 +2987,7 @@ CREATE INDEX userstory_nota_sprint_id_0bad6166 ON public.userstory_nota USING bt
 
 
 --
--- TOC entry 3126 (class 1259 OID 76021)
+-- TOC entry 3127 (class 1259 OID 76021)
 -- Name: userstory_nota_us_id_40ee4694; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2917,7 +2995,7 @@ CREATE INDEX userstory_nota_us_id_40ee4694 ON public.userstory_nota USING btree 
 
 
 --
--- TOC entry 3127 (class 1259 OID 76027)
+-- TOC entry 3128 (class 1259 OID 76027)
 -- Name: userstory_nota_usuario_id_759ca2be; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2925,7 +3003,7 @@ CREATE INDEX userstory_nota_usuario_id_759ca2be ON public.userstory_nota USING b
 
 
 --
--- TOC entry 3128 (class 1259 OID 75991)
+-- TOC entry 3129 (class 1259 OID 75991)
 -- Name: userstory_userstory_fase_id_e5347d9b; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2933,7 +3011,7 @@ CREATE INDEX userstory_userstory_fase_id_e5347d9b ON public.userstory_userstory 
 
 
 --
--- TOC entry 3129 (class 1259 OID 75992)
+-- TOC entry 3130 (class 1259 OID 75992)
 -- Name: userstory_userstory_flujo_id_8a9cd71d; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2941,7 +3019,7 @@ CREATE INDEX userstory_userstory_flujo_id_8a9cd71d ON public.userstory_userstory
 
 
 --
--- TOC entry 3132 (class 1259 OID 75993)
+-- TOC entry 3133 (class 1259 OID 75993)
 -- Name: userstory_userstory_proyecto_id_81fe69a3; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2949,7 +3027,7 @@ CREATE INDEX userstory_userstory_proyecto_id_81fe69a3 ON public.userstory_userst
 
 
 --
--- TOC entry 3133 (class 1259 OID 75994)
+-- TOC entry 3134 (class 1259 OID 75994)
 -- Name: userstory_userstory_sprint_id_2b178521; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2957,7 +3035,7 @@ CREATE INDEX userstory_userstory_sprint_id_2b178521 ON public.userstory_userstor
 
 
 --
--- TOC entry 3140 (class 1259 OID 76008)
+-- TOC entry 3141 (class 1259 OID 76008)
 -- Name: userstory_userstory_sprints_asignados_sprint_id_8c46152b; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2965,7 +3043,7 @@ CREATE INDEX userstory_userstory_sprints_asignados_sprint_id_8c46152b ON public.
 
 
 --
--- TOC entry 3141 (class 1259 OID 76007)
+-- TOC entry 3142 (class 1259 OID 76007)
 -- Name: userstory_userstory_sprints_asignados_userstory_id_1ae0dcd5; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2973,7 +3051,7 @@ CREATE INDEX userstory_userstory_sprints_asignados_userstory_id_1ae0dcd5 ON publ
 
 
 --
--- TOC entry 3134 (class 1259 OID 76009)
+-- TOC entry 3135 (class 1259 OID 76009)
 -- Name: userstory_userstory_team_member_id_43a7fd91; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -2981,7 +3059,7 @@ CREATE INDEX userstory_userstory_team_member_id_43a7fd91 ON public.userstory_use
 
 
 --
--- TOC entry 3135 (class 1259 OID 76015)
+-- TOC entry 3136 (class 1259 OID 76015)
 -- Name: userstory_userstory_tipo_us_id_e254c662; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -3045,7 +3123,7 @@ CREATE INDEX usuarios_usuario_username_be9def2b_like ON public.usuarios_usuario 
 
 
 --
--- TOC entry 3152 (class 2606 OID 75640)
+-- TOC entry 3153 (class 2606 OID 75640)
 -- Name: auth_group_permissions auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3054,7 +3132,7 @@ ALTER TABLE ONLY public.auth_group_permissions
 
 
 --
--- TOC entry 3151 (class 2606 OID 75635)
+-- TOC entry 3152 (class 2606 OID 75635)
 -- Name: auth_group_permissions auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3063,7 +3141,7 @@ ALTER TABLE ONLY public.auth_group_permissions
 
 
 --
--- TOC entry 3150 (class 2606 OID 75626)
+-- TOC entry 3151 (class 2606 OID 75626)
 -- Name: auth_permission auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3072,7 +3150,7 @@ ALTER TABLE ONLY public.auth_permission
 
 
 --
--- TOC entry 3159 (class 2606 OID 75741)
+-- TOC entry 3160 (class 2606 OID 75741)
 -- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3081,7 +3159,7 @@ ALTER TABLE ONLY public.django_admin_log
 
 
 --
--- TOC entry 3160 (class 2606 OID 75746)
+-- TOC entry 3161 (class 2606 OID 75746)
 -- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_usuarios_usuario_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3090,7 +3168,7 @@ ALTER TABLE ONLY public.django_admin_log
 
 
 --
--- TOC entry 3165 (class 2606 OID 75824)
+-- TOC entry 3166 (class 2606 OID 75824)
 -- Name: flujo_fase flujo_fase_flujo_id_d39dd2e5_fk_flujo_flujo_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3099,7 +3177,7 @@ ALTER TABLE ONLY public.flujo_fase
 
 
 --
--- TOC entry 3166 (class 2606 OID 75818)
+-- TOC entry 3167 (class 2606 OID 75818)
 -- Name: flujo_flujo flujo_flujo_proyecto_id_48fd0611_fk_proyecto_proyecto_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3108,7 +3186,7 @@ ALTER TABLE ONLY public.flujo_flujo
 
 
 --
--- TOC entry 3161 (class 2606 OID 76074)
+-- TOC entry 3162 (class 2606 OID 76074)
 -- Name: proyecto_proyecto proyecto_proyecto_cliente_id_b8407254_fk_clientes_cliente_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3117,7 +3195,7 @@ ALTER TABLE ONLY public.proyecto_proyecto
 
 
 --
--- TOC entry 3162 (class 2606 OID 75786)
+-- TOC entry 3163 (class 2606 OID 75786)
 -- Name: proyecto_teammember proyecto_teammember_proyecto_id_e429383f_fk_proyecto_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3126,7 +3204,7 @@ ALTER TABLE ONLY public.proyecto_teammember
 
 
 --
--- TOC entry 3163 (class 2606 OID 75791)
+-- TOC entry 3164 (class 2606 OID 75791)
 -- Name: proyecto_teammember proyecto_teammember_rol_id_bf8bd91a_fk_rol_rol_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3135,7 +3213,7 @@ ALTER TABLE ONLY public.proyecto_teammember
 
 
 --
--- TOC entry 3164 (class 2606 OID 75830)
+-- TOC entry 3165 (class 2606 OID 75830)
 -- Name: proyecto_teammember proyecto_teammember_usuario_id_2c9f2c76_fk_usuarios_usuario_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3144,7 +3222,7 @@ ALTER TABLE ONLY public.proyecto_teammember
 
 
 --
--- TOC entry 3149 (class 2606 OID 75581)
+-- TOC entry 3150 (class 2606 OID 75581)
 -- Name: rol_rol_permisos rol_rol_permisos_permiso_id_bedf62a8_fk_rol_permiso_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3153,7 +3231,7 @@ ALTER TABLE ONLY public.rol_rol_permisos
 
 
 --
--- TOC entry 3148 (class 2606 OID 75576)
+-- TOC entry 3149 (class 2606 OID 75576)
 -- Name: rol_rol_permisos rol_rol_permisos_rol_id_0b04dd57_fk_rol_rol_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3162,7 +3240,7 @@ ALTER TABLE ONLY public.rol_rol_permisos
 
 
 --
--- TOC entry 3167 (class 2606 OID 75868)
+-- TOC entry 3168 (class 2606 OID 75868)
 -- Name: sprint_horas sprint_horas_sprint_id_f9311bf3_fk_sprint_sprint_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3171,7 +3249,7 @@ ALTER TABLE ONLY public.sprint_horas
 
 
 --
--- TOC entry 3168 (class 2606 OID 75874)
+-- TOC entry 3169 (class 2606 OID 75874)
 -- Name: sprint_horas sprint_horas_team_member_id_f40a44b4_fk_usuarios_usuario_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3180,7 +3258,7 @@ ALTER TABLE ONLY public.sprint_horas
 
 
 --
--- TOC entry 3169 (class 2606 OID 75861)
+-- TOC entry 3170 (class 2606 OID 75861)
 -- Name: sprint_sprint sprint_sprint_proyecto_id_119395d9_fk_proyecto_proyecto_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3189,7 +3267,7 @@ ALTER TABLE ONLY public.sprint_sprint
 
 
 --
--- TOC entry 3172 (class 2606 OID 75909)
+-- TOC entry 3173 (class 2606 OID 75909)
 -- Name: tipoUserStory_tipouserstory_flujos tipoUserStory_tipous_flujo_id_0b349703_fk_flujo_flu; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3198,7 +3276,7 @@ ALTER TABLE ONLY public."tipoUserStory_tipouserstory_flujos"
 
 
 --
--- TOC entry 3170 (class 2606 OID 75898)
+-- TOC entry 3171 (class 2606 OID 75898)
 -- Name: tipoUserStory_tipouserstory tipoUserStory_tipous_proyecto_id_b06b1ab8_fk_proyecto_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3207,7 +3285,7 @@ ALTER TABLE ONLY public."tipoUserStory_tipouserstory"
 
 
 --
--- TOC entry 3171 (class 2606 OID 75904)
+-- TOC entry 3172 (class 2606 OID 75904)
 -- Name: tipoUserStory_tipouserstory_flujos tipoUserStory_tipous_tipouserstory_id_a4c17589_fk_tipoUserS; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3216,7 +3294,16 @@ ALTER TABLE ONLY public."tipoUserStory_tipouserstory_flujos"
 
 
 --
--- TOC entry 3174 (class 2606 OID 76098)
+-- TOC entry 3177 (class 2606 OID 76175)
+-- Name: userstory_actividad userstory_actividad_fase_us_id_30ab4af4_fk_flujo_fase_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.userstory_actividad
+    ADD CONSTRAINT userstory_actividad_fase_us_id_30ab4af4_fk_flujo_fase_id FOREIGN KEY (fase_us_id) REFERENCES public.flujo_fase(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 3175 (class 2606 OID 76098)
 -- Name: userstory_actividad userstory_actividad_sprint_id_1b72ba32_fk_sprint_sprint_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3225,7 +3312,7 @@ ALTER TABLE ONLY public.userstory_actividad
 
 
 --
--- TOC entry 3173 (class 2606 OID 76046)
+-- TOC entry 3174 (class 2606 OID 76046)
 -- Name: userstory_actividad userstory_actividad_us_id_e163dd84_fk_userstory_userstory_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3234,7 +3321,7 @@ ALTER TABLE ONLY public.userstory_actividad
 
 
 --
--- TOC entry 3175 (class 2606 OID 76124)
+-- TOC entry 3176 (class 2606 OID 76124)
 -- Name: userstory_actividad userstory_actividad_usuario_id_71c0a10b_fk_usuarios_usuario_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3243,7 +3330,7 @@ ALTER TABLE ONLY public.userstory_actividad
 
 
 --
--- TOC entry 3178 (class 2606 OID 76103)
+-- TOC entry 3180 (class 2606 OID 76103)
 -- Name: userstory_archivo userstory_archivo_sprint_id_ad918a59_fk_sprint_sprint_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3252,7 +3339,7 @@ ALTER TABLE ONLY public.userstory_archivo
 
 
 --
--- TOC entry 3176 (class 2606 OID 76034)
+-- TOC entry 3178 (class 2606 OID 76034)
 -- Name: userstory_archivo userstory_archivo_us_id_48105005_fk_userstory_userstory_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3261,7 +3348,7 @@ ALTER TABLE ONLY public.userstory_archivo
 
 
 --
--- TOC entry 3177 (class 2606 OID 76040)
+-- TOC entry 3179 (class 2606 OID 76040)
 -- Name: userstory_archivo userstory_archivo_usuario_id_4e32718c_fk_usuarios_usuario_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3270,7 +3357,7 @@ ALTER TABLE ONLY public.userstory_archivo
 
 
 --
--- TOC entry 3190 (class 2606 OID 76144)
+-- TOC entry 3192 (class 2606 OID 76144)
 -- Name: userstory_cambioestado userstory_cambioesta_usuario_id_8882d52e_fk_usuarios_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3279,7 +3366,7 @@ ALTER TABLE ONLY public.userstory_cambioestado
 
 
 --
--- TOC entry 3191 (class 2606 OID 76129)
+-- TOC entry 3195 (class 2606 OID 76170)
 -- Name: userstory_cambioestado userstory_cambioestado_fase_id_33af288f_fk_flujo_fase_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3288,7 +3375,7 @@ ALTER TABLE ONLY public.userstory_cambioestado
 
 
 --
--- TOC entry 3192 (class 2606 OID 76134)
+-- TOC entry 3193 (class 2606 OID 76134)
 -- Name: userstory_cambioestado userstory_cambioestado_sprint_id_247ca494_fk_sprint_sprint_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3297,7 +3384,7 @@ ALTER TABLE ONLY public.userstory_cambioestado
 
 
 --
--- TOC entry 3193 (class 2606 OID 76139)
+-- TOC entry 3194 (class 2606 OID 76139)
 -- Name: userstory_cambioestado userstory_cambioestado_us_id_7eb6013a_fk_userstory_userstory_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3306,7 +3393,7 @@ ALTER TABLE ONLY public.userstory_cambioestado
 
 
 --
--- TOC entry 3181 (class 2606 OID 76108)
+-- TOC entry 3183 (class 2606 OID 76108)
 -- Name: userstory_nota userstory_nota_sprint_id_0bad6166_fk_sprint_sprint_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3315,7 +3402,7 @@ ALTER TABLE ONLY public.userstory_nota
 
 
 --
--- TOC entry 3179 (class 2606 OID 76022)
+-- TOC entry 3181 (class 2606 OID 76022)
 -- Name: userstory_nota userstory_nota_us_id_40ee4694_fk_userstory_userstory_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3324,7 +3411,7 @@ ALTER TABLE ONLY public.userstory_nota
 
 
 --
--- TOC entry 3180 (class 2606 OID 76028)
+-- TOC entry 3182 (class 2606 OID 76028)
 -- Name: userstory_nota userstory_nota_usuario_id_759ca2be_fk_usuarios_usuario_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3333,7 +3420,7 @@ ALTER TABLE ONLY public.userstory_nota
 
 
 --
--- TOC entry 3189 (class 2606 OID 76000)
+-- TOC entry 3191 (class 2606 OID 76000)
 -- Name: userstory_userstory_sprints_asignados userstory_userstory__sprint_id_8c46152b_fk_sprint_sp; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3342,7 +3429,7 @@ ALTER TABLE ONLY public.userstory_userstory_sprints_asignados
 
 
 --
--- TOC entry 3188 (class 2606 OID 75995)
+-- TOC entry 3190 (class 2606 OID 75995)
 -- Name: userstory_userstory_sprints_asignados userstory_userstory__userstory_id_1ae0dcd5_fk_userstory; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3351,7 +3438,7 @@ ALTER TABLE ONLY public.userstory_userstory_sprints_asignados
 
 
 --
--- TOC entry 3182 (class 2606 OID 75971)
+-- TOC entry 3184 (class 2606 OID 75971)
 -- Name: userstory_userstory userstory_userstory_fase_id_e5347d9b_fk_flujo_fase_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3360,7 +3447,7 @@ ALTER TABLE ONLY public.userstory_userstory
 
 
 --
--- TOC entry 3183 (class 2606 OID 75976)
+-- TOC entry 3185 (class 2606 OID 75976)
 -- Name: userstory_userstory userstory_userstory_flujo_id_8a9cd71d_fk_flujo_flujo_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3369,7 +3456,7 @@ ALTER TABLE ONLY public.userstory_userstory
 
 
 --
--- TOC entry 3184 (class 2606 OID 75981)
+-- TOC entry 3186 (class 2606 OID 75981)
 -- Name: userstory_userstory userstory_userstory_proyecto_id_81fe69a3_fk_proyecto_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3378,7 +3465,7 @@ ALTER TABLE ONLY public.userstory_userstory
 
 
 --
--- TOC entry 3185 (class 2606 OID 75986)
+-- TOC entry 3187 (class 2606 OID 75986)
 -- Name: userstory_userstory userstory_userstory_sprint_id_2b178521_fk_sprint_sprint_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3387,7 +3474,7 @@ ALTER TABLE ONLY public.userstory_userstory
 
 
 --
--- TOC entry 3186 (class 2606 OID 76010)
+-- TOC entry 3188 (class 2606 OID 76010)
 -- Name: userstory_userstory userstory_userstory_team_member_id_43a7fd91_fk_usuarios_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3396,7 +3483,7 @@ ALTER TABLE ONLY public.userstory_userstory
 
 
 --
--- TOC entry 3187 (class 2606 OID 76016)
+-- TOC entry 3189 (class 2606 OID 76016)
 -- Name: userstory_userstory userstory_userstory_tipo_us_id_e254c662_fk_tipoUserS; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3405,7 +3492,7 @@ ALTER TABLE ONLY public.userstory_userstory
 
 
 --
--- TOC entry 3153 (class 2606 OID 75687)
+-- TOC entry 3154 (class 2606 OID 75687)
 -- Name: usuarios_usuario_groups usuarios_usuario_gro_usuario_id_7a34077f_fk_usuarios_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3414,7 +3501,7 @@ ALTER TABLE ONLY public.usuarios_usuario_groups
 
 
 --
--- TOC entry 3154 (class 2606 OID 75692)
+-- TOC entry 3155 (class 2606 OID 75692)
 -- Name: usuarios_usuario_groups usuarios_usuario_groups_group_id_e77f6dcf_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3423,7 +3510,7 @@ ALTER TABLE ONLY public.usuarios_usuario_groups
 
 
 --
--- TOC entry 3156 (class 2606 OID 76069)
+-- TOC entry 3157 (class 2606 OID 76069)
 -- Name: usuarios_usuario_permisos usuarios_usuario_per_usuario_id_e23dafe6_fk_usuarios_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3432,7 +3519,7 @@ ALTER TABLE ONLY public.usuarios_usuario_permisos
 
 
 --
--- TOC entry 3155 (class 2606 OID 76064)
+-- TOC entry 3156 (class 2606 OID 76064)
 -- Name: usuarios_usuario_permisos usuarios_usuario_permisos_permiso_id_59046850_fk_rol_permiso_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3441,7 +3528,7 @@ ALTER TABLE ONLY public.usuarios_usuario_permisos
 
 
 --
--- TOC entry 3158 (class 2606 OID 75720)
+-- TOC entry 3159 (class 2606 OID 75720)
 -- Name: usuarios_usuario_user_permissions usuarios_usuario_use_permission_id_4e5c0f2f_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3450,7 +3537,7 @@ ALTER TABLE ONLY public.usuarios_usuario_user_permissions
 
 
 --
--- TOC entry 3157 (class 2606 OID 75715)
+-- TOC entry 3158 (class 2606 OID 75715)
 -- Name: usuarios_usuario_user_permissions usuarios_usuario_use_usuario_id_60aeea80_fk_usuarios_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -3458,7 +3545,7 @@ ALTER TABLE ONLY public.usuarios_usuario_user_permissions
     ADD CONSTRAINT usuarios_usuario_use_usuario_id_60aeea80_fk_usuarios_ FOREIGN KEY (usuario_id) REFERENCES public.usuarios_usuario(id) DEFERRABLE INITIALLY DEFERRED;
 
 
--- Completed on 2019-06-12 16:20:11 -04
+-- Completed on 2019-06-12 23:55:34 -04
 
 --
 -- PostgreSQL database dump complete
