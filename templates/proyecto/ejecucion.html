@@ -209,6 +209,59 @@
         </div>
     </div>
 </div>
+<!-- sin user stories para iniciar sprint -->
+<div id="SinUserStories" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Sprint sin user stories asignados</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Debe asignar al menos un user story al sprint para iniciarlo
+            </div>
+        </div>
+    </div>
+</div>
+<!--fin sin user stories para iniciar sprint -->
+<!-- confirmar terminacion de sprint -->
+<div id="ConfirmarTerminacionSprint" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Sprint con user stories no terminados</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Algunos user stories no han sido finalizados, está seguro que desea terminar el sprint?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal"> Cancelar </button>
+                <form method="POST">
+                    <input name="conf_terminar" type="hidden" value={{ sprint_actual.pk }}>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-stop-circle"></i> Terminar Sprint
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--fin confirmar terminacion de sprint -->
+<script type="text/javascript">
+    $(document).ready(function($) {
+        {% if error %}
+            {% if error == 'sinus' %}
+                $("#SinUserStories").modal("show");
+            {% endif %}
+        {% endif %}
+        {% if confirmar %}
+            {% if confirmar == 'fin_sprint' %}
+                $("#ConfirmarTerminacionSprint").modal("show");
+            {% endif %}
+        {% endif %}
+    });
+</script>
 {% else %}
 Permiso denegado (Ver Ejecucion de Proyecto)
 {% endif %}

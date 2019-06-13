@@ -10,13 +10,30 @@
     </div>
     <div class="register">
         <div class="container detalle" style="font-size: 25px">
-            <li>Nombre: {{ object.nombre }}</li>
-            <li>Fecha de Inicio: {{ object.fecha_inicio }}</li>
-            <li>Fecha de Finalizacion: {{ object.fecha_fin }}</li>
-            <li>Duración: {{ object.duracion }}</li>
-            <li>Estado: {{ object.estado }}</li>
-            <li>F. de Inicio (Estimado): {{ object.fecha_ini_estimada }}</li>
-            <li>F. de Finalización (Estimado): {{ object.fecha_fin_estimada }}</li>
+            <li>Nombre: {% if object.nombre %} {{ object.nombre }} {% endif %}</li>
+            <li>Fecha de Inicio: {% if object.fecha_inicio %}{{ object.fecha_inicio }} {% endif %}</li>
+            <li>Fecha de Finalizacion: {% if object.fecha_fin %}{{ object.fecha_fin }} {% endif %}</li>
+            <li>Duración estimada: {% if object.dias_laborales %} {{ object.dias_laborales }} dias hábiles{% endif %}</li>
+            {% if sprint.estado == 'En proceso' %}
+                <li>Duración actual (Sprint no terminado): {% if object.duracion_real %} {{ object.duracion_real }}
+                        {% if object.duracion_real > 1 %}
+                            días hábiles
+                        {% else %}
+                            día hábil
+                        {% endif %}
+                    {% endif %}
+                </li>
+            {% else %}
+                <li>Duración real: {% if object.duracion_real %} {{ object.duracion_real }}
+                        {% if object.duracion_real > 1 %}
+                            días hábiles
+                        {% else %}
+                            día hábil
+                        {% endif %}
+                    {% endif %}
+                </li>
+            {% endif %}
+            <li>Estado: {% if object.estado %}{{ object.estado }} {% endif %}</li>
         </div>
         <br>
         {% if sprint.estado != 'Pendiente' %}
@@ -115,12 +132,29 @@
                     {% for key, actividades in actividades.items %}
                         {% if key == us.pk %}
                             {% for actividad in actividades %}
-                                {{ actividad.nombre }}: {{ actividad.descripcion }}<br>
-                                Duracion: {{ actividad.duracion }}<br>
-                                Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
-                                <div class="container" style="width: 600px;">
-                                    <hr>
-                                </div>
+                                {% if actividad.tipo == 'actividad' %}
+                                    {{ actividad.nombre }}: {{ actividad.descripcion }}<br>
+                                    Duracion: {{ actividad.duracion }} horas<br>
+                                    Sprint: {{ actividad.sprint }} <br>
+                                    Fase: {% if actividad.fase_us %}
+                                                {{ actividad.fase_us.nombre }}
+                                          {% elif actividad.estado_fase == 'Control de Calidad'%}
+                                                Control de Calidad
+                                          {% endif %}
+                                    <br>
+                                    Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
+                                    <div class="container" style="width: 600px;">
+                                        <hr>
+                                    </div>
+                                {% elif actividad.tipo == 'cambio' %}
+                                    <div style="color:darkblue">{{ actividad.descripcion }} <br>
+                                    Sprint: {{ actividad.sprint }} <br>
+                                    Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
+                                    <div class="container" style="width: 600px;">
+                                        <hr>
+                                    </div>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         {% endif %}
                     {% endfor %}

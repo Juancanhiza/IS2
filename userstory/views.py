@@ -243,9 +243,18 @@ class ProductBacklogListView(LoginRequiredMixin, ListView):
         context['archivos'] = {}
         context['actividades'] = {}
         for us in self.object_list:
-            context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
-            context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
-            context['actividades'][us.pk] = Actividad.objects.filter(us=us.pk)
+            context['notas'][us.pk] = Nota.objects.filter(us=us.pk).order_by('fecha').reverse()
+            context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk).order_by('fecha').reverse()
+            actividades = Actividad.objects.filter(us=us.pk)
+            cambios = CambioEstado.objects.filter(us=us.pk)
+            context['actividades'][us.pk] = []
+            for a in actividades:
+                a.tipo = 'actividad'
+                context['actividades'][us.pk].append(a)
+            for c in cambios:
+                c.tipo = 'cambio'
+                context['actividades'][us.pk].append(c)
+            context['actividades'][us.pk].sort(key=lambda x: x.fecha, reverse=True)
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['direccion'] = {}
         context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')

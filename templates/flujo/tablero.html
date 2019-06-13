@@ -347,6 +347,8 @@
                     <button type="submit" id="guardar-{{ us.pk }}" value="{{ us.pk }}" class="btn btn-success" style="display: none">Guardar</button>
                     <input type='hidden' name='us' value="{{ us.pk }}">
                     <input type='hidden' name='usuario' value="{{ usuario.pk }}">
+                    <input type='hidden' name='fase_us' value="{{ us.fase.pk }}">
+                    <input type='hidden' name='estado_fase' value="{{ us.estado_fase }}">
                 </form>
                 <hr>
                 <h5 class="w-100 text-center">Historial de US:
@@ -388,18 +390,25 @@
                             {% for actividad in actividades %}
                                 {% if actividad.tipo == 'actividad' %}
                                     {{ actividad.nombre }}: {{ actividad.descripcion }}<br>
-                                    Duracion: {{ actividad.duracion }}<br>
+                                    Duracion: {{ actividad.duracion }} horas<br>
                                     Sprint: {{ actividad.sprint }} <br>
+                                    Fase: {% if actividad.fase_us %}
+                                                {{ actividad.fase_us.nombre }}
+                                          {% elif actividad.estado_fase == 'Control de Calidad'%}
+                                                Control de Calidad
+                                          {% endif %}
+                                    <br>
                                     Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
                                     <div class="container" style="width: 600px;">
                                         <hr>
                                     </div>
                                 {% elif actividad.tipo == 'cambio' %}
-                                    {{ actividad.descripcion }} <br>
+                                    <div style="color:darkblue">{{ actividad.descripcion }} <br>
                                     Sprint: {{ actividad.sprint }} <br>
                                     Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
                                     <div class="container" style="width: 600px;">
                                         <hr>
+                                    </div>
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -442,9 +451,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header" style="display: inline; text-align: center">
-                <h4>Mover {{ us.nombre }}
+                <h5>Actividad mover {{ us.nombre }}
                 <button type="button" style="display: inline" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </h4>
+                </h5>
             </div>
             <div class="modal-body">
                 <label for="id_fase_{{ us.pk }}">Fase: </label>
@@ -452,8 +461,12 @@
                     {% for fase in fases %}
                         <option value="{{ fase.pk }}">{{ fase.nombre }}</option>
                     {% endfor %}
-                </select>
-                <input type="hidden" name="us" value="{{ us.pk }}">
+                </select><br>
+                {{ actividad_form.as_p }}
+                <input type="hidden" name="sprint" value="{{ sprint_actual.pk }}">
+                <input type='hidden' name='us' value="{{ us.pk }}">
+                <input type='hidden' name='usuario' value="{{ user.pk }}">
+                <input type='hidden' name='estado_fase' value="Control de Calidad">
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success">Mover</button>
@@ -502,7 +515,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
-                Debe cargar al menos una actividad para dar por terminado el user story en esta fase
+                Debe cargar al menos una actividad en la fase actual para dar por terminado el user story en esta fase
             </div>
         </div>
     </div>
@@ -527,6 +540,9 @@
             {% if error == 'sinactividad' %}
                 $("#SinActividad").modal("show");
             {% endif %}
+        {% endif %}
+        {% if modal %}
+            $("#UserStory_{{ modal }}").modal("show");
         {% endif %}
         $('#finalizados-btn').click(function() {
             var finalizados =  $('#finalizados').html();

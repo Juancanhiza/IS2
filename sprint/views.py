@@ -533,4 +533,6 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         :param queryset:
         :return: el objeto actual
         """
-        return Sprint.objects.get(pk=self.kwargs['pk'])
+        sprint = Sprint.objects.get(pk=self.kwargs['pk'])
+        sprint.duracion_real = sprint.get_duracion_real()
+        return sprint

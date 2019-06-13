@@ -101,4 +101,4 @@ class GuardarActividadForm(forms.ModelForm):
     class Meta:
         model = Actividad
         """Campos a ingresar"""
-        fields = ('nombre','descripcion','duracion','us','usuario','sprint')
+        fields = ('nombre','descripcion','duracion','us','usuario','sprint','fase_us','estado_fase')

@@ -10,6 +10,7 @@ from sprint.models import *
 from flujo.models import *
 from django.utils import timezone
 from userstory.models import *
+from django.shortcuts import render
 
 """
 Vistas del Proyecto
@@ -495,10 +496,8 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         :return: la respuesta a la consulta GET
         """
         self.object = self.get_object()
-        formclass = self.get_form_class()
-        form = self.get_form(formclass)
         permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
-        return self.render_to_response(self.get_context_data(form=form, permisos=permisos))
+        return self.render_to_response(self.get_context_data(permisos=permisos))
 
     def post(self, request, *args, **kwargs):
         """
@@ -508,7 +507,9 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         :param kwargs: diccionario de datos adicionales
         :return: la respuesta a la consulta POST
         """
+        self.object = self.get_object()
         proyecto = self.get_object()
+        permisos = request.user.get_nombres_permisos(proyecto=self.kwargs['pk_proyecto'])
         if 'iniciar' in request.POST.keys():
             proyecto.fecha_inicio = timezone.now().today()
             proyecto.estado = "Activo"
@@ -528,6 +529,21 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             proyecto.save()
         if 'terminar_sprint' in request.POST.keys():
             sprint = Sprint.objects.get(pk=request.POST['terminar_sprint'])
+            no_terminados = UserStory.objects.filter(estado=1,sprint=sprint.pk)
+            if not no_terminados:
+                sprint.estado = 'Terminado'
+                sprint.fecha_fin = timezone.now().today()
+                sprint.save()
+                us_list = UserStory.objects.filter(sprint=sprint.pk)
+                for us in us_list:
+                    if us.estado != 0: #terminado
+                        us.estado = 2 #pendiente
+                        us.sprint = None
+                        us.save()
+            else:
+                return render(request,'proyecto/ejecucion.html',self.get_context_data(permisos=permisos, confirmar='fin_sprint'))
+        if 'conf_terminar' in request.POST.keys():
+            sprint = Sprint.objects.get(pk=request.POST['conf_terminar'])
             sprint.estado = 'Terminado'
             sprint.fecha_fin = timezone.now().today()
             sprint.save()
@@ -539,15 +555,19 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                     us.save()
         if 'iniciar_sprint' in request.POST.keys():
             sprint = Sprint.objects.get(pk=request.POST['iniciar_sprint'])
-            sprint.estado = 'En Proceso'
-            sprint.fecha_inicio = timezone.now().today()
-            sprint.save()
-            us_list = UserStory.objects.filter(sprint=sprint.pk)
-            for us in us_list:
-                us.sprints_asignados.add(sprint)
-                us.fase = Fase.objects.filter(flujo=us.flujo.pk).order_by('pk')[0]
-                us.estado_fase = 'To Do'
-                us.save()
+            sprint_us = sprint.get_user_stories()
+            if sprint_us:
+                sprint.estado = 'En Proceso'
+                sprint.fecha_inicio = timezone.now().today()
+                sprint.save()
+                us_list = UserStory.objects.filter(sprint=sprint.pk)
+                for us in us_list:
+                    us.sprints_asignados.add(sprint)
+                    us.fase = Fase.objects.filter(flujo=us.flujo.pk).order_by('pk')[0]
+                    us.estado_fase = 'To Do'
+                    us.save()
+            else:
+                return render(self.get_context_data(error='sinus',permisos=permisos))
         return HttpResponseRedirect('./')
 
     def get_context_data(self, **kwargs):
@@ -558,6 +578,9 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         """
         context = super().get_context_data(**kwargs)
         context['title'] = "Ejecucion de Proyecto"
+        formclass = self.get_form_class()
+        form = self.get_form(formclass)
+        context['form'] = form
         try:
             context['sprint_pendiente'] = Sprint.objects.get(proyecto=self.kwargs['pk_proyecto'], estado="Pendiente")
         except:

@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from proyecto.models import Proyecto
 from django.utils import timezone
 from datetime import timedelta
+from userstory.models import UserStory
 
 """
 Estados posibles del sprint
@@ -78,23 +79,33 @@ class Sprint(models.Model):
 
     def get_duracion_real(self):
         """
-        metodo del modelo Sprint que retorna la cantidad de dias de duracion del sprint
+        metodo del modelo Sprint que retorna la cantidad de dias de duracion del sprint en
+        días hábiles
         :return:
         :dias: la cantidad de dias entre la fecha de inicio del sprint y la fecha de finalizacion
         del sprint, en caso de no tener fecha de finalizacion aun, hasta la fecha de hoy
         """
-        if not self.fecha_incio: return 0
+        if not self.fecha_inicio: return 0
+        dias_habiles = self.get_dias_habiles()
         inicio = self.fecha_inicio
         if self.fecha_fin:
             fin = self.fecha_fin
         else:
-            fin = timezone.now().today()
-        date = inicio
+            fin = timezone.now().date()
+        currentdate = inicio
         dias = 0
-        while date <= fin:
-            dias += 1
-            date = date + timedelta(days=1)
+        while currentdate <= fin:
+            if currentdate.isoweekday() in dias_habiles:
+                dias += 1
+            currentdate += timedelta(days=1)
         return dias
+
+    def get_user_stories(self):
+        """
+        metodo del modelo Sprint que retorna todos los user stories asignados al sprint
+        :return: Todos los user stories del sprint
+        """
+        return UserStory.objects.filter(sprint=self.pk)
 
 
 

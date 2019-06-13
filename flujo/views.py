@@ -291,8 +291,8 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         context['direccion'] = {}
         context['actividades'] = {}
         for us in context['user_stories']:
-            context['notas'][us.pk] = Nota.objects.filter(us=us.pk)
-            context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk)
+            context['notas'][us.pk] = Nota.objects.filter(us=us.pk).order_by('fecha').reverse()
+            context['archivos'][us.pk] = Archivo.objects.filter(us=us.pk).order_by('fecha').reverse()
             actividades = Actividad.objects.filter(us=us.pk)
             cambios = CambioEstado.objects.filter(us=us.pk)
             context['actividades'][us.pk] = []
@@ -335,22 +335,27 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             if adjunto.is_valid():
                 adjunto.save()
             else:
-                self.render_to_response(self.get_context_data(formulario=adjunto))
+                self.render_to_response(self.get_context_data(permisos=permisos,formulario=adjunto))
+            us = UserStory.objects.get(pk=request.POST['us'])
+            return render(request,'flujo/tablero.html',self.get_context_data(s_fase=us.fase,usuario=usuario,
+                                                                             modal=us.pk, permisos=permisos))
         elif 'siguiente' in request.POST.keys():
             us = UserStory.objects.get(id=request.POST['siguiente'])
             if us.estado_fase == 'To Do':
                 us.estado_fase = 'Doing'
                 us.save()
             elif us.estado_fase == 'Doing':
-                ultima_actividad = list(Actividad.objects.filter(us=us.pk,sprint=us.sprint).order_by('fecha').reverse())
-                ultimo_cambio = list(CambioEstado.objects.filter(us=us.pk,sprint=us.sprint).order_by('fecha').reverse())
+                ultima_actividad = list(Actividad.objects.filter(us=us.pk,sprint=us.sprint,
+                                                                 fase_us=us.fase).order_by('fecha').reverse())
+                ultimo_cambio = list(CambioEstado.objects.filter(us=us.pk,sprint=us.sprint,
+                                                                 fase=us.fase,estado_fase='To Do').order_by('fecha').reverse())
                 if ultima_actividad and ultimo_cambio:
                     ultima_actividad = ultima_actividad[0]
                     ultimo_cambio = ultimo_cambio[0]
                     if ultima_actividad.fecha < ultimo_cambio.fecha:
                         return self.render_to_response(self.get_context_data(s_fase=us.fase,usuario=usuario,
                                                                              permisos=permisos, error='sinactividad'))
-                else:
+                elif not ultima_actividad:
                     return self.render_to_response(self.get_context_data(s_fase=us.fase, usuario=usuario,
                                                                          permisos=permisos, error='sinactividad'))
                 us.estado_fase = "Done"
@@ -372,14 +377,24 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     us.fase = None
                     us.estado_fase = 'Control de Calidad'
                 us.save()
-            ce = CambioEstado()
-            ce.us = us
-            ce.fase = us.fase
-            ce.sprint = us.sprint
-            ce.usuario = request.user
-            ce.estado_fase = us.estado_fase
-            ce.descripcion = "Cambio de estado a " + us.estado_fase + " de la fase " + us.fase.nombre
-            ce.save()
+            if us.fase:
+                ce = CambioEstado()
+                ce.us = us
+                ce.fase = us.fase
+                ce.sprint = us.sprint
+                ce.usuario = request.user
+                ce.estado_fase = us.estado_fase
+                ce.descripcion = "Cambio de estado a " + us.estado_fase + " de la fase " + us.fase.nombre
+                ce.save()
+            elif us.estado_fase == "Control de Calidad":
+                ce = CambioEstado()
+                ce.us = us
+                ce.fase = us.fase
+                ce.sprint = us.sprint
+                ce.usuario = request.user
+                ce.estado_fase = us.estado_fase
+                ce.descripcion = "El US pasa a control de calidad"
+                ce.save()
             return render(request,'flujo/tablero.html',self.get_context_data(s_fase=us.fase,usuario=usuario, permisos=permisos))
         if 'anterior' in request.POST.keys():
             us = UserStory.objects.get(id=request.POST['anterior'])
@@ -412,12 +427,23 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             return render(request, 'flujo/tablero.html',
                           self.get_context_data(s_fase=us.fase, usuario=usuario, permisos=permisos))
         if 'finalizar' in request.POST.keys():
+            actividad = GuardarActividadForm(request.POST)
+            if actividad.is_valid():
+                actividad.save()
+            else:
+                return self.render_to_response(self.get_context_data(permisos=permisos))
             us = UserStory.objects.get(id=request.POST['finalizar'])
             us.fase = None
             us.estado_fase = 'Done'
             us.estado = 0
             us.save()
         if 'fase' in request.POST.keys():
+            actividad = GuardarActividadForm(request.POST)
+            if actividad.is_valid():
+                actividad.save()
+            else:
+                print(str(actividad))
+                return self.render_to_response(self.get_context_data(permisos=permisos))
             us = UserStory.objects.get(id=request.POST['us'])
             fase = Fase.objects.get(id=request.POST['fase'])
             us.fase = fase

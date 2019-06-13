@@ -259,12 +259,29 @@
                     {% for key, actividades in actividades.items %}
                         {% if key == us.pk %}
                             {% for actividad in actividades %}
-                                {{ actividad.nombre }}: {{ actividad.descripcion }}<br>
-                                Duracion: {{ actividad.duracion }}<br>
-                                Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
-                                <div class="container" style="width: 600px;">
-                                    <hr>
-                                </div>
+                                {% if actividad.tipo == 'actividad' %}
+                                    {{ actividad.nombre }}: {{ actividad.descripcion }}<br>
+                                    Duracion: {{ actividad.duracion }} horas<br>
+                                    Sprint: {{ actividad.sprint }} <br>
+                                    Fase: {% if actividad.fase_us %}
+                                                {{ actividad.fase_us.nombre }}
+                                          {% elif actividad.estado_fase == 'Control de Calidad'%}
+                                                Control de Calidad
+                                          {% endif %}
+                                    <br>
+                                    Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
+                                    <div class="container" style="width: 600px;">
+                                        <hr>
+                                    </div>
+                                {% elif actividad.tipo == 'cambio' %}
+                                    <div style="color:darkblue">{{ actividad.descripcion }} <br>
+                                    Sprint: {{ actividad.sprint }} <br>
+                                    Autor: {{ actividad.usuario }}, {{ actividad.fecha }}
+                                    <div class="container" style="width: 600px;">
+                                        <hr>
+                                    </div>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
                         {% endif %}
                     {% endfor %}

@@ -152,6 +152,8 @@ class Actividad(models.Model):
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
     sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
+    fase_us = models.ForeignKey('flujo.Fase', on_delete=models.CASCADE,null=True,blank=True)
+    estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE, default='To Do')
 
     def __str__(self):
         """
@@ -166,8 +168,8 @@ class CambioEstado(models.Model):
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
     fecha = models.DateTimeField(auto_now_add=True)
     sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
-    fase = models.ForeignKey('flujo.Fase', on_delete=models.CASCADE)
-    estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE)
+    fase = models.ForeignKey('flujo.Fase', on_delete=models.CASCADE,null=True)
+    estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE, null=True, blank=True)
 
     def __str__(self):
         """
