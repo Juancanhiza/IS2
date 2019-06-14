@@ -61,6 +61,37 @@ class Sprint(models.Model):
                 dias_habiles.append(int(d))
         return dias_habiles
 
+    def get_nombres_dias_habiles(self):
+        """
+        retorna la lista nombres de dias habiles definidos para el sprint
+        1: Lunes
+        2: Martes
+        3: Miercoles
+        4: Jueves
+        5: Viernes
+        6: Sábado
+        7: Domingo
+        """
+        dias_habiles = []
+        dh = self.dias_habiles
+        if dh:
+            for d in dh.split(','):
+                if d == '1':
+                    dias_habiles.append('Lunes')
+                elif d == '2':
+                    dias_habiles.append('Martes')
+                elif d == '3':
+                    dias_habiles.append('Miércoles')
+                elif d == '4':
+                    dias_habiles.append('Jueves')
+                elif d == '5':
+                    dias_habiles.append('Viernes')
+                elif d == '6':
+                    dias_habiles.append('Sábado')
+                elif d == '7':
+                    dias_habiles.append('Domingo')
+        return dias_habiles
+
     def validate(self):
         """
         Metodo del modelo de Sprint que lanza excepciones de tipo ValidationError en caso de

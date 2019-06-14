@@ -66,7 +66,7 @@ class CreateSprintView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     """
     template_name = 'sprint/sprint.html'
     model = Sprint
-    success_url = '../'
+    success_url = '../../'
     form_class = CreateSprintForm
     success_message = 'Se ha creado el sprint'
 
@@ -189,7 +189,7 @@ class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'sprint/sprint.html'
     model = Sprint
     form_class = UpdateSprintForm
-    success_url = '../'
+    success_url = '../../'
     success_message = 'Los cambios se guardaron correctamente'
 
     def get(self, request, *args, **kwargs):
@@ -475,6 +475,9 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
 
 @method_decorator(login_required, name='dispatch')
 class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
+    """
+    Clase de la vista utilizada para visualizar los sprints sin opciones de modificacion
+    """
     model = Sprint
     template_name = 'sprint/ver_sprint.html'
 
@@ -525,6 +528,7 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         context['direccion'][str(context['project'])] = (2, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/')
         context['direccion']['Sprints'] = (3, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/')
         context['direccion']['Ver: ' + self.object.nombre] = (4, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/ver/' + str(self.object.pk) + '/')
+        context['dias_habiles'] = self.object.get_nombres_dias_habiles()
         return context
 
     def get_object(self, queryset=None):
