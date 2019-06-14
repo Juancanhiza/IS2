@@ -108,6 +108,21 @@ class Sprint(models.Model):
             raise ValidationError('En sprint debe estar relacionado a un proyecto')
         return True
 
+    def validate_test(self):
+        """
+        Metodo del modelo de Sprint que retorna un booleano en caso
+        que no se hayan completado todos los campos obligatorios en el sprint.
+        """
+        if not self.has_dias_habiles():
+            return False
+        if not self.nombre:
+            return False
+        if not self.dias_laborales or self.dias_laborales == 0:
+            return False
+        if not self.proyecto:
+            return False
+        return True
+
     def get_duracion_real(self):
         """
         metodo del modelo Sprint que retorna la cantidad de dias de duracion del sprint en
