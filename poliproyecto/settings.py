@@ -84,9 +84,9 @@ WSGI_APPLICATION = 'poliproyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbdev',
+        'NAME': 'devbd',
         'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'postgres',
         'HOST': '127.0.0.1',
         'PORT':'5432',
     }
@@ -134,5 +134,5 @@ MEDIA_URL = '/media/'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'poliproyectos2019@gmail.com'
-EMAIL_HOST_PASSWORD = 'putoelquelolea'
+EMAIL_HOST_PASSWORD = 'team08is2'
 EMAIL_PORT = 587

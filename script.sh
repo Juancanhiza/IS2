@@ -63,7 +63,7 @@ do
             echo
             virtualenv venv --python=python3
             source venv/bin/activate
-            pip install -r requirements.txt
+            pip install -r requeriments.txt
             echo
             chmod +x prodbdconf.sh
             sudo -u postgres ./prodbdconf.sh
