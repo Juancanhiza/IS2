@@ -128,7 +128,7 @@ STATICFILES_FINDERS =[
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 MEDIA_URL = '/media/'
 

@@ -333,6 +333,10 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 adjunto = GuardarNotaForm(request.POST)
             if request.POST['tipo-adjunto'] == 'archivo':
                 adjunto = GuardarArchivoForm(request.POST, request.FILES)
+                # Modificaciones para guardar el archivo binario
+                file = adjunto.save()
+                if not request.FILES.__len__() == 0:
+                    file.set_data(request.FILES['archivo'])
             if request.POST['tipo-adjunto'] == 'actividad':
                 adjunto = GuardarActividadForm(request.POST)
             if adjunto.is_valid():

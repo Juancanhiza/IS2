@@ -17,6 +17,10 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from . import views
 from accounts.views import login, logout
+from userstory.views import ver_archivo
+from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', views.home),
@@ -29,4 +33,8 @@ urlpatterns = [
     url(r'^usuarios/', include('usuarios.urls')),
     url(r'^roles/', include('rol.urls')),
     url(r'^clientes/',include('clientes.urls')),
+    path(route='media/<int:archivo_id>/', view=ver_archivo, name='ver_archivo')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

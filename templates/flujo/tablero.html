@@ -291,7 +291,10 @@
 <div class="container tablero" id="finalizados" style="display: none">
     <table class="table table-sm scrolltable-cc" width="100%">
         <thead class="thead-dark">
-            <th width="30%">Nombre</th>
+            <td width="30%">
+                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
+                {{ us.nombre }}</a>
+            </td>
             <th width="40%">Descripcion</th>
             <th width="17%">Duracion Estimada</th>
             <th width="13%">Priorizacion</th>
@@ -371,10 +374,11 @@
                     {% endfor %}
                 </div>
                 <div class="container" id="archivos-us-{{ us.pk }}" style="display: none">
+                    <!-- AGREGAR EL ARCHIVO BINARIO -->
                     {% for key, archivos in archivos.items %}
                         {% if key == us.pk %}
                             {% for archivo in archivos %}
-                                {{ archivo.titulo }}: <a href="/media/{{ archivo.nombre }}">{{ archivo.archivo }}</a><br>
+                                {{ archivo.titulo }}: <a href="{% url 'ver_archivo' archivo.pk %}">{{ archivo.archivo }}</a><br>
                                 Sprint: {{ archivo.sprint }} <br>
                                 Autor: {{ archivo.usuario }}, {{ archivo.fecha }}
                                 <div class="container" style="width: 600px;">

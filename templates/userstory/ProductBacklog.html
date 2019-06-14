@@ -85,7 +85,8 @@
                     {% for key, archivos in archivos.items %}
                         {% if key == us.pk %}
                             {% for archivo in archivos %}
-                                {{ archivo.titulo }}: <a href="/media/{{ archivo.nombre }}">{{ archivo.archivo }}</a><br>
+                                {{ archivo.titulo }}: <a href="{% url 'ver_archivo' archivo.pk %}">{{ archivo.archivo }}</a><br>
+                                Sprint: {{ archivo.sprint }} <br>
                                 Autor: {{ archivo.usuario }}, {{ archivo.fecha }}
                                 <div class="container" style="width: 600px;">
                                     <hr>

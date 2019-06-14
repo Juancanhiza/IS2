@@ -1,5 +1,8 @@
+import pickle
+
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.http import HttpResponse
 
 """
 Definicion de los estados de User Story
@@ -128,6 +131,7 @@ class Archivo(models.Model):
     """
     titulo = models.CharField(max_length=255, blank=True)
     archivo = models.FileField(upload_to='')
+    binario = models.BinaryField(null=True, blank=True)
     fecha = models.DateTimeField(auto_now_add=True)
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
     usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT, null=True)
@@ -140,6 +144,11 @@ class Archivo(models.Model):
         """
         return self.titulo
 
+    def set_data(self, data):
+        self.binario = pickle.dumps(data)
+
+    def get_data(self):
+        return pickle.loads(self.binario)
 
 class Actividad(models.Model):
     """
