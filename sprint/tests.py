@@ -20,7 +20,7 @@ class SprintModelTest(TestCase):
         proyecto.save()
         sprint = Sprint(
             nombre="prueba",
-            proyecto=proyecto.pk,
+            proyecto=proyecto,
             estado='Pendiente',
             dias_laborales=20,
             dias_habiles='1,2,3,4,5'
@@ -35,8 +35,9 @@ class SprintModelTest(TestCase):
         """
         Verifica que la validacion de obligatoriedad del campo nombre se ejecute correctamente
         """
+        p = Proyecto()
         sprint = Sprint(
-            proyecto=3,
+            proyecto=p,
             estado='Pendiente',
             dias_laborales=20,
             dias_habiles='1,2,3,4,5'
@@ -59,9 +60,10 @@ class SprintModelTest(TestCase):
         """
         Verifica que la validacion de obligatoriedad del campo dias laborales se ejecute correctamente
         """
+        p = Proyecto()
         sprint = Sprint(
             nombre='prueba',
-            proyecto=3,
+            proyecto=p,
             estado='Pendiente',
             dias_habiles='1,2,3,4,5'
         )
@@ -71,9 +73,10 @@ class SprintModelTest(TestCase):
         """
         Verifica que la validacion de obligatoriedad del campo dias habiles se ejecute correctamente
         """
+        p = Proyecto()
         sprint = Sprint(
             nombre='prueba',
-            proyecto=3,
+            proyecto= p,
             estado='Pendiente',
             dias_laborales=20
         )
@@ -94,5 +97,5 @@ class SprintModelTest(TestCase):
         self.assertIsNotNone(tablero)
 
     def test_duracion(self):
-        sprint = Sprint(nombre='sprint', fecha_inicio='29/04/2019', fecha_fin='12/04/2019', duracion=200)
-        self.assertIs(sprint.duracion, 200)
+        sprint = Sprint(nombre='sprint', fecha_inicio='29/04/2019', fecha_fin='12/04/2019', dias_laborales=200)
+        self.assertIs(sprint.dias_laborales, 200)

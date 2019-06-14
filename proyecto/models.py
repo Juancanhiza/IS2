@@ -22,7 +22,7 @@ class Proyecto(models.Model):
     fecha_fin = models.DateField(blank=True, null=True)
     estado = models.CharField(max_length=25, choices=ESTADOS_PROYECTO, default='Pendiente')
     descripcion = models.TextField(blank=True, null=True)
-    cliente = models.ForeignKey('clientes.Cliente',on_delete=models.PROTECT)
+    cliente = models.ForeignKey('clientes.Cliente',on_delete=models.PROTECT,null=True)
 
     def __str__(self):
         """

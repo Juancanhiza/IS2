@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nombre', models.CharField(max_length=20)),
                 ('descripcion', models.TextField()),
-                ('duracion', models.TimeField()),
+                ('duracion', models.IntegerField()),
                 ('fecha', models.DateTimeField(auto_now_add=True)),
             ],
         ),
