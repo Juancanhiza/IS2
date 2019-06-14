@@ -636,6 +636,14 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             us.estado_fase = 'Done'
             us.estado = 0
             us.save()
+            ce = CambioEstado()
+            ce.us = us
+            ce.fase = us.fase
+            ce.sprint = us.sprint
+            ce.usuario = request.user
+            ce.estado_fase = us.estado_fase
+            ce.descripcion = "Se finaliza el User Story"
+            ce.save()
             # Notificación al Desarrollador por correo
             body = render_to_string(
                 '../templates/notificaciones/control_calidad_aceptado.html', {
@@ -659,13 +667,20 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             if actividad.is_valid():
                 actividad.save()
             else:
-                print(str(actividad))
                 return self.render_to_response(self.get_context_data(permisos=permisos))
             us = UserStory.objects.get(id=request.POST['us'])
             fase = Fase.objects.get(id=request.POST['fase'])
             us.fase = fase
             us.estado_fase = 'To Do'
             us.save()
+            ce = CambioEstado()
+            ce.us = us
+            ce.fase = us.fase
+            ce.sprint = us.sprint
+            ce.usuario = request.user
+            ce.estado_fase = us.estado_fase
+            ce.descripcion = "Cambio de estado a " + us.estado_fase + " de la fase " + us.fase.nombre
+            ce.save()
             # Notificación al Desarrollador por correo
             body = render_to_string(
                 '../templates/notificaciones/control_calidad_rechazado.html', {

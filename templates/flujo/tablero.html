@@ -273,11 +273,7 @@
                     <td width="50%">{{ us.descripcion }}</td>
                     <td width="20%">
                         <button type="button" href="#Mover_{{ us.pk }}" data-toggle="modal" class="btn btn-danger">No OK</button>
-                        <form method="POST" style="display: inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-success">Finalizar</button>
-                            <input type="hidden" name="finalizar" value="{{ us.pk }}">
-                        </form>
+                        <button type="button" href="#Finalizar_{{ us.pk }}" data-toggle="modal" class="btn btn-success">Finalizar</button>
                     </td>
                     </tr>
                 {% endif %}
@@ -291,10 +287,7 @@
 <div class="container tablero" id="finalizados" style="display: none">
     <table class="table table-sm scrolltable-cc" width="100%">
         <thead class="thead-dark">
-            <td width="30%">
-                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
-                {{ us.nombre }}</a>
-            </td>
+            <th width="30%">User Story</th>
             <th width="40%">Descripcion</th>
             <th width="17%">Duracion Estimada</th>
             <th width="13%">Priorizacion</th>
@@ -303,7 +296,10 @@
             {% for us in user_stories %}
                 {% if us.estado == 0 %} <!-- Finalizado -->
                     <tr>
-                        <td width="30%">{{ us.nombre }}</td>
+                        <td width="30%">
+                            <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
+                            {{ us.nombre }}</a>
+                        </td>
                         <td width="40%">{{ us.descripcion }}</td>
                         <td width="17%" style="padding-left: 13px;">{{ us.duracion_estimada}}</td>
                         <td width="13%" style="padding-left: 17px;">{{ us.priorizacion }}</td>
@@ -337,11 +333,15 @@
                     </li>
                     <br>
                 </div>
-                <div class="botones-historial">
-                    <button type="button" value="{{ us.pk }}" class="btn btn-dark add-nota">Agregar Nota</button>
-                    <button type="button" value="{{ us.pk }}" class="btn btn-dark add-archivo">Agregar Archivo</button>
-                    <button type="button" value="{{ us.pk }}" class="btn btn-dark add-actividad">Agregar Actividad</button>
-                </div>
+                    <div class="botones-historial">
+                        {% if us.estado != 0 %}
+                        <button type="button" value="{{ us.pk }}" class="btn btn-dark add-nota">Agregar Nota</button>
+                        <button type="button" value="{{ us.pk }}" class="btn btn-dark add-archivo">Agregar Archivo</button>
+                        {% if us.team_member.pk == user.pk %}
+                        <button type="button" value="{{ us.pk }}" class="btn btn-dark add-actividad">Agregar Actividad</button>
+                        {% endif %}
+                        {% endif %}
+                    </div>
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="container" id="formulario-nuevo-{{ us.pk }}">
@@ -423,6 +423,7 @@
             <div class="modal-footer">
                 <form method="POST">
                     {% csrf_token %}
+                    {% if us.estado_fase != 'Control de Calidad' and us.estado != 0 %}
                     {% if us.fase != fases.0 %}
                     <button type="submit" class="btn btn-danger change-status">
                         <i class="fas fa-arrow-left"></i>
@@ -434,14 +435,17 @@
                         Mover a estado anterior
                     </button>
                     {% endif %}
+                    {% endif %}
                     <input type="hidden" name="anterior" value="{{ us.pk }}">
                 </form>
                 <form method="POST">
                     {% csrf_token %}
+                    {% if us.estado_fase != 'Control de Calidad' and us.estado != 0 %}
                     <button type="submit" class="btn btn-success change-status">
                         Mover a estado siguiente
                         <i class="fas fa-arrow-right"></i>
                     </button>
+                    {% endif %}
                     <input type="hidden" name="siguiente" value="{{ us.pk }}">
                 </form>
             </div>
@@ -474,6 +478,32 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success">Mover</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+<div id="Finalizar_{{ us.pk }}" class="modal fade">
+    <form method="POST">
+    {% csrf_token %}
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inline; text-align: center">
+                <h5>Actividad finalizar {{ us.nombre }}
+                <button type="button" style="display: inline" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </h5>
+            </div>
+            <div class="modal-body">
+                {{ actividad_form.as_p }}
+                <input type="hidden" name="sprint" value="{{ sprint_actual.pk }}">
+                <input type='hidden' name='us' value="{{ us.pk }}">
+                <input type='hidden' name='usuario' value="{{ user.pk }}">
+                <input type='hidden' name='estado_fase' value="Control de Calidad">
+                <input type="hidden" name="finalizar" value="{{ us.pk }}">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Finalizar</button>
             </div>
         </div>
     </div>
