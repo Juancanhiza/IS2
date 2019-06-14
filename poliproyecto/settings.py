@@ -84,9 +84,9 @@ WSGI_APPLICATION = 'poliproyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'devdb',
+        'NAME': 'dbdev',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
         'PORT':'5432',
     }
@@ -127,7 +127,7 @@ STATICFILES_FINDERS =[
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 MEDIA_URL = '/media/'
 

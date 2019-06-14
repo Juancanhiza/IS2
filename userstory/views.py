@@ -252,3 +252,19 @@ class ProductBacklogListView(LoginRequiredMixin, ListView):
         context['direccion'][proyecto.nombre] = (2, '/proyectos/ejecuciones/' + str(proyecto.pk) + '/')
         context['direccion']['Product Backlog'] = (3, '/proyectos/ejecuciones/' + str(proyecto.pk) + '/productbacklog/')
         return context
+
+
+@login_required
+def ver_archivo(request,archivo_id):
+    """
+    Vista utilizada para la visualizacion de archivos
+    :param request:
+    :param archivo_id: id del archivo a ser visualizado
+    :return: el archivo adjunto
+    """
+    archivo = Archivo.objects.get(pk=archivo_id)
+    archivo_a_devolver = archivo.get_data()
+    respuesta = HttpResponse(content=archivo_a_devolver)
+    respuesta['Content-Type'] = 'application/octet-stream'
+    respuesta['Content-Disposition'] = 'attachment; filename="%s"' % archivo.archivo.name
+    return respuesta
