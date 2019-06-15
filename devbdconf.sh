@@ -19,5 +19,5 @@ echo "Se ha creado devbd"
 
 source venv/bin/activate
 PGPASSWORD="admin"
-psql -h localhost -p 5432 -U postgres -d devbd -f bddev.backup
+psql -h localhost -p 5432 -U postgres -d devbd -f bd.backup
 echo "devbd se cargó exitosamente."

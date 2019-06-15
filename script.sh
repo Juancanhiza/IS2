@@ -5,7 +5,7 @@ mkdir -p static
 echo "¡Bienvenido a PoliProyectos!"
 echo "Seleccione uno de los siguientes entornos de despliegue:"
 PS3='Por favor, ingrese una opción:' 
-options=("Desarrollo" "Producción" "Salir")
+options=("Desarrollo" "Producción" "Generar Documentacion" "Pruebas Unitarias" "Salir")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -34,28 +34,6 @@ do
             echo
             chmod +x devbdconf.sh
             sudo -u postgres ./devbdconf.sh
-	    ##echo "Generando documentacion..."
-	    ##source venv/bin/activate
-   	    ##pycco *.py
-  	    ##pycco accounts/*.py
-	    ##pycco GestorP/*.py
-  	    ##pycco menu/*.py
-	    ##pycco proyecto/*.py
-	    ##pycco Rol/*.py
-	    ##pycco sprint/*.py
-	    ##pycco tablero/*.py
-	    ##pycco team/*.py
-	    ##pycco us/*.py
-  	    ##pycco usuario/*.py
-	    ##echo "Corriendo pruebas unitarias..."
-            ##python -m unittest test_login.py
-            ####python -m unittest test_sprint.py
-            ##python -m unittest tests_proyecto.py
-            ##python -m unittest tests_roles.py
-            ##python -m unittest tests_tablero.py
-            ##python -m unittest tests_us.py
-            ##python -m unittest tests_usuario.py
-            ##python manage.py runserver
             break
             ;;
         "Producción")
@@ -95,7 +73,16 @@ do
             sudo a2dissite 000-default.conf
             sudo a2ensite prueba.conf
             break
-            ;; 
+            ;;
+        "Generar Documentacion")
+            echo "Generando documentacion..."
+	        pycco -i **/*.py -p
+            break
+            ;;
+        "Pruebas Unitarias")
+            ./manage.py test
+            break
+            ;;
         "Salir")
             break
             ;;

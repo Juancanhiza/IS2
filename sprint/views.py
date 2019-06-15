@@ -12,6 +12,9 @@ from flujo.models import *
 from django.forms import inlineformset_factory
 from django.db import transaction
 import json
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+
 """
 Vista del Login
 """
@@ -284,11 +287,13 @@ class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         form = self.get_form(formclass)
         team = TeamMember.objects.filter(proyecto=self.kwargs['pk_proyecto'])
         horas_team = HorasFormSet(request.POST)
+        #Reasignacion de team members
         if 'viejo_tm' in request.POST.keys() and 'tm_disponibles' in request.POST.keys():
             viejo_tm = Usuario.objects.get(pk=request.POST['viejo_tm'])
             nuevo_tm = Usuario.objects.get(pk=request.POST['tm_disponibles'])
             us_a_modificar_p = UserStory.objects.filter(team_member=viejo_tm.pk, estado=2)
             us_a_modificar_a = UserStory.objects.filter(team_member=viejo_tm.pk, estado=1)
+            #Lista de todos los us a reasignar, enviar al usuario nuevo_tm
             us_a_modificar = us_a_modificar_a.union(us_a_modificar_p)
             for us in us_a_modificar:
                 us.team_member = nuevo_tm
@@ -297,7 +302,26 @@ class UpdateSprintView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             for hora in horas:
                 hora.team_member = nuevo_tm
                 hora.save()
+            # Notificación al Desarrollador por correo
+            body = render_to_string(
+                '../templates/notificaciones/reasignacion_us.html', {
+                    # Poner los parámetros requeridos del correo
+                    'lista_us': us_a_modificar,
+                    'proyecto': us.proyecto.nombre,
+                    'sprint': us.sprint.nombre,
+                    'team_member': nuevo_tm.first_name,
+                },
+            )
+            email_msg = EmailMessage(
+                subject='Asignacion de US',
+                body=body,
+                from_email=['PoliProyectos-noreply'],
+                to=[nuevo_tm.email],
+            )
+            email_msg.content_subtype = 'html'
+            email_msg.send()
             return HttpResponseRedirect('./')
+        #fin reasignacion de team members
         if form.is_valid() and horas_team.is_valid():
             try:
                 with transaction.atomic():
@@ -529,6 +553,7 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         context['direccion']['Sprints'] = (3, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/')
         context['direccion']['Ver: ' + self.object.nombre] = (4, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/ver/' + str(self.object.pk) + '/')
         context['dias_habiles'] = self.object.get_nombres_dias_habiles()
+        context['team_members'] = Horas.objects.filter(sprint=self.object.pk)
         return context
 
     def get_object(self, queryset=None):

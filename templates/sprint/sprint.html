@@ -12,20 +12,20 @@
         <div class="container form-container">
             <form method="POST">
                 {% csrf_token %}
-                {% if object.estado != 'Pendiente' %}
+                {% if object.estado and object.estado != 'Pendiente' %}
                 <div class="container" style="padding-left: 4em;padding-top: 1em;"></div>
                 {% endif %}
-                <div style="{% if object.estado != 'Pendiente' %}display:none{% endif %}">
+                <div style="{% if object.estado and object.estado != 'Pendiente' %}display:none{% endif %}">
                     {{ form.as_p}}
                 </div>
                 <p style="color: red;">
                     {{ form_error }}
                 </p>
-                <div style="{% if object.estado != 'Pendiente' %}display:none{% endif %}">
+                <div style="{% if object.estado and object.estado != 'Pendiente' %}display:none{% endif %}">
                     Dias hábiles de la semana:
                 </div>
                 <div class="container" style="padding-left: 4em;padding-top: 1em;
-                                              {% if object.estado != 'Pendiente' %}display:none{% endif %}">
+                                              {% if object.estado and object.estado != 'Pendiente' %}display:none{% endif %}">
                 {% if 1 in dias_habiles %}
                     <li><label for="lunes">
                     <input type="checkbox" name="dias_habiles_check"

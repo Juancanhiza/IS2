@@ -136,7 +136,7 @@ class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateVie
     """
     template_name = 'tipoUserStory/tipoUserStory.html'
     model = TipoUserStory
-    success_url = '../'
+    success_url = '../../'
     form_class = UpdateUserStoryTypeForm
     success_message = 'Los cambios se guardaron correctamente'
 
@@ -211,7 +211,7 @@ class UpdateUserStoryTypeView(LoginRequiredMixin, SuccessMessageMixin, UpdateVie
             form.save()
         else:
             return self.render_to_response(self.get_context_data(form=form))
-        return HttpResponseRedirect('../')
+        return HttpResponseRedirect('../../')
 
 @method_decorator(login_required, name='dispatch')
 class VerUserStoryTypeDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):

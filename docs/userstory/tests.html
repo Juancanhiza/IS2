@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
   <title>tests.py</title>
-  <link rel="stylesheet" href="pycco.css">
+  <link rel="stylesheet" href="../pycco.css">
 </head>
 <body>
 <div id='container'>
@@ -21,7 +21,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
-<span class="kn">from</span> <span class="nn">userstory.models</span> <span class="kn">import</span> <span class="n">UserStory</span>
+<span class="kn">from</span> <span class="nn">userstory.models</span> <span class="kn">import</span> <span class="n">UserStory</span><span class="p">,</span> <span class="n">Actividad</span><span class="p">,</span> <span class="n">Archivo</span><span class="p">,</span> <span class="n">Nota</span>
 <span class="kn">from</span> <span class="nn">proyecto.models</span> <span class="kn">import</span> <span class="n">Proyecto</span></pre></div>
     </div>
   </div>
@@ -63,7 +63,85 @@
       <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_Rango</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">proyecto1</span> <span class="o">=</span> <span class="n">Proyecto</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;Proyecto1&#39;</span><span class="p">,</span> <span class="n">fecha_inicio</span><span class="o">=</span><span class="s1">&#39;23/04/2019&#39;</span><span class="p">,</span> <span class="n">fecha_fin</span><span class="o">=</span><span class="s1">&#39;22/04/2019&#39;</span><span class="p">)</span>
         <span class="n">us</span> <span class="o">=</span> <span class="n">UserStory</span><span class="p">(</span><span class="n">proyecto</span><span class="o">=</span><span class="n">proyecto1</span><span class="p">,</span> <span class="n">nombre</span><span class="o">=</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s2">&quot;desc&quot;</span><span class="p">,</span> <span class="n">fecha_inicio</span><span class="o">=</span><span class="s1">&#39;13/04/2019&#39;</span><span class="p">,</span> <span class="n">duracion_estimada</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">valor_negocio</span><span class="o">=</span><span class="mi">55</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertLessEqual</span><span class="p">(</span><span class="n">us</span><span class="o">.</span><span class="n">valor_negocio</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertLessEqual</span><span class="p">(</span><span class="n">us</span><span class="o">.</span><span class="n">valor_negocio</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;El valor del Valor de Negocio no debe superar el valor de 10&quot;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>test para crear actividades
+:return:</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_actividad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">actividad</span> <span class="o">=</span> <span class="n">Actividad</span><span class="p">(</span><span class="n">nombre</span><span class="o">=</span><span class="s1">&#39;Actividad 1&#39;</span><span class="p">,</span> <span class="n">descripcion</span><span class="o">=</span><span class="s1">&#39;desc&#39;</span><span class="p">,</span> <span class="n">duracion</span><span class="o">=</span><span class="s1">&#39;1000&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">actividad</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>test para crear archivos
+:return:</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_archivo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">archivo</span> <span class="o">=</span> <span class="n">Archivo</span><span class="p">(</span><span class="n">titulo</span><span class="o">=</span><span class="s1">&#39;Archivo 1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">archivo</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>test para crear notas
+:return:</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">def</span> <span class="nf">test_nota</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>        <span class="n">nota</span> <span class="o">=</span> <span class="n">Nota</span><span class="p">(</span><span class="n">nota</span><span class="o">=</span><span class="s1">&#39;Nota 1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsNotNone</span><span class="p">(</span><span class="n">nota</span><span class="p">)</span>
 
 </pre></div>
     </div>

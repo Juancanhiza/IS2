@@ -114,7 +114,7 @@ class UpdateUserStoryView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'userstory/userstory.html'
     model = UserStory
     form_class = UpdateUserStoryForm
-    success_url = '../'
+    success_url = '../../'
     success_message = 'Los cambios se guardaron correctamente'
 
     def get(self, request, *args, **kwargs):
