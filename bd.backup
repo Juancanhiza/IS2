@@ -5,7 +5,7 @@
 -- Dumped from database version 11.2 (Ubuntu 11.2-1.pgdg18.04+1)
 -- Dumped by pg_dump version 11.2 (Ubuntu 11.2-1.pgdg18.04+1)
 
--- Started on 2019-06-14 22:18:26 -04
+-- Started on 2019-06-14 23:35:15 -04
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1724,6 +1724,14 @@ COPY public.flujo_fase (id, nombre, flujo_id) FROM stdin;
 33	Pruebas Unitarias	4
 34	Pruebas Globales	4
 35	Verificacion	4
+36	Análisis de Costos	5
+37	A. de Complejidad	5
+38	Diseño	5
+39	Implementación	5
+40	Estudio de Clientes	6
+41	Planes de Venta	6
+42	Negociación	6
+43	Informes	6
 \.
 
 
@@ -1738,6 +1746,8 @@ COPY public.flujo_flujo (id, nombre, descripcion, proyecto_id) FROM stdin;
 2	Contabilidad	Flujo para desarrollo del modulo de Contabilidad	1
 3	Auditoría		2
 4	Testeo		2
+5	Nuevos Desarrollos	Modulo de nuevas implementaciones	1
+6	CRM	Módulo de gestión de las relaciones con clientes.	1
 \.
 
 
@@ -1905,6 +1915,11 @@ COPY public."tipoUserStory_tipouserstory" (id, nombre, descripcion, proyecto_id)
 1	Programacion	Tipo de us utilizado para las tareas de programación unicamente, excluyendo consultoria	1
 2	Programación		2
 3	Analisis		2
+4	Consultoría	Para los US de control y verificación	1
+6	Internacionalización	Implementación del i18n.	1
+7	Migracion de Sw	Migración a nuevas tecnologías	1
+5	Marketing	Gestion de clientes, ventas y otras utilidades.	1
+8	Sistema Responsive	Implementacion completa de Responsive para dispositivos móviles	1
 \.
 
 
@@ -1920,6 +1935,12 @@ COPY public."tipoUserStory_tipouserstory_flujos" (id, tipouserstory_id, flujo_id
 3	2	3
 4	2	4
 5	3	4
+6	4	1
+7	4	2
+8	5	6
+9	6	5
+10	7	5
+11	8	5
 \.
 
 
@@ -2044,6 +2065,11 @@ COPY public.userstory_nota (id, nota, fecha, us_id, usuario_id, sprint_id) FROM 
 COPY public.userstory_userstory (id, estado_fase, nombre, descripcion, fecha_inicio, duracion_estimada, valor_negocio, prioridad, valor_tecnico, estado, fase_id, flujo_id, proyecto_id, sprint_id, team_member_id, tipo_us_id) FROM stdin;
 1	Done	Planilla de Vacaciones	Desarrollo de automatización de calculo de vacaciones mediante planillas	\N	80	7	4	8	0	\N	1	1	2	1	1
 2	To Do	Liquidacion de Salarios	Se debe realizar un reporte de liquidación de salarios, se adjunta especificación en etapa de diseño	\N	30	10	8	7	1	12	1	1	4	2	1
+3	To Do	Preparacion de Claves	Preparacion de claves para i18n	\N	50	8	8	5	2	\N	5	1	\N	\N	6
+4	To Do	Puesta a Prueba	Verificacion de datos para realizar migración	\N	20	5	6	4	2	\N	5	1	\N	\N	7
+5	To Do	Interfaz Cliente	Implementación de interfaz para manejo de clientes	\N	85	9	7	7	2	\N	6	1	\N	\N	5
+6	To Do	Interfaz Ventas	Interfaz de Ventas realizadas, pendientes o próximas.	\N	70	8	5	5	2	\N	6	1	\N	\N	5
+7	To Do	Frases Repetidas	Unificación de Frases repetidas para evitar sobrecarga en la Internacionalización.	\N	55	9	2	3	2	\N	5	1	\N	\N	6
 \.
 
 
@@ -2190,7 +2216,7 @@ SELECT pg_catalog.setval('public.django_migrations_id_seq', 47, true);
 -- Name: flujo_fase_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.flujo_fase_id_seq', 35, true);
+SELECT pg_catalog.setval('public.flujo_fase_id_seq', 43, true);
 
 
 --
@@ -2199,7 +2225,7 @@ SELECT pg_catalog.setval('public.flujo_fase_id_seq', 35, true);
 -- Name: flujo_flujo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.flujo_flujo_id_seq', 4, true);
+SELECT pg_catalog.setval('public.flujo_flujo_id_seq', 6, true);
 
 
 --
@@ -2271,7 +2297,7 @@ SELECT pg_catalog.setval('public.sprint_sprint_id_seq', 4, true);
 -- Name: tipoUserStory_tipouserstory_flujos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."tipoUserStory_tipouserstory_flujos_id_seq"', 5, true);
+SELECT pg_catalog.setval('public."tipoUserStory_tipouserstory_flujos_id_seq"', 11, true);
 
 
 --
@@ -2280,7 +2306,7 @@ SELECT pg_catalog.setval('public."tipoUserStory_tipouserstory_flujos_id_seq"', 5
 -- Name: tipoUserStory_tipouserstory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."tipoUserStory_tipouserstory_id_seq"', 3, true);
+SELECT pg_catalog.setval('public."tipoUserStory_tipouserstory_id_seq"', 8, true);
 
 
 --
@@ -2325,7 +2351,7 @@ SELECT pg_catalog.setval('public.userstory_nota_id_seq', 4, true);
 -- Name: userstory_userstory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.userstory_userstory_id_seq', 2, true);
+SELECT pg_catalog.setval('public.userstory_userstory_id_seq', 7, true);
 
 
 --
@@ -3598,7 +3624,7 @@ ALTER TABLE ONLY public.usuarios_usuario_user_permissions
     ADD CONSTRAINT usuarios_usuario_use_usuario_id_60aeea80_fk_usuarios_ FOREIGN KEY (usuario_id) REFERENCES public.usuarios_usuario(id) DEFERRABLE INITIALLY DEFERRED;
 
 
--- Completed on 2019-06-14 22:18:26 -04
+-- Completed on 2019-06-14 23:35:16 -04
 
 --
 -- PostgreSQL database dump complete
