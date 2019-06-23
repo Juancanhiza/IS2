@@ -28,8 +28,13 @@
                             {% for us in user_stories %}
                                 {% if us.fase == fases.0 and us.estado_fase == 'To Do' %}
                                     <div class="panel user-story">
-                                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
-                                        <div class="container" style="padding-top: 5.7em;">
+                                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
+                                            <div class="container" style="height: 7em;">
+                                                {{ us.nombre }}
+                                            </div>
+                                        </a>
+                                        {% if us.team_member.pk == user.pk %}
+                                        <div class="container">
                                             <form method="POST" style="display: inline">
                                                 {% csrf_token %}
                                                 {% if us.fase != fases.0 %}
@@ -54,6 +59,7 @@
                                                 <input type="hidden" name="siguiente" value="{{ us.pk }}">
                                             </form>
                                         </div>
+                                        {% endif %}
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -64,8 +70,12 @@
                              {% for us in user_stories %}
                                 {% if us.fase == fases.0 and us.estado_fase == 'Doing' %}
                                     <div class="panel user-story">
-                                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
-                                        <div class="container" style="padding-top: 5.7em;">
+                                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
+                                            <div class="container" style="height: 7em;">
+                                                {{ us.nombre }}
+                                            </div>
+                                        </a>
+                                        <div class="container">
                                             <form method="POST" style="display: inline">
                                                 {% csrf_token %}
                                                 {% if us.fase != fases.0 %}
@@ -100,8 +110,13 @@
                              {% for us in user_stories %}
                                 {% if us.fase == fases.0 and us.estado_fase == 'Done' %}
                                     <div class="panel user-story">
-                                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
-                                        <div class="container" style="padding-top: 5.7em;">
+                                        <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
+                                            <div class="container" style="height: 7em;">
+                                                {{ us.nombre }}
+                                            </div>
+                                        </a>
+                                        <div class="container">
+                                            {% if us.team_member.pk == user.pk %}
                                             <form method="POST" style="display: inline">
                                                 {% csrf_token %}
                                                 {% if us.fase != fases.0 %}
@@ -125,6 +140,7 @@
                                                 </button>
                                                 <input type="hidden" name="siguiente" value="{{ us.pk }}">
                                             </form>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 {% endif %}
@@ -146,8 +162,13 @@
                     {% for us in user_stories %}
                         {% if us.fase == fase and us.estado_fase == 'To Do' %}
                             <div class="panel user-story">
-                                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
-                                <div class="container" style="padding-top: 5.7em;">
+                                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
+                                    <div class="container" style="height: 7em;">
+                                        {{ us.nombre }}
+                                    </div>
+                                </a>
+                                <div class="container">
+                                    {% if us.team_member.pk == user.pk %}
                                     <form method="POST" style="display: inline">
                                         {% csrf_token %}
                                         {% if us.fase != fases.0 %}
@@ -171,6 +192,7 @@
                                         </button>
                                         <input type="hidden" name="siguiente" value="{{ us.pk }}">
                                     </form>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endif %}
@@ -182,8 +204,13 @@
                      {% for us in user_stories %}
                         {% if us.fase == fase and us.estado_fase == 'Doing' %}
                             <div class="panel user-story">
-                                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
-                                <div class="container" style="padding-top: 5.7em;">
+                                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
+                                    <div class="container" style="height: 7em;">
+                                        {{ us.nombre }}
+                                    </div>
+                                </a>
+                                <div class="container">
+                                    {% if us.team_member.pk == user.pk %}
                                     <form method="POST" style="display: inline">
                                         {% csrf_token %}
                                         {% if us.fase != fases.0 %}
@@ -207,6 +234,7 @@
                                         </button>
                                         <input type="hidden" name="siguiente" value="{{ us.pk }}">
                                     </form>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endif %}
@@ -218,8 +246,13 @@
                      {% for us in user_stories %}
                         {% if us.fase == fase and us.estado_fase == 'Done' %}
                             <div class="panel user-story">
-                                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">{{ us.nombre }}</a>
-                                <div class="container" style="padding-top: 5.7em;">
+                                <a href="#UserStory_{{ us.pk }}" role="button" data-toggle="modal">
+                                    <div class="container" style="height: 7em;">
+                                        {{ us.nombre }}
+                                    </div>
+                                </a>
+                                <div class="container">
+                                    {% if us.team_member.pk == user.pk %}
                                     <form method="POST" style="display: inline">
                                         {% csrf_token %}
                                         {% if us.fase != fases.0 %}
@@ -243,6 +276,7 @@
                                         </button>
                                         <input type="hidden" name="siguiente" value="{{ us.pk }}">
                                     </form>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endif %}
@@ -420,35 +454,37 @@
                     {% endfor %}
                 </div>
             </div>
-            <div class="modal-footer">
-                <form method="POST">
-                    {% csrf_token %}
-                    {% if us.estado_fase != 'Control de Calidad' and us.estado != 0 %}
-                    {% if us.fase != fases.0 %}
-                    <button type="submit" class="btn btn-danger change-status">
-                        <i class="fas fa-arrow-left"></i>
-                        Mover a estado anterior
-                    </button>
-                    {% elif  us.fase == fases.0 and us.estado_fase != 'To Do'%}
-                    <button type="submit" class="btn btn-danger change-status">
-                        <i class="fas fa-arrow-left"></i>
-                        Mover a estado anterior
-                    </button>
-                    {% endif %}
-                    {% endif %}
-                    <input type="hidden" name="anterior" value="{{ us.pk }}">
-                </form>
-                <form method="POST">
-                    {% csrf_token %}
-                    {% if us.estado_fase != 'Control de Calidad' and us.estado != 0 %}
-                    <button type="submit" class="btn btn-success change-status">
-                        Mover a estado siguiente
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                    {% endif %}
-                    <input type="hidden" name="siguiente" value="{{ us.pk }}">
-                </form>
-            </div>
+            {% if us.team_member.pk == user.pk %}
+                <div class="modal-footer">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% if us.estado_fase != 'Control de Calidad' and us.estado != 0 %}
+                        {% if us.fase != fases.0 %}
+                        <button type="submit" class="btn btn-danger change-status">
+                            <i class="fas fa-arrow-left"></i>
+                            Mover a estado anterior
+                        </button>
+                        {% elif  us.fase == fases.0 and us.estado_fase != 'To Do'%}
+                        <button type="submit" class="btn btn-danger change-status">
+                            <i class="fas fa-arrow-left"></i>
+                            Mover a estado anterior
+                        </button>
+                        {% endif %}
+                        {% endif %}
+                        <input type="hidden" name="anterior" value="{{ us.pk }}">
+                    </form>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% if us.estado_fase != 'Control de Calidad' and us.estado != 0 %}
+                        <button type="submit" class="btn btn-success change-status">
+                            Mover a estado siguiente
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        {% endif %}
+                        <input type="hidden" name="siguiente" value="{{ us.pk }}">
+                    </form>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -556,6 +592,23 @@
 </div>
 <!--fin sin actividad al pasar al done -->
 
+<!-- actividad invalida-->
+<div id="SinActividad" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Formulario de Actividad invalido</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                No se pudo guardar la actividad, favor complete todos los campos del formulario con
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--fin actividad invalida -->
+
 <input type="hidden" value="{{ s_fase.pk }}" id="fase_actual">
 <script type="text/javascript">
     $(document).ready(function($) {
@@ -573,6 +626,8 @@
         {% if error %}
             {% if error == 'sinactividad' %}
                 $("#SinActividad").modal("show");
+            {% elif error == 'act_inv' %}
+                $("#ActividadInvalida").modal("show");
             {% endif %}
         {% endif %}
         {% if modal %}

@@ -8,8 +8,8 @@
     </div>
     <div class="body" style="">
         {% if 'Ver Definiciones de Proyecto' in permisos %}
-        <a href="{% url 'update_options' object.pk %}" style="color: white">
-            <button type="button" class="btn btn-success" style="margin-left: 50em">
+        <a href="{% url 'update_options' object.pk %}" style="color: white;margin-left: 50em">
+            <button type="button" class="btn btn-success">
                 Ir a Definición
             </button>
         </a>
@@ -238,6 +238,7 @@
             <div class="modal-footer">
                 <button class="btn btn-danger" data-dismiss="modal"> Cancelar </button>
                 <form method="POST">
+                    {% csrf_token %}
                     <input name="conf_terminar" type="hidden" value={{ sprint_actual.pk }}>
                     <button type="submit" class="btn btn-success">
                         <i class="fas fa-stop-circle"></i> Terminar Sprint

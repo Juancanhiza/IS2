@@ -630,7 +630,10 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             if actividad.is_valid():
                 actividad.save()
             else:
-                return self.render_to_response(self.get_context_data(permisos=permisos))
+                return self.render_to_response(self.get_context_data(s_fase='Control de Calidad',
+                                                                     permisos=permisos,
+                                                                     error='act_inv'
+                                                                     ))
             us = UserStory.objects.get(id=request.POST['finalizar'])
             us.fase = None
             us.estado_fase = 'Done'
@@ -667,7 +670,10 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
             if actividad.is_valid():
                 actividad.save()
             else:
-                return self.render_to_response(self.get_context_data(permisos=permisos))
+                return self.render_to_response(self.get_context_data(s_fase='Control de Calidad',
+                                                                     permisos=permisos,
+                                                                     error='act_inv'
+                                                                     ))
             us = UserStory.objects.get(id=request.POST['us'])
             fase = Fase.objects.get(id=request.POST['fase'])
             us.fase = fase

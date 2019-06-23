@@ -29,38 +29,40 @@
             <table class="table table-sm scrolltable" width="100%">
                 <thead class="thead-dark thead">
                     <tr>
-                        <th width="7%">Asignar</th>
-                        <th width="36%">Nombre</th>
-                        <th width="19%">Estado</th>
-                        <th width="21%">Duracion Estimada (Horas)</th>
+                        <th width="4%"></th>
+                        <th width="30%">Nombre</th>
+                        <th width="15%">Estado</th>
+                        <th width="13%">Estimacion Sprint Anterior (Hs)</th>
+                        <th width="13%">Duracion Estimada / Sprint (Hs)</th>
                         <th width="13%">Priorizacion</th>
-                        <th width="15%">Asigar team member</th>
+                        <th width="12%">Asigar team member</th>
                     </tr>
                 </thead>
                 <tbody class="tbody">
                     {% for us in first_list %}
                         <tr style="background-color: khaki!important;;">
                             {% if us.sprint == sprint %}
-                                <td width="7%"><input class="asignar" type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}" checked></td>
+                                <td width="4%"><input class="asignar" type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}" checked></td>
                             {% else %}
-                                <td width="7%"><input class="asignar" type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}"></td>
+                                <td width="4%"><input class="asignar" type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}"></td>
                             {% endif %}
-                            <td width="36%">
+                            <td width="30%">
                                 <div class="enlace">
                                     <a href="#UserStory_{{ us.pk }}" data-toggle="modal"
                                     role="button" class="enlace">
                                     {{ us.nombre }}</a>
                                 </div>
                             </td>
-                            <td width="19%">No terminado</td>
-                            <td width="21%">
-                                <input style="width: 9em" type="number" name="duracion_estimada_{{ us.pk }}"
-                                       value="{{ us.duracion_estimada }}" class="horas" id="est_{{ us.pk }}">
+                            <td width="15%">No terminado</td>
+                            <td width="13%">{{ us.duracion_estimada }}</td>
+                            <td width="13%">
+                                <input style="width: 6em" type="number" name="duracion_estimada_{{ us.pk }}"
+                                       value="{{ us.duracion_restante }}" class="horas" id="est_{{ us.pk }}">
                             </td>
                             <td width="13%">
                                 {{ us.priorizacion }}
                             </td>
-                            <td width="15%"><button class="btn btn-success btn-sm" type="button" name="botones_asignacion"
+                            <td width="12%"><button class="btn btn-success btn-sm" type="button" name="botones_asignacion"
                                         data-toggle="modal" href="#Asignacion_{{ us.pk }}" value="{{ us.pk }}"
                                         id="asignacion_{{ us.pk }}" style="display: none">
                                     Asignar TM
@@ -71,26 +73,27 @@
                     {% for us in second_list %}
                         <tr>
                             {% if us.sprint == sprint %}
-                                <td width="7%"><input class="asignar" type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}" checked></td>
+                                <td width="4%"><input class="asignar" type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}" checked></td>
                             {% else %}
-                                <td width="7%"><input class="asignar" type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}"></td>
+                                <td width="4%"><input class="asignar" type="checkbox" name="user_stories" value="{{ us.pk }}" id="id_user_stories_{{ us.pk }}"></td>
                             {% endif %}
-                            <td width="36%">
+                            <td width="30%">
                                 <div class="enlace">
                                     <a href="#UserStory_{{ us.pk }}" data-toggle="modal"
                                     role="button" class="enlace">
                                     {{ us.nombre }}</a>
                                 </div>
                             </td>
-                            <td width="19%">{{ us.get_estado_display }}</td>
-                            <td width="21%">
-                                <input style="width: 9em" type="number" name="duracion_estimada_{{ us.pk }}"
-                                       value="{{ us.duracion_estimada }}" class="horas" id="est_{{ us.pk }}">
+                            <td width="15%">{{ us.get_estado_display }}</td>
+                            <td width="13%"></td>
+                            <td width="13%">
+                                <input style="width: 6em" type="number" name="duracion_estimada_{{ us.pk }}"
+                                       value="{{ us.duracion_restante }}" class="horas" id="est_{{ us.pk }}">
                             </td>
                             <td width="13%">
                                 {{ us.priorizacion }}
                             </td>
-                            <td width="15%">
+                            <td width="12%">
                                 <button class="btn btn-success btn-sm" type="button"
                                         data-toggle="modal" href="#Asignacion_{{ us.pk }}" name="botones_asignacion"
                                         id="asignacion_{{ us.pk }}" value="{{ us.pk }}">
@@ -323,7 +326,10 @@
                 checked = document.getElementById('id_user_stories_{{ us.pk }}').checked;
                 if (checked){
                     btn_asignacion.style.display = 'inline';
-                    duracion_us = document.getElementById('est_{{ us.pk }}').value;
+                    duracion_us = document.getElementById('est_{{ us.pk }}').value
+                    if (duracion_us == null || duracion_us == ''){
+                        duracion_us = 0
+                    }
                     tm = document.getElementById('id_team_member_{{ us.pk }}').value;
                     horas_totales += parseInt(duracion_us);
                     if (tm){
@@ -342,6 +348,9 @@
                 if (checked){
                     btn_asignacion.style.display = 'inline';
                     duracion_us = document.getElementById('est_{{ us.pk }}').value;
+                    if (duracion_us == null || duracion_us == ''){
+                        duracion_us = 0
+                    }
                     tm = document.getElementById('id_team_member_{{ us.pk }}').value;
                     horas_totales += parseInt(duracion_us);
                     if (tm){

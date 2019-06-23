@@ -53,7 +53,8 @@ class UserStory(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
     fecha_inicio = models.DateField('Fecha de inicio del User Story', null=True, blank=True)
-    duracion_estimada = models.IntegerField()
+    duracion_estimada = models.PositiveIntegerField(null=True,blank=True)
+    duracion_restante = models.IntegerField(null=True,blank=True)
     valor_negocio = models.PositiveIntegerField(validators=[rango])
     prioridad = models.PositiveIntegerField(validators=[rango])
     valor_tecnico = models.PositiveIntegerField(validators=[rango])
@@ -104,7 +105,26 @@ class UserStory(models.Model):
             raise ValidationError('Debe asignar un team member al user story ' + str(self.nombre))
         if not self.has_duracion_estimada():
             raise ValidationError('Se deben estimar las horas de duración del user story ' + str(self.nombre))
+        if not self.duracion_restante:
+            raise ValidationError('Se deben estimar las horas de duración del user story ' + str(self.nombre))
+        if self.duracion_restante <= 0:
+            raise ValidationError('Debe indicar una duracion estimada mayor a 0 al user story ' + str(self.nombre))
         return True
+
+    def get_horas_trabajadas(self, sprint=None):
+        """
+        metodo de la clase de user stories que retorna la cantidad de horas trabajadas
+        hasta el momento en el user story
+        :return: las horas trabajadas en el user story actual
+        """
+        if not sprint:
+            actividades = Actividad.objects.filter(us=self.pk)
+        else:
+            actividades = Actividad.objects.filter(us=self.pk, sprint=sprint)
+        horas = 0.0
+        for actividad in actividades:
+            horas += actividad.duracion
+        return horas
 
 
 class Nota(models.Model):
@@ -186,3 +206,8 @@ class CambioEstado(models.Model):
         :return: descripcion del objeto actual
         """
         return self.descripcion
+
+class HistorialEstimaciones(models.Model):
+    duracion_estimada = models.PositiveIntegerField()
+    sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
+    us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)

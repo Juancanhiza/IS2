@@ -466,35 +466,36 @@ class AsignarUSUpdateView(LoginRequiredMixin, ListView):
         asigned = request.POST.getlist('user_stories')
         sprint = Sprint.objects.get(pk=self.kwargs['sprint_pk'])
         for us in self.object_list:
-            if str(us.pk) in asigned:
-                '''Se asignan los us al sprint'''
-                us.sprint = sprint
-                us.estado = 1  # asignado
-                us.fase = Fase.objects.filter(flujo=us.flujo.pk).order_by('pk')[0]
-                us.estado_fase = 'To Do'
-                asignado_pk = request.POST['team_member_' + str(us.pk)]
-                asignado = None
-                if asignado_pk:
-                    asignado = Usuario.objects.get(pk=asignado_pk)
-                us.team_member = asignado
-                us.duracion_estimada = int(request.POST['duracion_estimada_' + str(us.pk)])
-                try:
-                    us.validate_asignacion()
+            with transaction.atomic():
+                if str(us.pk) in asigned:
+                    '''Se asignan los us al sprint'''
+                    us.sprint = sprint
+                    us.estado = 1  # asignado
+                    asignado_pk = request.POST['team_member_' + str(us.pk)]
+                    asignado = None
+                    if asignado_pk:
+                        asignado = Usuario.objects.get(pk=asignado_pk)
+                    us.team_member = asignado
+                    us.duracion_restante = int(request.POST['duracion_estimada_' + str(us.pk)])
+                    try:
+                        us.validate_asignacion()
+                        us.save()
+                    except ValidationError as e:
+                        error_msg = e.message
+                        return self.render_to_response(self.get_context_data(permisos=permisos,
+                                                                             error_msg=error_msg,
+                                                                             set_team_members=True))
+                else:
+                    '''Se quita la asignacion a todos los us que no fueron seleccionados'''
+                    if not request.POST['duracion_estimada_' + str(us.pk)]:
+                        d = 0
+                    else:
+                        d = int(request.POST['duracion_estimada_' + str(us.pk)])
+                    us.duracion_restante = d
+                    us.sprint = None
+                    us.estado = 2  # pendiente
+                    us.team_member = None
                     us.save()
-                except ValidationError as e:
-                    error_msg = e.message
-                    return self.render_to_response(self.get_context_data(permisos=permisos,
-                                                                         error_msg=error_msg,
-                                                                         set_team_members=True))
-            else:
-                '''Se quita la asignacion a todos los us que no fueron seleccionados'''
-                us.duracion_estimada = request.POST['duracion_estimada_' + str(us.pk)]
-                us.sprint = None
-                us.fase = None
-                us.estado = 2  # pendiente
-                us.estado_fase = 'To Do'
-                us.team_member = None
-                us.save()
         return HttpResponseRedirect('../../../')
 
 @method_decorator(login_required, name='dispatch')

@@ -474,7 +474,7 @@ class EjecucionListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = "Ejecuciones de Proyectos"
         context['direccion'] = {}
-        context['direccion']['Ejecuciones'] = (1, '/ejecuciones/')
+        context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
         return context
 
 
@@ -536,12 +536,6 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 sprint.estado = 'Terminado'
                 sprint.fecha_fin = timezone.now().today()
                 sprint.save()
-                us_list = UserStory.objects.filter(sprint=sprint.pk)
-                for us in us_list:
-                    if us.estado != 0: #terminado
-                        us.estado = 2 #pendiente
-                        us.sprint = None
-                        us.save()
             else:
                 return render(request,'proyecto/ejecucion.html',self.get_context_data(permisos=permisos, confirmar='fin_sprint'))
         if 'conf_terminar' in request.POST.keys():
@@ -572,6 +566,7 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 # Desasignacion de US no finalizados
                 if us.estado != 0: #terminado
                     us.estado = 2 #pendiente
+                    us.duracion_restante = us.duracion_estimada - us.get_horas_trabajadas(sprint=us.sprint)
                     us.sprint = None
                     us.save()
         if 'iniciar_sprint' in request.POST.keys():
@@ -583,10 +578,17 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 sprint.save()
                 us_list = UserStory.objects.filter(sprint=sprint.pk)
                 for us in us_list:
+                    us.duracion_estimada = us.duracion_restante
                     us.sprints_asignados.add(sprint)
-                    us.fase = Fase.objects.filter(flujo=us.flujo.pk).order_by('pk')[0]
-                    us.estado_fase = 'To Do'
+                    if not us.fase and us.estado_fase != 'Control de Calidad':
+                        us.fase = Fase.objects.filter(flujo=us.flujo)[0]
+                        us.estado_fase = 'To Do'
                     us.save()
+                    he = HistorialEstimaciones()
+                    he.duracion_estimada = us.duracion_estimada
+                    he.us = us
+                    he.sprint = sprint
+                    he.save()
                     # Notificación al Desarrollador por correo
                     body = render_to_string(
                         '../templates/notificaciones/inicio_sprint.html', {
@@ -606,7 +608,7 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                     email_msg.content_subtype = 'html'
                     email_msg.send()
             else:
-                return render(self.get_context_data(error='sinus',permisos=permisos))
+                return self.render_to_response(self.get_context_data(error='sinus',permisos=permisos))
         return HttpResponseRedirect('./')
 
     def get_context_data(self, **kwargs):
