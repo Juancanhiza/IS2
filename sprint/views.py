@@ -592,6 +592,7 @@ class SprintBacklogPDF(View):
         self.sprint = Sprint.objects.get(pk=self.kwargs['sprint_pk'])
         self.proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         response = HttpResponse(content_type='application/pdf')
+        #se crea el pdf
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer)
         self.doc = SimpleDocTemplate(buffer)
@@ -601,12 +602,13 @@ class SprintBacklogPDF(View):
         self.doc.build(self.story, onFirstPage=self.numeroPagina,
                        onLaterPages=self.numeroPagina)
         pdf = buffer.getvalue()
+        #fin
         buffer.close()
         response.write(pdf)
         return response
 
     def encabezado(self):
-        p = Paragraph("Product Backlog", self.estiloPC())
+        p = Paragraph("Sprint Backlog", self.estiloPC())
         self.story.append(p)
         self.story.append(Spacer(1, 0.1 * inch))
         p = Paragraph("Proyecto: " + str(self.proyecto), self.estiloPC())
@@ -618,10 +620,15 @@ class SprintBacklogPDF(View):
         for us in user_stories:
             estimacion = HistorialEstimaciones.objects.get(sprint=self.sprint, us=us.pk)
             us.duracion_estimada = estimacion.duracion_estimada
+            actividades = Actividad.objects.filter(sprint=self.sprint, us=us.pk)
+            horas = 0.0
+            for actividad in actividades:
+                horas += actividad.duracion
+            us.horas_trabajadas = horas
         nro = 1
         data = [["","User Story", "Horas Estimadas", "Horas Trabajadas","Priorizacion"]]
         for x in user_stories:
-            aux = [nro,x.nombre, x.duracion_estimada, "", \
+            aux = [nro,x.nombre, x.duracion_estimada, x.horas_trabajadas, \
                 locale.format("%0.2f", x.priorizacion, grouping=True)]
             nro += 1
             data.append(aux)
