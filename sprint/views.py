@@ -14,6 +14,21 @@ from django.db import transaction
 import json
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from io import BytesIO
+from reportlab.pdfgen import canvas
+import locale
+from django.views.generic import View
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle, TA_CENTER
+from reportlab.lib.units import inch, mm
+from reportlab.lib import colors
+from reportlab.platypus import (
+        Paragraph,
+        Table,
+        SimpleDocTemplate,
+        Spacer,
+        TableStyle,
+        Paragraph)
 
 """
 Vista del Login
@@ -566,3 +581,63 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         sprint = Sprint.objects.get(pk=self.kwargs['pk'])
         sprint.duracion_real = sprint.get_duracion_real()
         return sprint
+
+
+@method_decorator(login_required, name='dispatch')
+class SprintBacklogPDF(View):
+    """
+    clase de la vista para creacion de reporte Product Backlog
+    """
+    def get(self, request, *args, **kwargs):
+        self.sprint = Sprint.objects.get(pk=self.kwargs['sprint_pk'])
+        self.proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        response = HttpResponse(content_type='application/pdf')
+        buffer = BytesIO()
+        pdf = canvas.Canvas(buffer)
+        self.doc = SimpleDocTemplate(buffer)
+        self.story = []
+        self.encabezado()
+        self.crearTabla()
+        self.doc.build(self.story, onFirstPage=self.numeroPagina,
+                       onLaterPages=self.numeroPagina)
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
+
+    def encabezado(self):
+        p = Paragraph("Product Backlog", self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.1 * inch))
+        p = Paragraph("Proyecto: " + str(self.proyecto), self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.3 * inch))
+
+    def crearTabla(self):
+        user_stories = UserStory.objects.filter(sprints_asignados__id=self.sprint.pk)
+        for us in user_stories:
+            estimacion = HistorialEstimaciones.objects.get(sprint=self.sprint, us=us.pk)
+            us.duracion_estimada = estimacion.duracion_estimada
+        nro = 1
+        data = [["","User Story", "Horas Estimadas", "Horas Trabajadas","Priorizacion"]]
+        for x in user_stories:
+            aux = [nro,x.nombre, x.duracion_estimada, "", \
+                locale.format("%0.2f", x.priorizacion, grouping=True)]
+            nro += 1
+            data.append(aux)
+        style = TableStyle([
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])
+
+        t = Table(data)
+        t.setStyle(style)
+        self.story.append(t)
+
+    def estiloPC(self):
+        return ParagraphStyle(name="centrado", alignment=TA_CENTER)
+
+    def numeroPagina(self, canvas, doc):
+        num = canvas.getPageNumber()
+        text = "Pagina %s" % num
+        canvas.drawRightString(190 * mm, 20 * mm, text)

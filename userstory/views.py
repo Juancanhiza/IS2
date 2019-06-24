@@ -7,6 +7,22 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from tipoUserStory.models import *
 from userstory.models import *
+from django.views.generic import View
+from django.conf import settings
+from io import BytesIO
+from reportlab.pdfgen import canvas
+import locale
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle, TA_CENTER
+from reportlab.lib.units import inch, mm
+from reportlab.lib import colors
+from reportlab.platypus import (
+        Paragraph,
+        Table,
+        SimpleDocTemplate,
+        Spacer,
+        TableStyle,
+        Paragraph)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -262,6 +278,81 @@ class ProductBacklogListView(LoginRequiredMixin, ListView):
         context['direccion']['Product Backlog'] = (3, '/proyectos/ejecuciones/' + str(proyecto.pk) + '/productbacklog/')
         return context
 
+@method_decorator(login_required, name='dispatch')
+class ProductBacklogPDF(View):
+    """
+    clase de la vista para creacion de reporte Product Backlog
+    """
+    def get(self, request, *args, **kwargs):
+        self.proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        response = HttpResponse(content_type='application/pdf')
+        buffer = BytesIO()
+        pdf = canvas.Canvas(buffer)
+        self.doc = SimpleDocTemplate(buffer)
+        self.story = []
+        self.encabezado()
+        self.crearTabla()
+        self.doc.build(self.story, onFirstPage=self.numeroPagina,
+                       onLaterPages=self.numeroPagina)
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
+
+    def encabezado(self):
+        p = Paragraph("Product Backlog", self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.1 * inch))
+        p = Paragraph("Proyecto: " + str(self.proyecto), self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.3 * inch))
+
+    def crearTabla(self):
+        user_stories = []
+        us_query = UserStory.objects.filter(proyecto = self.proyecto)
+        l1 = []
+        l2 = []
+        l3 = []
+        for us in us_query:
+            if us.estado != 0 and us.sprints_asignados:
+                l1.append(us)
+            elif (us.estado == 1 or us.estado == 0):
+                l2.append(us)
+            else:
+                l3.append(us)
+        l1.sort(key=lambda x: x.priorizacion, reverse=True)
+        l2.sort(key=lambda x: x.priorizacion, reverse=True)
+        l3.sort(key=lambda x: x.priorizacion, reverse=True)
+        for us in l1:
+            user_stories.append(us)
+        for us in l2:
+            user_stories.append(us)
+        for us in l3:
+            user_stories.append(us)
+        estados = ['Terminado','En Proceso','Pendiente']
+        nro = 1
+        data = [["","Nombre", "Estado", "Prioridad"]]
+        for x in user_stories:
+            aux = [nro,x.nombre, estados[x.estado] if not (x.estado != 0 and x.sprints_asignados) else "No Terminado", \
+                locale.format("%0.2f", x.priorizacion, grouping=True)]
+            nro += 1
+            data.append(aux)
+        style = TableStyle([
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])
+
+        t = Table(data)
+        t.setStyle(style)
+        self.story.append(t)
+
+    def estiloPC(self):
+        return ParagraphStyle(name="centrado", alignment=TA_CENTER)
+
+    def numeroPagina(self, canvas, doc):
+        num = canvas.getPageNumber()
+        text = "Pagina %s" % num
+        canvas.drawRightString(190 * mm, 20 * mm, text)
 
 @login_required
 def ver_archivo(request,archivo_id):

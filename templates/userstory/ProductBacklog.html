@@ -7,6 +7,10 @@
         <h3 style="text-align: center">Proyecto: {{ project.nombre }}</h3>
     </div>
     <div class="body">
+        <a target="_blank" href="{% url 'reporte_pb' project.pk %}">
+            <button type="button" class="btn btn-success">
+                <i class="fas fa-file-pdf"></i> Exportar a PDF</button>
+        </a>
         <table class="table table-sm scrolltable" width="100%">
             <thead class="thead-dark thead">
                 <tr>

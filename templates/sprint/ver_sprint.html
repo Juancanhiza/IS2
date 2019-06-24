@@ -61,6 +61,10 @@
         </table>
         {% if sprint.estado != 'Pendiente' %}
             <hr><h4 style="text-align: center;">Sprint Backlog</h4><hr>
+            <a target="_blank" href="{% url 'reporte_sb' project.pk object.pk %}">
+            <button type="button" class="btn btn-success">
+                <i class="fas fa-file-pdf"></i> Exportar a PDF</button>
+            </a>
             <table class="table table-sm scrolltable" width="100%">
                 <thead class="thead-dark thead">
                     <tr>

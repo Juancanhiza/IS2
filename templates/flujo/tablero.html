@@ -75,6 +75,7 @@
                                                 {{ us.nombre }}
                                             </div>
                                         </a>
+                                        {% if us.team_member.pk == user.pk %}
                                         <div class="container">
                                             <form method="POST" style="display: inline">
                                                 {% csrf_token %}
@@ -100,6 +101,7 @@
                                                 <input type="hidden" name="siguiente" value="{{ us.pk }}">
                                             </form>
                                         </div>
+                                        {% endif %}
                                     </div>
                                 {% endif %}
                             {% endfor %}
