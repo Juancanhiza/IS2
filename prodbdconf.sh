@@ -19,5 +19,5 @@ echo "Se ha creado prodbd"
 
 source venv/bin/activate
 PGPASSWORD="admin"
-psql -h localhost -p 5432 -U postgres -d prodbd -f bd.backup
+psql -h localhost -p 5432 -U postgres -d prodbd -f dbdev
 echo "prodbd se cargó exitosamente."
