@@ -1,5 +1,7 @@
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.http import HttpResponseRedirect
+
+from poliproyecto import settings
 from .forms import *
 from proyecto.models import *
 from sprint.forms import CreateSprintForm, UpdateSprintForm
@@ -19,16 +21,19 @@ from reportlab.pdfgen import canvas
 import locale
 from django.views.generic import View
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import ParagraphStyle, TA_CENTER
+from reportlab.lib.styles import ParagraphStyle, TA_CENTER, TA_LEFT
 from reportlab.lib.units import inch, mm
 from reportlab.lib import colors
+from reportlab.graphics.shapes import Drawing, Line
+from reportlab.lib.enums import TA_RIGHT
 from reportlab.platypus import (
         Paragraph,
         Table,
         SimpleDocTemplate,
         Spacer,
         TableStyle,
-        Paragraph)
+        Paragraph,
+        Image)
 
 """
 Vista del Login
@@ -586,7 +591,7 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
 @method_decorator(login_required, name='dispatch')
 class SprintBacklogPDF(View):
     """
-    clase de la vista para creacion de reporte Product Backlog
+    Clase de la vista para creacion de Reporte Sprint Backlog
     """
     def get(self, request, *args, **kwargs):
         self.sprint = Sprint.objects.get(pk=self.kwargs['sprint_pk'])
@@ -598,6 +603,8 @@ class SprintBacklogPDF(View):
         self.doc = SimpleDocTemplate(buffer)
         self.story = []
         self.encabezado()
+        self.titulo()
+        self.descripcion()
         self.crearTabla()
         self.doc.build(self.story, onFirstPage=self.numeroPagina,
                        onLaterPages=self.numeroPagina)
@@ -608,10 +615,28 @@ class SprintBacklogPDF(View):
         return response
 
     def encabezado(self):
-        p = Paragraph("Sprint Backlog", self.estiloPC())
+        logo = settings.MEDIA_ROOT+"logo2.png"
+        im = Image(logo, inch, inch)
+        im.hAlign = 'LEFT'
+        p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>", self.estiloPR())
+        data_tabla = [[im, p]]
+        tabla = Table(data_tabla)
+        self.story.append(tabla)
+
+        d = Drawing(480, 3)
+        d.add(Line(0, 0, 480, 0))
+        self.story.append(d)
+        self.story.append(Spacer(1, 0.3 * inch))
+
+    def titulo(self):
+        txt = "<b><u>Reporte de Sprint Backlog</u></b>"
+        p = Paragraph('<font size=20>'+str(txt)+'</font>', self.estiloPC())
         self.story.append(p)
-        self.story.append(Spacer(1, 0.1 * inch))
-        p = Paragraph("Proyecto: " + str(self.proyecto), self.estiloPC())
+        self.story.append(Spacer(1, 0.5 * inch))
+
+    def descripcion(self):
+        txt = "<b>Proyecto: </b>" + str(self.proyecto)
+        p = Paragraph('<font size=12>' + str(txt) + '</font>', self.estiloPL())
         self.story.append(p)
         self.story.append(Spacer(1, 0.3 * inch))
 
@@ -626,7 +651,7 @@ class SprintBacklogPDF(View):
                 horas += actividad.duracion
             us.horas_trabajadas = horas
         nro = 1
-        data = [["","User Story", "Horas Estimadas", "Horas Trabajadas","Priorizacion"]]
+        data = [["N°","User Story", "Horas Estimadas", "Horas Trabajadas","Priorizacion"]]
         for x in user_stories:
             aux = [nro,x.nombre, x.duracion_estimada, x.horas_trabajadas, \
                 locale.format("%0.2f", x.priorizacion, grouping=True)]
@@ -643,6 +668,12 @@ class SprintBacklogPDF(View):
 
     def estiloPC(self):
         return ParagraphStyle(name="centrado", alignment=TA_CENTER)
+
+    def estiloPL(self):
+        return ParagraphStyle(name="izquierda", alignment=TA_LEFT)
+
+    def estiloPR(self):
+        return ParagraphStyle(name="derecha", alignment=TA_RIGHT)
 
     def numeroPagina(self, canvas, doc):
         num = canvas.getPageNumber()

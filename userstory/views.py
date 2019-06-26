@@ -13,7 +13,9 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 import locale
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import ParagraphStyle, TA_CENTER
+from reportlab.lib.styles import ParagraphStyle, TA_CENTER, TA_LEFT
+from reportlab.graphics.shapes import Drawing, Line
+from reportlab.lib.enums import TA_RIGHT
 from reportlab.lib.units import inch, mm
 from reportlab.lib import colors
 from reportlab.platypus import (
@@ -22,7 +24,8 @@ from reportlab.platypus import (
         SimpleDocTemplate,
         Spacer,
         TableStyle,
-        Paragraph)
+        Paragraph,
+        Image)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -291,6 +294,8 @@ class ProductBacklogPDF(View):
         self.doc = SimpleDocTemplate(buffer)
         self.story = []
         self.encabezado()
+        self.titulo()
+        self.descripcion()
         self.crearTabla()
         self.doc.build(self.story, onFirstPage=self.numeroPagina,
                        onLaterPages=self.numeroPagina)
@@ -300,10 +305,28 @@ class ProductBacklogPDF(View):
         return response
 
     def encabezado(self):
-        p = Paragraph("Product Backlog", self.estiloPC())
+        logo = settings.MEDIA_ROOT+"logo2.png"
+        im = Image(logo, inch, inch)
+        im.hAlign = 'LEFT'
+        p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>", self.estiloPR())
+        data_tabla = [[im, p]]
+        tabla = Table(data_tabla)
+        self.story.append(tabla)
+
+        d = Drawing(480, 3)
+        d.add(Line(0, 0, 480, 0))
+        self.story.append(d)
+        self.story.append(Spacer(1, 0.3 * inch))
+
+    def titulo(self):
+        txt = "<b><u>Reporte de Product Backlog</u></b>"
+        p = Paragraph('<font size=20>'+str(txt)+'</font>', self.estiloPC())
         self.story.append(p)
-        self.story.append(Spacer(1, 0.1 * inch))
-        p = Paragraph("Proyecto: " + str(self.proyecto), self.estiloPC())
+        self.story.append(Spacer(1, 0.5 * inch))
+
+    def descripcion(self):
+        txt = "<b>Proyecto: </b>" + str(self.proyecto)
+        p = Paragraph('<font size=12>' + str(txt) + '</font>', self.estiloPL())
         self.story.append(p)
         self.story.append(Spacer(1, 0.3 * inch))
 
@@ -331,7 +354,7 @@ class ProductBacklogPDF(View):
             user_stories.append(us)
         estados = ['Terminado','En Proceso','Pendiente']
         nro = 1
-        data = [["","Nombre", "Estado", "Prioridad"]]
+        data = [["N°","Nombre", "Estado", "Prioridad"]]
         for x in user_stories:
             aux = [nro,x.nombre, estados[x.estado] if not (x.estado != 0 and x.sprints_asignados) else "No Terminado", \
                 locale.format("%0.2f", x.priorizacion, grouping=True)]
@@ -348,6 +371,12 @@ class ProductBacklogPDF(View):
 
     def estiloPC(self):
         return ParagraphStyle(name="centrado", alignment=TA_CENTER)
+
+    def estiloPL(self):
+        return ParagraphStyle(name="izquierda", alignment=TA_LEFT)
+
+    def estiloPR(self):
+        return ParagraphStyle(name="derecha", alignment=TA_RIGHT)
 
     def numeroPagina(self, canvas, doc):
         num = canvas.getPageNumber()

@@ -15,6 +15,27 @@
             <li>RUC: {{ object.ruc }}</li>
             <li>Telefono: {{ object.telefono }}</li>
         </div>
+        <hr><h4 style="text-align: center;">Proyectos del Cliente</h4><hr>
+            <a target="_blank" href="{% url 'reporte_cl' cliente.pk %}">
+            <button type="button" class="btn btn-success">
+                <i class="fas fa-file-pdf"></i> Exportar a PDF</button>
+            </a>
+            <table class="table table-sm scrolltable" width="100%">
+                <thead class="thead-dark thead">
+                    <tr>
+                        <th width="60%">Proyecto</th>
+                        <th width="40%">Estado</th>
+                    </tr>
+                </thead>
+                <tbody class="tbody">
+                    {% for pr in proyectos  %}
+                        <tr>
+                            <td width="60%">{{ pr.nombre }}</td>
+                            <td width="40%">{{ pr.estado }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         <br>
         <div class="row">
             <a href="../../"><button type="button" class="btn submit-btn">Atras</button></a>

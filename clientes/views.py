@@ -1,14 +1,35 @@
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from reportlab.graphics.shapes import Drawing, Line
+from reportlab.lib.enums import TA_RIGHT
 from .models import Cliente
+from proyecto.models import Proyecto
 from clientes.forms import CreateClientForm, UpdateClientForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
+from io import BytesIO
+from reportlab.pdfgen import canvas
+import locale
+from django.views.generic import View
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle, TA_CENTER, TA_LEFT
+from reportlab.lib.units import inch, mm
+from reportlab.lib import colors
+from reportlab.platypus import (Paragraph,
+                                Table,
+                                SimpleDocTemplate,
+                                Spacer,
+                                TableStyle,
+                                Image, KeepTogether)
+from userstory.models import UserStory
+from poliproyecto import settings
+
 """
 Vistas necesarias para la administracion de Cliente
 """
+
 
 @method_decorator(login_required, name='dispatch')
 class ClientListView(LoginRequiredMixin, ListView):
@@ -19,7 +40,7 @@ class ClientListView(LoginRequiredMixin, ListView):
     model = Cliente
     queryset = Cliente.objects.all()
 
-    def get(self,request,*args,**kwargs):
+    def get(self, request, *args, **kwargs):
         """
         Metodo que es ejecutado al darse una consulta GET
         :param request: consulta recibida
@@ -55,7 +76,7 @@ class CreateClientView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     form_class = CreateClientForm
     success_message = 'Se ha creado el cliente'
 
-    def get(self,request,*args,**kwargs):
+    def get(self, request, *args, **kwargs):
         """
         Metodo que es ejecutado al darse una consulta GET
         :param request: consulta recibida
@@ -69,7 +90,6 @@ class CreateClientView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         permisos = request.user.get_nombres_permisos()
         return self.render_to_response(self.get_context_data(permisos=permisos, form=form))
 
-
     def get_context_data(self, **kwargs):
         """
         Metodo que retorna un diccionario utilizado para pasar datos a las vistas
@@ -80,7 +100,7 @@ class CreateClientView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         context['title'] = "Crear Cliente"
         context['direccion'] = {}
         context['direccion']['Clientes'] = (1, '/clientes/')
-        context['direccion']['Crear Cliente'] = (2,'/clientes/create/')
+        context['direccion']['Crear Cliente'] = (2, '/clientes/create/')
         return context
 
     def post(self, request, *args, **kwargs):
@@ -99,8 +119,7 @@ class CreateClientView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
             self.object = form.save()
             return HttpResponseRedirect(self.success_url)
         else:
-            return self.render_to_response(self.get_context_data(permisos=permisos,form=form))
-
+            return self.render_to_response(self.get_context_data(permisos=permisos, form=form))
 
 
 @method_decorator(login_required, name='dispatch')
@@ -114,7 +133,7 @@ class UpdateClientView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     success_url = './'
     success_message = 'Los cambios se guardaron correctamente'
 
-    def get(self,request,*args,**kwargs):
+    def get(self, request, *args, **kwargs):
         """
         Metodo que es ejecutado al darse una consulta GET
         :param request: consulta recibida
@@ -138,7 +157,8 @@ class UpdateClientView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         context['title'] = "Modificar Cliente"
         context['direccion'] = {}
         context['direccion']['Clientes'] = (1, '/clientes/')
-        context['direccion']['Modificar: ' + self.object.nombre] = (2, '/clientes/modificar/' + str(self.object.pk) + '/')
+        context['direccion']['Modificar: ' + self.object.nombre] = (
+        2, '/clientes/modificar/' + str(self.object.pk) + '/')
         return context
 
     def get_object(self, queryset=None):
@@ -165,8 +185,7 @@ class UpdateClientView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             self.object = form.save()
             return HttpResponseRedirect(self.success_url)
         else:
-            return self.render_to_response(self.get_context_data(permisos=permisos,form=form))
-
+            return self.render_to_response(self.get_context_data(permisos=permisos, form=form))
 
 
 @method_decorator(login_required, name='dispatch')
@@ -200,6 +219,8 @@ class VerClientDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         context['direccion'] = {}
         context['direccion']['Clientes'] = (1, '/clientes/')
         context['direccion']['Ver: ' + self.object.nombre] = (2, '/clientes/ver/' + str(self.object.pk) + '/')
+        context['proyectos'] = Proyecto.objects.filter(cliente=self.get_object())
+        context['cliente'] = self.object
         return context
 
     def get_object(self, queryset=None):
@@ -209,3 +230,96 @@ class VerClientDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         :return: Retorna el cliente a ser visualizado
         """
         return Cliente.objects.get(pk=self.kwargs['pk'])
+
+
+@method_decorator(login_required, name='dispatch')
+class ProyectosClientePDF(View):
+    """
+    clase de la vista para creacion de reporte de Proyectos del cliente
+    """
+
+    def get(self, request, *args, **kwargs):
+        self.cliente = Cliente.objects.get(pk=self.kwargs['pk'])
+        response = HttpResponse(content_type='application/pdf')
+        # se crea el pdf
+        buffer = BytesIO()
+        pdf = canvas.Canvas(buffer)
+        self.doc = SimpleDocTemplate(buffer)
+        self.story = []
+        self.encabezado()
+        self.titulo()
+        self.descripcion()
+        self.crearTabla()
+        self.doc.build(self.story, onFirstPage=self.numeroPagina,
+                       onLaterPages=self.numeroPagina)
+        pdf = buffer.getvalue()
+        # fin
+        buffer.close()
+        response.write(pdf)
+        return response
+
+    def encabezado(self):
+        logo = settings.MEDIA_ROOT+"logo2.png"
+        im = Image(logo, inch, inch)
+        im.hAlign = 'LEFT'
+        p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>", self.estiloPR())
+        data_tabla = [[im, p]]
+        tabla = Table(data_tabla)
+        self.story.append(tabla)
+
+        d = Drawing(480, 3)
+        d.add(Line(0, 0, 480, 0))
+        self.story.append(d)
+        self.story.append(Spacer(1, 0.3 * inch))
+
+    def titulo(self):
+        txt = "<b><u>Reporte de Proyectos de Cliente</u></b>"
+        p = Paragraph('<font size=20>'+str(txt)+'</font>', self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.5 * inch))
+
+    def descripcion(self):
+        txt = "<b>Cliente: </b>"+self.cliente.nombre+"<br/><b>Descripción: </b>" + self.cliente.descripcion+"<br/><b>Teléfono: </b>"+ self.cliente.telefono
+        p = Paragraph('<font size=12>' + str(txt) + '</font>', self.estiloPL())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.5 * inch))
+
+    def crearTabla(self):
+        proyectos = Proyecto.objects.filter(cliente=self.cliente.pk)
+        nro = 1
+        data = [["N°", "Proyectos", "Estado", "US Terminados", "US No terminados"]]
+        for x in proyectos:
+            # Hallar numero de US terminados y no finalizados
+            us_total = UserStory.objects.filter(proyecto=x.pk)
+            unt = ut = 0
+            for us in us_total:
+                if us.estado != 0:  # No esta terminado
+                    unt += 1
+                else:
+                    ut += 1
+            aux = [nro, x.nombre, x.estado, ut, unt]
+            nro += 1
+            data.append(aux)
+        style = TableStyle([
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])
+        # Altura variable dependiendo de la cantidad de datos
+        rowheights = [.2*inch] * len(data)
+        t = Table(data, 100, rowheights)
+        t.setStyle(style)
+        self.story.append(t)
+
+    def estiloPC(self):
+        return ParagraphStyle(name="centrado", alignment=TA_CENTER)
+
+    def estiloPL(self):
+        return ParagraphStyle(name="izquierda", alignment=TA_LEFT)
+
+    def estiloPR(self):
+        return ParagraphStyle(name="derecha", alignment=TA_RIGHT)
+
+    def numeroPagina(self, canvas, doc):
+        num = canvas.getPageNumber()
+        text = "Página %s" % num
+        canvas.drawRightString(190 * mm, 20 * mm, text)
