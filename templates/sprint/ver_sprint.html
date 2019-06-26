@@ -88,6 +88,12 @@
                 </tbody>
             </table>
         {% endif %}
+        {% if sprint.estado == 'Terminado' %}
+                <div class="explanation">
+                    <p>Burndown chart de sprint con las horas restantes y dias de trabajo.</p>
+                </div>
+                <svg id="visualisation" width="800" height="600" class="chart"></svg>
+        {% endif %}<br>
         <div class="row">
             <a href="../../"><button type="button" class="btn submit-btn">Atras</button></a>
         </div>
