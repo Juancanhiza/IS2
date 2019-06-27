@@ -555,6 +555,12 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         context['direccion']['Ver: ' + self.object.nombre] = (4, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/sprints/ver/' + str(self.object.pk) + '/')
         context['dias_habiles'] = self.object.get_nombres_dias_habiles()
         context['team_members'] = Horas.objects.filter(sprint=self.object.pk)
+        context['bdc_line'] = self.object.get_bdc_line()
+        if len(context['bdc_line']) < self.object.dias_laborales:
+            xMax = self.object.dias_laborales
+        else:
+            xMax = len(context['bdc_line']) + 1
+        context['xMax'] = xMax
         return context
 
     def get_object(self, queryset=None):

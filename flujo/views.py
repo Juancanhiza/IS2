@@ -306,6 +306,8 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                 c.tipo = 'cambio'
                 context['actividades'][us.pk].append(c)
             context['actividades'][us.pk].sort(key=lambda x: x.fecha, reverse=True)
+            us.horas_sprint = us.get_horas_trabajadas(sprint=context['sprint_actual'])
+            us.horas_total = us.get_horas_trabajadas()
         context['direccion']['Ejecuciones'] = (1,"/proyectos/ejecuciones/")
         context['direccion'][str(context['project'].nombre)] = (2,"/proyectos/ejecuciones/"+str(self.kwargs['pk_proyecto'])+"/")
         link = "/proyectos/ejecuciones/"+str(self.kwargs['pk_proyecto'])+"/"
