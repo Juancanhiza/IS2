@@ -259,7 +259,7 @@ class ProyectosClientePDF(View):
         return response
 
     def encabezado(self):
-        logo = settings.MEDIA_ROOT+"logo2.png"
+        logo = "logo2.png"
         im = Image(logo, inch, inch)
         im.hAlign = 'LEFT'
         p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>", self.estiloPR())

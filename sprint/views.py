@@ -635,7 +635,7 @@ class SprintBacklogPDF(View):
         return response
 
     def encabezado(self):
-        logo = settings.MEDIA_ROOT+"logo2.png"
+        logo = "logo2.png"
         im = Image(logo, inch, inch)
         im.hAlign = 'LEFT'
         p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>", self.estiloPR())
@@ -707,6 +707,7 @@ class PrioridadesPDF(View):
     """
     def get(self, request, *args, **kwargs):
         self.proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        self.sprint = Sprint.objects.get(proyecto=self.proyecto.pk, estado='En Proceso')
         response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer)
@@ -724,7 +725,7 @@ class PrioridadesPDF(View):
         return response
 
     def encabezado(self):
-        logo = settings.MEDIA_ROOT+"logo2.png"
+        logo = "logo2.png"
         im = Image(logo, inch, inch)
         im.hAlign = 'LEFT'
         p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>", self.estiloPR())
@@ -738,20 +739,20 @@ class PrioridadesPDF(View):
         self.story.append(Spacer(1, 0.3 * inch))
 
     def titulo(self):
-        txt = "<b><u>Prioridades de Sprint</u></b>"
+        txt = "<b><u>Prioridades del Sprint Actual</u></b>"
         p = Paragraph('<font size=20>'+str(txt)+'</font>', self.estiloPC())
         self.story.append(p)
         self.story.append(Spacer(1, 0.5 * inch))
 
     def descripcion(self):
-        txt = "<b>Proyecto: </b>" + str(self.proyecto)
+        txt = "<b>Proyecto: </b>" + str(self.proyecto) + '<br/><b>Sprint: </b>' + str(self.sprint.nombre)
         p = Paragraph('<font size=12>' + str(txt) + '</font>', self.estiloPL())
         self.story.append(p)
         self.story.append(Spacer(1, 0.3 * inch))
 
     def crearTabla(self):
         user_stories = []
-        us_query = UserStory.objects.filter(proyecto=self.proyecto,sprint=self.kwargs['sprint_pk'])
+        us_query = UserStory.objects.filter(proyecto=self.proyecto, sprint=self.kwargs['sprint_pk'])
         l1 = []
         l2 = []
         l3 = []

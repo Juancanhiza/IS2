@@ -207,7 +207,7 @@
                     {% if sprint_actual %}
                         <a target="_blank" href="{% url 'prioridades' project.pk sprint_actual.pk%}">
                             <button type="button" class="btn btn-success">
-                                <i class="fas fa-file-pdf"></i> Exportar a PDF</button>
+                                <i class="fas fa-file-pdf"></i> Prioridades del Sprint</button>
                         </a>
                     {% endif %}
                     {% csrf_token %}
