@@ -105,7 +105,7 @@ class UserStory(models.Model):
             raise ValidationError('Debe asignar un team member al user story ' + str(self.nombre))
         if not self.has_duracion_estimada():
             raise ValidationError('Se deben estimar las horas de duración del user story ' + str(self.nombre))
-        if not self.duracion_restante():
+        if not self.duracion_restante:
             raise ValidationError('Se deben estimar las horas de duración del user story ' + str(self.nombre))
         if self.duracion_restante <= 0:
             raise ValidationError('Debe indicar una duracion estimada mayor a 0 al user story ' + str(self.nombre))
