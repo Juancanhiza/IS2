@@ -179,7 +179,7 @@ class Actividad(models.Model):
     duracion = models.IntegerField()
     usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT)
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
-    fecha = models.DateTimeField()
+    fecha = models.DateTimeField(auto_now_add=True)
     sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
     fase_us = models.ForeignKey('flujo.Fase', on_delete=models.CASCADE,null=True,blank=True)
     estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE, default='To Do')
