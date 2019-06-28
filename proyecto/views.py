@@ -1,4 +1,5 @@
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from poliproyecto import settings
 from .forms import *
 from proyecto.forms import CreateProjectForm, UpdateProjectForm
 from django.http import HttpResponseRedirect
@@ -800,12 +801,12 @@ class HorasTrabajadasPDF(View):
         return response
 
     def encabezado(self):
-        # logo = settings.MEDIA_ROOT+"logo2.png"
-        # im = Image(logo, inch, inch)
-        # im.hAlign = 'LEFT'
+        logo = settings.MEDIA_ROOT+"logo2.png"
+        im = Image(logo, inch, inch)
+        im.hAlign = 'LEFT'
         p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>",
                       self.estiloPR())
-        data_tabla = [[p]]
+        data_tabla = [[im, p]]
         tabla = Table(data_tabla)
         self.story.append(tabla)
 

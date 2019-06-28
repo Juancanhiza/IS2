@@ -2,7 +2,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from reportlab.graphics.shapes import Drawing, Line
 from reportlab.lib.enums import TA_RIGHT
 from .models import Cliente
-from proyecto.models import Proyecto
+from proyecto.models import Proyecto, TeamMember
 from clientes.forms import CreateClientForm, UpdateClientForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.messages.views import SuccessMessageMixin
@@ -287,17 +287,15 @@ class ProyectosClientePDF(View):
     def crearTabla(self):
         proyectos = Proyecto.objects.filter(cliente=self.cliente.pk)
         nro = 1
-        data = [["N°", "Proyectos", "Estado", "US Terminados", "US No terminados"]]
+        data = [["N°", "Proyectos", "Estado", "Usuarios Asignados" , "US Terminados", "US Asignados", "US Pendientes"]]
         for x in proyectos:
             # Hallar numero de US terminados y no finalizados
             us_total = UserStory.objects.filter(proyecto=x.pk)
-            unt = ut = 0
-            for us in us_total:
-                if us.estado != 0:  # No esta terminado
-                    unt += 1
-                else:
-                    ut += 1
-            aux = [nro, x.nombre, x.estado, ut, unt]
+            ut = us_total.filter(estado=0).count() ## US FINALIZADO
+            ua = us_total.filter(estado=1).count()  ## US ASIGNADO
+            up = us_total.filter(estado=2).count()  ## US PENDIENTE
+            usuarios_asig = TeamMember.objects.filter(proyecto=x.pk).count() #Usuarios Asignados al Proyecto
+            aux = [nro, x.nombre, x.estado, usuarios_asig, ut, ua, up]
             nro += 1
             data.append(aux)
         style = TableStyle([
@@ -305,8 +303,7 @@ class ProyectosClientePDF(View):
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])
         # Altura variable dependiendo de la cantidad de datos
-        rowheights = [.2*inch] * len(data)
-        t = Table(data, 100, rowheights)
+        t = Table(data)
         t.setStyle(style)
         self.story.append(t)
 
