@@ -53,7 +53,7 @@ class UserStory(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
     fecha_inicio = models.DateField('Fecha de inicio del User Story', null=True, blank=True)
-    duracion_estimada = models.PositiveIntegerField(null=True,blank=True)
+    duracion_estimada = models.PositiveIntegerField(null=True)
     duracion_restante = models.IntegerField(null=True,blank=True)
     valor_negocio = models.PositiveIntegerField(validators=[rango])
     prioridad = models.PositiveIntegerField(validators=[rango])
@@ -105,7 +105,7 @@ class UserStory(models.Model):
             raise ValidationError('Debe asignar un team member al user story ' + str(self.nombre))
         if not self.has_duracion_estimada():
             raise ValidationError('Se deben estimar las horas de duración del user story ' + str(self.nombre))
-        if not self.duracion_restante:
+        if not self.duracion_restante():
             raise ValidationError('Se deben estimar las horas de duración del user story ' + str(self.nombre))
         if self.duracion_restante <= 0:
             raise ValidationError('Debe indicar una duracion estimada mayor a 0 al user story ' + str(self.nombre))
@@ -179,7 +179,7 @@ class Actividad(models.Model):
     duracion = models.IntegerField()
     usuario = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT)
     us = models.ForeignKey('UserStory', on_delete=models.CASCADE, null=True)
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField()
     sprint = models.ForeignKey('sprint.Sprint', on_delete=models.CASCADE)
     fase_us = models.ForeignKey('flujo.Fase', on_delete=models.CASCADE,null=True,blank=True)
     estado_fase = models.CharField(max_length=30, choices=ESTADOS_EN_FASE, default='To Do')
