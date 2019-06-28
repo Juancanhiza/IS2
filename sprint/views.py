@@ -556,11 +556,21 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         context['dias_habiles'] = self.object.get_nombres_dias_habiles()
         context['team_members'] = Horas.objects.filter(sprint=self.object.pk)
         context['bdc_line'] = self.object.get_bdc_line()
+        context['horas_trabajadas'] = self.object.get_horas_trabajadas()
         if len(context['bdc_line']) < self.object.dias_laborales:
             xMax = self.object.dias_laborales
         else:
             xMax = len(context['bdc_line']) + 1
         context['xMax'] = xMax
+        horas = Horas.objects.filter(sprint=self.object.pk)
+        team_members = []
+        horas_tm = {}
+        capacidad = 0
+        for h in horas:
+            team_member = Usuario.objects.get(pk=h.team_member.pk)
+            team_members.append(team_member)
+            capacidad += h.horas_laborales
+        context['capacidad_sprint'] = capacidad * self.object.dias_laborales
         return context
 
     def get_object(self, queryset=None):

@@ -14,6 +14,8 @@
             <li>Fecha de Inicio: {% if object.fecha_inicio %}{{ object.fecha_inicio }} {% endif %}</li>
             <li>Fecha de Finalizacion: {% if object.fecha_fin %}{{ object.fecha_fin }} {% endif %}</li>
             <li>Duración estimada: {% if object.dias_laborales %} {{ object.dias_laborales }} dias hábiles{% endif %}</li>
+            <li>Capacidad: {{ capacidad_sprint }} horas</li>
+            <li>Horas trabajadas: {{ horas_trabajadas }} horas</li>
             {% if sprint.estado == 'En proceso' %}
                 <li>Duración actual (Sprint no terminado): {% if object.duracion_real %} {{ object.duracion_real }}
                         {% if object.duracion_real > 1 %}
