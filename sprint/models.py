@@ -171,6 +171,7 @@ class Sprint(models.Model):
         para el grafico de su correspondiente burn down chart y el total de horas trabajadas
         :return: lista de coordenadas para graficar el burn  down chart
         """
+        if not self.fecha_inicio: return []
         coordenadas = []
         estimaciones = HistorialEstimaciones.objects.filter(sprint=self.pk)
         horas = 0
