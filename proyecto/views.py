@@ -563,25 +563,31 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             sprint.fecha_fin = timezone.now().today()
             sprint.save()
             us_list = UserStory.objects.filter(sprint=sprint.pk)
+            """
+                Notificación por correo al Desarrollador de que finalizó el Sprint y cuales US tenía asignado sin finalizar. 
+            """
+            team_members = TeamMember.objects.filter(proyecto=proyecto)
+            for tm in team_members:
+                us_asignados = UserStory.objects.filter(team_member=tm.usuario)
+                if us_asignados:
+                    body = render_to_string(
+                        '../templates/notificaciones/finalizacion_sprint.html', {
+                            # Poner los parámetros requeridos del correo
+                            'us_asignados': us_asignados,
+                            'proyecto': proyecto.nombre,
+                            'sprint': sprint,
+                            'team_member': tm.usuario,
+                        },
+                    )
+                    email_msg = EmailMessage(
+                        subject='Finalización de Sprint',
+                        body=body,
+                        from_email=['PoliProyectos-noreply'],
+                        to=[tm.usuario.email],
+                    )
+                    email_msg.content_subtype = 'html'
+                    email_msg.send()
             for us in us_list:
-                # Notificación al Desarrollador por correo
-                body = render_to_string(
-                    '../templates/notificaciones/finalizacion_sprint.html', {
-                        # Poner los parámetros requeridos del correo
-                        'nombre_us': us.nombre,
-                        'proyecto': us.proyecto.nombre,
-                        'sprint': us.sprint.nombre,
-                        'team_member': us.team_member,
-                    },
-                )
-                email_msg = EmailMessage(
-                    subject='Finalización de Sprint',
-                    body=body,
-                    from_email=['PoliProyectos-noreply'],
-                    to=[us.team_member.email],
-                )
-                email_msg.content_subtype = 'html'
-                email_msg.send()
                 # Desasignacion de US no finalizados
                 if us.estado != 0: #terminado
                     us.estado = 2 #pendiente
@@ -608,24 +614,30 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                     he.us = us
                     he.sprint = sprint
                     he.save()
-                    # Notificación al Desarrollador por correo
-                    body = render_to_string(
-                        '../templates/notificaciones/inicio_sprint.html', {
-                            # Poner los parámetros requeridos del correo
-                            'nombre_us': us.nombre,
-                            'proyecto': us.proyecto.nombre,
-                            'sprint': us.sprint.nombre,
-                            'team_member': us.team_member,
-                        },
-                    )
-                    email_msg = EmailMessage(
-                        subject='Inicio de Sprint',
-                        body=body,
-                        from_email=['PoliProyectos-noreply'],
-                        to=[us.team_member.email],
-                    )
-                    email_msg.content_subtype = 'html'
-                    email_msg.send()
+                """
+                    Notificación por correo al Desarrollador de que arrancó el Sprint y cuales US le han asignado. 
+                """
+                team_members = TeamMember.objects.filter(proyecto=proyecto)
+                for tm in team_members:
+                    us_asignados = UserStory.objects.filter(team_member=tm.usuario)
+                    if us_asignados:
+                        body = render_to_string(
+                            '../templates/notificaciones/inicio_sprint.html', {
+                                # Poner los parámetros requeridos del correo
+                                'us_asignados': us_asignados,
+                                'proyecto': proyecto.nombre,
+                                'sprint': sprint,
+                                'team_member': tm.usuario,
+                            },
+                        )
+                        email_msg = EmailMessage(
+                            subject='Inicio de Sprint',
+                            body=body,
+                            from_email=['PoliProyectos-noreply'],
+                            to=[tm.usuario.email],
+                        )
+                        email_msg.content_subtype = 'html'
+                        email_msg.send()
             else:
                 return self.render_to_response(self.get_context_data(error='sinus',permisos=permisos))
         return HttpResponseRedirect('./')
