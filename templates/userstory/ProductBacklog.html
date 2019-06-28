@@ -55,6 +55,15 @@
                     <li>
                         Descripcion: {{ us.descripcion }}
                     </li>
+                    <li>
+                        Estimacion: {{ us.duracion_estimada }} horas
+                    </li>
+                    <li>
+                        Total de horas trabajadas: {{ us.horas_total }} horas
+                    </li>
+                    <li>
+                        Asignado: {{ us.team_member.username }}
+                    </li>
                     <br>
                 </div>
                 <form method="POST" enctype="multipart/form-data">

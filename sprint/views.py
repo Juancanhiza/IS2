@@ -568,6 +568,10 @@ class VerSprintDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
                 c.tipo = 'cambio'
                 context['actividades'][us.pk].append(c)
             context['actividades'][us.pk].sort(key=lambda x: x.fecha, reverse=True)
+            us.horas_sprint = us.get_horas_trabajadas(sprint=self.object.pk)
+            us.horas_total = us.get_horas_trabajadas()
+            us.duracion_estimada = HistorialEstimaciones.objects.get(us=us.pk,
+                                                                     sprint=self.object.pk).duracion_estimada
         context['direccion'] = {}
         context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
         context['direccion'][str(context['project'])] = (2, '/proyectos/ejecuciones/' + str(self.kwargs['pk_proyecto']) + '/')
@@ -631,11 +635,11 @@ class SprintBacklogPDF(View):
         return response
 
     def encabezado(self):
-        logo = settings.MEDIA_ROOT+"logo2.png"
-        im = Image(logo, inch, inch)
-        im.hAlign = 'LEFT'
+        #logo = settings.MEDIA_ROOT+"logo2.png"
+        #im = Image(logo, inch, inch)
+        #im.hAlign = 'LEFT'
         p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>", self.estiloPR())
-        data_tabla = [[im, p]]
+        data_tabla = [[p]]
         tabla = Table(data_tabla)
         self.story.append(tabla)
 
@@ -671,6 +675,107 @@ class SprintBacklogPDF(View):
         for x in user_stories:
             aux = [nro,x.nombre, x.duracion_estimada, x.horas_trabajadas, \
                 locale.format("%0.2f", x.priorizacion, grouping=True)]
+            nro += 1
+            data.append(aux)
+        style = TableStyle([
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])
+
+        t = Table(data)
+        t.setStyle(style)
+        self.story.append(t)
+
+    def estiloPC(self):
+        return ParagraphStyle(name="centrado", alignment=TA_CENTER)
+
+    def estiloPL(self):
+        return ParagraphStyle(name="izquierda", alignment=TA_LEFT)
+
+    def estiloPR(self):
+        return ParagraphStyle(name="derecha", alignment=TA_RIGHT)
+
+    def numeroPagina(self, canvas, doc):
+        num = canvas.getPageNumber()
+        text = "Pagina %s" % num
+        canvas.drawRightString(190 * mm, 20 * mm, text)
+
+@method_decorator(login_required, name='dispatch')
+class PrioridadesPDF(View):
+    """
+    clase de la vista para creacion de reporte Product Backlog
+    """
+    def get(self, request, *args, **kwargs):
+        self.proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        response = HttpResponse(content_type='application/pdf')
+        buffer = BytesIO()
+        pdf = canvas.Canvas(buffer)
+        self.doc = SimpleDocTemplate(buffer)
+        self.story = []
+        self.encabezado()
+        self.titulo()
+        self.descripcion()
+        self.crearTabla()
+        self.doc.build(self.story, onFirstPage=self.numeroPagina,
+                       onLaterPages=self.numeroPagina)
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
+
+    def encabezado(self):
+        #logo = settings.MEDIA_ROOT+"logo2.png"
+        #im = Image(logo, inch, inch)
+        #im.hAlign = 'LEFT'
+        p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>", self.estiloPR())
+        data_tabla = [[p]]
+        tabla = Table(data_tabla)
+        self.story.append(tabla)
+
+        d = Drawing(480, 3)
+        d.add(Line(0, 0, 480, 0))
+        self.story.append(d)
+        self.story.append(Spacer(1, 0.3 * inch))
+
+    def titulo(self):
+        txt = "<b><u>Prioridades de Sprint</u></b>"
+        p = Paragraph('<font size=20>'+str(txt)+'</font>', self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.5 * inch))
+
+    def descripcion(self):
+        txt = "<b>Proyecto: </b>" + str(self.proyecto)
+        p = Paragraph('<font size=12>' + str(txt) + '</font>', self.estiloPL())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.3 * inch))
+
+    def crearTabla(self):
+        user_stories = []
+        us_query = UserStory.objects.filter(proyecto=self.proyecto,sprint=self.kwargs['sprint_pk'])
+        l1 = []
+        l2 = []
+        l3 = []
+        for us in us_query:
+            if us.estado != 0 and us.sprints_asignados.count() >= 2:
+                l1.append(us)
+            elif (us.estado == 1 or us.estado == 0):
+                l2.append(us)
+            else:
+                l3.append(us)
+        l1.sort(key=lambda x: x.priorizacion, reverse=True)
+        l2.sort(key=lambda x: x.priorizacion, reverse=True)
+        l3.sort(key=lambda x: x.priorizacion, reverse=True)
+        for us in l1:
+            user_stories.append(us)
+        for us in l2:
+            user_stories.append(us)
+        for us in l3:
+            user_stories.append(us)
+        nro = 1
+        data = [["N°","Nombre", "Priorizacion", "Trabajado en otro sprint"]]
+        for x in user_stories:
+            aux = [nro,x.nombre, locale.format("%0.2f", x.priorizacion, grouping=True),
+                   "" if us.sprints_asignados.count() >= 2 else "SI"]
             nro += 1
             data.append(aux)
         style = TableStyle([

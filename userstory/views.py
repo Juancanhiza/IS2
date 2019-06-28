@@ -274,6 +274,7 @@ class ProductBacklogListView(LoginRequiredMixin, ListView):
                 c.tipo = 'cambio'
                 context['actividades'][us.pk].append(c)
             context['actividades'][us.pk].sort(key=lambda x: x.fecha, reverse=True)
+            us.horas_total = us.get_horas_trabajadas()
         proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         context['direccion'] = {}
         context['direccion']['Ejecuciones'] = (1, '/proyectos/ejecuciones/')
@@ -305,11 +306,11 @@ class ProductBacklogPDF(View):
         return response
 
     def encabezado(self):
-        logo = settings.MEDIA_ROOT+"logo2.png"
-        im = Image(logo, inch, inch)
-        im.hAlign = 'LEFT'
+        #logo = settings.MEDIA_ROOT+"logo2.png"
+        #im = Image(logo, inch, inch)
+        #im.hAlign = 'LEFT'
         p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>", self.estiloPR())
-        data_tabla = [[im, p]]
+        data_tabla = [[p]]
         tabla = Table(data_tabla)
         self.story.append(tabla)
 

@@ -13,6 +13,24 @@ from userstory.models import *
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from io import BytesIO
+from reportlab.pdfgen import canvas
+import locale
+from django.views.generic import View
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import ParagraphStyle, TA_CENTER, TA_LEFT
+from reportlab.lib.units import inch, mm
+from reportlab.lib import colors
+from reportlab.graphics.shapes import Drawing, Line
+from reportlab.lib.enums import TA_RIGHT
+from reportlab.platypus import (
+        Paragraph,
+        Table,
+        SimpleDocTemplate,
+        Spacer,
+        TableStyle,
+        Paragraph,
+        Image)
 
 """
 Vistas del Proyecto
@@ -749,3 +767,176 @@ class UpdateTeamMemberView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         if team_member_formset.rol_doble:
             fs_error = "Solo puede existir un "+str(team_member_formset.rol_doble.nombre)
         return self.render_to_response(self.get_context_data(fs_error=fs_error, form=form, team_members=team_member_formset))
+
+@method_decorator(login_required, name='dispatch')
+class HorasTrabajadasPDF(View):
+    """
+    Clase de la vista para creacion de Reporte Sprint Backlog
+    """
+
+    def get(self, request, *args, **kwargs):
+        self.proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
+        response = HttpResponse(content_type='application/pdf')
+        # se crea el pdf
+        buffer = BytesIO()
+        pdf = canvas.Canvas(buffer)
+        self.doc = SimpleDocTemplate(buffer)
+        self.story = []
+        self.encabezado()
+        self.titulo()
+        self.descripcion()
+        self.titulo_sprint()
+        self.por_sprint()
+        self.titulo_us()
+        self.por_us()
+        self.titulo_tm()
+        self.por_tm()
+        self.doc.build(self.story, onFirstPage=self.numeroPagina,
+                       onLaterPages=self.numeroPagina)
+        pdf = buffer.getvalue()
+        # fin
+        buffer.close()
+        response.write(pdf)
+        return response
+
+    def encabezado(self):
+        # logo = settings.MEDIA_ROOT+"logo2.png"
+        # im = Image(logo, inch, inch)
+        # im.hAlign = 'LEFT'
+        p = Paragraph("<i>Software Gestor de Proyectos<br/>Asunción-Paraguay<br/>Contacto: 0981-222333</i>",
+                      self.estiloPR())
+        data_tabla = [[p]]
+        tabla = Table(data_tabla)
+        self.story.append(tabla)
+
+        d = Drawing(480, 3)
+        d.add(Line(0, 0, 480, 0))
+        self.story.append(d)
+        self.story.append(Spacer(1, 0.3 * inch))
+
+    def titulo(self):
+        txt = "<b><u>Reporte de Horas Trabajadas</u></b>"
+        p = Paragraph('<font size=20>' + str(txt) + '</font>', self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.5 * inch))
+
+    def titulo_sprint(self):
+        txt = "<b><u>Por Sprint</u></b>"
+        p = Paragraph('<font size=10>' + str(txt) + '</font>', self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.2 * inch))
+
+    def titulo_us(self):
+        txt = "<b><u>Por User Story</u></b>"
+        p = Paragraph('<font size=10>' + str(txt) + '</font>', self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.2 * inch))
+
+    def titulo_tm(self):
+        txt = "<b><u>Por Usuarios</u></b>"
+        p = Paragraph('<font size=10>' + str(txt) + '</font>', self.estiloPC())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.2 * inch))
+
+    def descripcion(self):
+        txt = "<b>Proyecto: </b>" + str(self.proyecto)
+        p = Paragraph('<font size=12>' + str(txt) + '</font>', self.estiloPL())
+        self.story.append(p)
+        self.story.append(Spacer(1, 0.3 * inch))
+
+    def por_sprint(self):
+        sprints = Sprint.objects.filter(proyecto=self.proyecto)
+        for sprint in sprints:
+            estimaciones = HistorialEstimaciones.objects.filter(sprint=sprint.pk)
+            planificacion = 0
+            for estimacion in estimaciones:
+                planificacion += estimacion.duracion_estimada
+            sprint.planificacion = planificacion
+            actividades = Actividad.objects.filter(sprint=sprint.pk)
+            horas_trabajadas = 0
+            for actividad in actividades:
+                horas_trabajadas += actividad.duracion
+            sprint.horas_trabajadas = horas_trabajadas
+            horas_trabajadas = 0
+        nro = 1
+        data = [["N°", "Sprint", "Estado",  "Horas Planificadas","Horas Trabajadas"]]
+        for x in sprints:
+            aux = [nro, x.nombre, x.estado, x.planificacion,x.horas_trabajadas]
+            nro += 1
+            data.append(aux)
+        style = TableStyle([
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])
+
+        t = Table(data)
+        t.setStyle(style)
+        self.story.append(t)
+        self.story.append(Spacer(1, 0.5 * inch))
+
+    def por_us(self):
+        user_stories = UserStory.objects.filter(proyecto=self.proyecto)
+        for us in user_stories:
+            us.horas_trabajadas = us.get_horas_trabajadas()
+        nro = 1
+        data = [["N°", "User Story", "Estado", "Horas Trabajadas"]]
+        estados = ['Terminado', 'En Proceso', 'Pendiente']
+        for x in user_stories:
+            aux = [nro, x.nombre, estados[x.estado], x.horas_trabajadas]
+            nro += 1
+            data.append(aux)
+        style = TableStyle([
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])
+
+        t = Table(data)
+        t.setStyle(style)
+        self.story.append(t)
+        self.story.append(Spacer(1, 0.5 * inch))
+
+    def por_tm(self):
+        sprints = Sprint.objects.filter(proyecto=self.proyecto)
+        horas = {}
+        for sprint in sprints:
+            actividades = Actividad.objects.filter(sprint=sprint.pk)
+            for actividad in actividades:
+                if actividad.usuario.pk not in horas.keys():
+                    horas[actividad.usuario.pk] = 0
+                horas[actividad.usuario.pk] += actividad.duracion
+        team_members = TeamMember.objects.filter(proyecto=self.proyecto)
+        for tm in team_members:
+            if tm.usuario.pk not in horas.keys():
+                horas[tm.usuario.pk] = 0
+        nro = 1
+        data = [["N°", "Team Member", "Horas Trabajadas"]]
+        estados = ['Terminado', 'En Proceso', 'Pendiente']
+        for usuario_pk in horas.keys():
+            usuario = Usuario.objects.get(pk=usuario_pk)
+            tm = usuario.first_name+" "+usuario.last_name
+            aux = [nro, tm, horas[usuario_pk]]
+            nro += 1
+            data.append(aux)
+        style = TableStyle([
+            ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE')])
+
+        t = Table(data)
+        t.setStyle(style)
+        self.story.append(t)
+        self.story.append(Spacer(1, 0.5 * inch))
+
+    def estiloPC(self):
+        return ParagraphStyle(name="centrado", alignment=TA_CENTER)
+
+    def estiloPL(self):
+        return ParagraphStyle(name="izquierda", alignment=TA_LEFT)
+
+    def estiloPR(self):
+        return ParagraphStyle(name="derecha", alignment=TA_RIGHT)
+
+    def numeroPagina(self, canvas, doc):
+        num = canvas.getPageNumber()
+        text = "Pagina %s" % num
+        canvas.drawRightString(190 * mm, 20 * mm, text)
