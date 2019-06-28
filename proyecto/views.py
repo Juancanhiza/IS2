@@ -784,7 +784,7 @@ class UpdateTeamMemberView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 @method_decorator(login_required, name='dispatch')
 class HorasTrabajadasPDF(View):
     """
-    Clase de la vista para creacion de Reporte Sprint Backlog
+    Clase de la vista para creacion de Reporte Horas Trabajadas
     """
 
     def get(self, request, *args, **kwargs):
@@ -794,6 +794,7 @@ class HorasTrabajadasPDF(View):
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer)
         self.doc = SimpleDocTemplate(buffer)
+        self.doc.title = 'Reporte de Horas Trabajadas del Proyecto: ' + str(self.proyecto.nombre)
         self.story = []
         self.encabezado()
         self.titulo()
@@ -951,5 +952,5 @@ class HorasTrabajadasPDF(View):
 
     def numeroPagina(self, canvas, doc):
         num = canvas.getPageNumber()
-        text = "Pagina %s" % num
+        text = "Página %s" % num
         canvas.drawRightString(190 * mm, 20 * mm, text)

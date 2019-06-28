@@ -621,6 +621,7 @@ class SprintBacklogPDF(View):
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer)
         self.doc = SimpleDocTemplate(buffer)
+        self.doc.title = 'Reporte de Sprint Backlog del Sprint: ' + str(self.sprint.nombre)
         self.story = []
         self.encabezado()
         self.titulo()
@@ -655,7 +656,7 @@ class SprintBacklogPDF(View):
         self.story.append(Spacer(1, 0.5 * inch))
 
     def descripcion(self):
-        txt = "<b>Proyecto: </b>" + str(self.proyecto)
+        txt = "<b>Proyecto: </b>" + str(self.proyecto) + "<br/><b>Sprint: </b>" + str(self.sprint.nombre)
         p = Paragraph('<font size=12>' + str(txt) + '</font>', self.estiloPL())
         self.story.append(p)
         self.story.append(Spacer(1, 0.3 * inch))
@@ -697,13 +698,13 @@ class SprintBacklogPDF(View):
 
     def numeroPagina(self, canvas, doc):
         num = canvas.getPageNumber()
-        text = "Pagina %s" % num
+        text = "Página %s" % num
         canvas.drawRightString(190 * mm, 20 * mm, text)
 
 @method_decorator(login_required, name='dispatch')
 class PrioridadesPDF(View):
     """
-    clase de la vista para creacion de reporte Product Backlog
+    clase de la vista para creacion de Reporte de Prioridades de sprint
     """
     def get(self, request, *args, **kwargs):
         self.proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
@@ -712,6 +713,7 @@ class PrioridadesPDF(View):
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer)
         self.doc = SimpleDocTemplate(buffer)
+        self.doc.title = 'Reporte de Prioridades de Sprint: ' + str(self.sprint.nombre)
         self.story = []
         self.encabezado()
         self.titulo()
@@ -799,5 +801,5 @@ class PrioridadesPDF(View):
 
     def numeroPagina(self, canvas, doc):
         num = canvas.getPageNumber()
-        text = "Pagina %s" % num
+        text = "Página %s" % num
         canvas.drawRightString(190 * mm, 20 * mm, text)

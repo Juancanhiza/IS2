@@ -293,6 +293,7 @@ class ProductBacklogPDF(View):
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer)
         self.doc = SimpleDocTemplate(buffer)
+        self.doc.title = 'Reporte de Product Backlog del Proyecto: ' + str(self.proyecto.nombre)
         self.story = []
         self.encabezado()
         self.titulo()
@@ -381,7 +382,7 @@ class ProductBacklogPDF(View):
 
     def numeroPagina(self, canvas, doc):
         num = canvas.getPageNumber()
-        text = "Pagina %s" % num
+        text = "Página %s" % num
         canvas.drawRightString(190 * mm, 20 * mm, text)
 
 @login_required

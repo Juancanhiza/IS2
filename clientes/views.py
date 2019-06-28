@@ -245,6 +245,7 @@ class ProyectosClientePDF(View):
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer)
         self.doc = SimpleDocTemplate(buffer)
+        self.doc.title = 'Reporte de Proyectos del Cliente: ' + str(self.cliente.nombre)
         self.story = []
         self.encabezado()
         self.titulo()
