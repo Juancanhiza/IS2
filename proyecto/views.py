@@ -813,6 +813,13 @@ class HorasTrabajadasPDF(View):
     """
 
     def get(self, request, *args, **kwargs):
+        """
+        metodo de respuesta a consulta GET
+        :param request: consulta GET
+        :param args: argumentos
+        :param kwargs: diccionario de datos
+        :return: respuesta a la consulta GET
+        """
         self.proyecto = Proyecto.objects.get(pk=self.kwargs['pk_proyecto'])
         response = HttpResponse(content_type='application/pdf')
         # se crea el pdf
@@ -839,6 +846,10 @@ class HorasTrabajadasPDF(View):
         return response
 
     def encabezado(self):
+        """
+        agrega el encabezado al documento
+        :return: None
+        """
         logo = settings.MEDIA_ROOT+"logo2.png"
         im = Image(logo, inch, inch)
         im.hAlign = 'LEFT'
@@ -854,36 +865,60 @@ class HorasTrabajadasPDF(View):
         self.story.append(Spacer(1, 0.3 * inch))
 
     def titulo(self):
+        """
+        agrega el titulo al documento
+        :return: None
+        """
         txt = "<b><u>Reporte de Horas Trabajadas</u></b>"
         p = Paragraph('<font size=20>' + str(txt) + '</font>', self.estiloPC())
         self.story.append(p)
         self.story.append(Spacer(1, 0.5 * inch))
 
     def titulo_sprint(self):
+        """
+        agrega el titulo de horas trabajadas por sprint
+        :return: None
+        """
         txt = "<b><u>Por Sprint</u></b>"
         p = Paragraph('<font size=10>' + str(txt) + '</font>', self.estiloPC())
         self.story.append(p)
         self.story.append(Spacer(1, 0.2 * inch))
 
     def titulo_us(self):
+        """
+        agrega el titulo de horas trabajadas por user story
+        :return: None
+        """
         txt = "<b><u>Por User Story</u></b>"
         p = Paragraph('<font size=10>' + str(txt) + '</font>', self.estiloPC())
         self.story.append(p)
         self.story.append(Spacer(1, 0.2 * inch))
 
     def titulo_tm(self):
+        """
+        agrega el titulo de horas trabajadas por team member al documento
+        :return: None
+        """
         txt = "<b><u>Por Usuarios</u></b>"
         p = Paragraph('<font size=10>' + str(txt) + '</font>', self.estiloPC())
         self.story.append(p)
         self.story.append(Spacer(1, 0.2 * inch))
 
     def descripcion(self):
+        """
+        agrega la descripcion del reporte
+        :return: None
+        """
         txt = "<b>Proyecto: </b>" + str(self.proyecto)
         p = Paragraph('<font size=12>' + str(txt) + '</font>', self.estiloPL())
         self.story.append(p)
         self.story.append(Spacer(1, 0.3 * inch))
 
     def por_sprint(self):
+        """
+        agrega al documento pdf la tabla de horas trabajadas por sprint
+        :return: None
+        """
         sprints = Sprint.objects.filter(proyecto=self.proyecto)
         for sprint in sprints:
             estimaciones = HistorialEstimaciones.objects.filter(sprint=sprint.pk)
@@ -914,6 +949,10 @@ class HorasTrabajadasPDF(View):
         self.story.append(Spacer(1, 0.5 * inch))
 
     def por_us(self):
+        """
+        agrega al documento la tabla de horas trabajadas por user story
+        :return:
+        """
         user_stories = UserStory.objects.filter(proyecto=self.proyecto)
         for us in user_stories:
             us.horas_trabajadas = us.get_horas_trabajadas()
@@ -935,6 +974,10 @@ class HorasTrabajadasPDF(View):
         self.story.append(Spacer(1, 0.5 * inch))
 
     def por_tm(self):
+        """
+        agrega al documento la tabla de horas trabajadas por team member
+        :return: None
+        """
         sprints = Sprint.objects.filter(proyecto=self.proyecto)
         horas = {}
         for sprint in sprints:
@@ -967,15 +1010,30 @@ class HorasTrabajadasPDF(View):
         self.story.append(Spacer(1, 0.5 * inch))
 
     def estiloPC(self):
+        """
+        :return: estilo de titulos
+        """
         return ParagraphStyle(name="centrado", alignment=TA_CENTER)
 
     def estiloPL(self):
+        """
+        :return: estilo del logo
+        """
         return ParagraphStyle(name="izquierda", alignment=TA_LEFT)
 
     def estiloPR(self):
+        """
+        :return: estilo de datos de la empresa
+        """
         return ParagraphStyle(name="derecha", alignment=TA_RIGHT)
 
     def numeroPagina(self, canvas, doc):
+        """
+        agrega el numero de pagina al documento
+        :param canvas:
+        :param doc: documento pdf
+        :return: None
+        """
         num = canvas.getPageNumber()
         text = "Página %s" % num
         canvas.drawRightString(190 * mm, 20 * mm, text)

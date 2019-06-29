@@ -239,6 +239,13 @@ class ProyectosClientePDF(View):
     """
 
     def get(self, request, *args, **kwargs):
+        """
+        metodo de respuesta a la consulta GET
+        :param request: consulta GET
+        :param args: argumentos
+        :param kwargs: diccionario de datos
+        :return: respuesta a la consulta GET
+        """
         self.cliente = Cliente.objects.get(pk=self.kwargs['pk'])
         response = HttpResponse(content_type='application/pdf')
         # se crea el pdf
@@ -260,6 +267,10 @@ class ProyectosClientePDF(View):
         return response
 
     def encabezado(self):
+        """
+        agrega el encabezado al reporte
+        :return: None
+        """
         logo = settings.MEDIA_ROOT+"logo2.png"
         im = Image(logo, inch, inch)
         im.hAlign = 'LEFT'
@@ -274,18 +285,30 @@ class ProyectosClientePDF(View):
         self.story.append(Spacer(1, 0.3 * inch))
 
     def titulo(self):
+        """
+        agrega el titulo al reporte
+        :return: None
+        """
         txt = "<b><u>Reporte de Proyectos de Cliente</u></b>"
         p = Paragraph('<font size=20>'+str(txt)+'</font>', self.estiloPC())
         self.story.append(p)
         self.story.append(Spacer(1, 0.5 * inch))
 
     def descripcion(self):
+        """
+        agrega la cabecera del reporte
+        :return: None
+        """
         txt = "<b>Cliente: </b>"+self.cliente.nombre+"<br/><b>Descripción: </b>" + self.cliente.descripcion+"<br/><b>Teléfono: </b>"+ self.cliente.telefono
         p = Paragraph('<font size=12>' + str(txt) + '</font>', self.estiloPL())
         self.story.append(p)
         self.story.append(Spacer(1, 0.5 * inch))
 
     def crearTabla(self):
+        """
+        agrega la tabla del reporte
+        :return: None
+        """
         proyectos = Proyecto.objects.filter(cliente=self.cliente.pk)
         nro = 1
         data = [["N°", "Proyectos", "Estado", "Usuarios Asignados" , "US Terminados", "US Asignados", "US Pendientes"]]
@@ -309,15 +332,30 @@ class ProyectosClientePDF(View):
         self.story.append(t)
 
     def estiloPC(self):
+        """
+        :return: estilo del cuerpo del reporte
+        """
         return ParagraphStyle(name="centrado", alignment=TA_CENTER)
 
     def estiloPL(self):
+        """
+        :return: estilo de la descripcion del reporte
+        """
         return ParagraphStyle(name="izquierda", alignment=TA_LEFT)
 
     def estiloPR(self):
+        """
+        :return: estilo del encabezado
+        """
         return ParagraphStyle(name="derecha", alignment=TA_RIGHT)
 
     def numeroPagina(self, canvas, doc):
+        """
+        agrega el numero de pagina al documento
+        :param canvas:
+        :param doc:documento pdf
+        :return: None
+        """
         num = canvas.getPageNumber()
         text = "Página %s" % num
         canvas.drawRightString(190 * mm, 20 * mm, text)
