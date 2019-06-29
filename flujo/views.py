@@ -670,7 +670,7 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
         if 'fase' in request.POST.keys():
             actividad = GuardarActividadForm(request.POST)
             if actividad.is_valid():
-                actividad.save()
+                actividad = actividad.save()
             else:
                 return self.render_to_response(self.get_context_data(s_fase='Control de Calidad',
                                                                      permisos=permisos,
@@ -698,6 +698,7 @@ class TableroTemplateView(LoginRequiredMixin, SuccessMessageMixin, TemplateView)
                     'sprint': us.sprint.nombre,
                     'team_member': us.team_member.first_name,
                     'fase_nueva': us.fase.nombre,
+                    'motivo': actividad.descripcion,
                 },
             )
             email_msg = EmailMessage(
@@ -744,6 +745,7 @@ class VerFlujoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView):
         context['direccion'][str(context['project'])] = (2, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/')
         context['direccion']['Flujos'] = (3, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/flujos/')
         context['direccion']['Ver: ' + self.object.nombre] = (4, '/proyectos/definiciones/' + str(self.kwargs['pk_proyecto']) + '/flujos/ver/' + str(self.object.pk))
+        context['fases'] = Fase.objects.filter(flujo=self.object.pk)
         return context
 
     def get_object(self, queryset=None):

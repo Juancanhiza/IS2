@@ -215,6 +215,7 @@ class Sprint(models.Model):
                 for actividad in actividades:
                     horas_trabajadas += actividad.duracion
                 horas = horas - horas_trabajadas
+                fin = fin + timedelta(days=1)
             dia = dia + timedelta(days=1)
         return coordenadas
 

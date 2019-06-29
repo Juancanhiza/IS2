@@ -61,6 +61,7 @@ class VerProyectoDetailView(LoginRequiredMixin, SuccessMessageMixin, DetailView)
         :return: diccionario de contexto necesario para la correcta visualizacion de los datos
         """
         context = super().get_context_data(**kwargs)
+        context['team_members'] = TeamMember.objects.filter(proyecto=self.object.pk)
         context['title'] = "Ver Proyecto " + str(self.object.pk)
         context['direccion'] = {}
         context['direccion']['Proyectos'] = (1, '/proyectos/')
@@ -557,6 +558,30 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 sprint.save()
             else:
                 return render(request,'proyecto/ejecucion.html',self.get_context_data(permisos=permisos, confirmar='fin_sprint'))
+            """
+            Notificación por correo al Desarrollador de que finalizó el Sprint y cuales US tenía asignado sin finalizar. 
+            """
+            team_members = TeamMember.objects.filter(proyecto=proyecto)
+            for tm in team_members:
+                us_asignados = UserStory.objects.filter(sprint=sprint.pk, team_member=tm.usuario)
+                if us_asignados:
+                    body = render_to_string(
+                        '../templates/notificaciones/finalizacion_sprint.html', {
+                            # Poner los parámetros requeridos del correo
+                            'us_asignados': us_asignados,
+                            'proyecto': proyecto.nombre,
+                            'sprint': sprint,
+                            'team_member': tm.usuario,
+                        },
+                    )
+                    email_msg = EmailMessage(
+                        subject='Finalización de Sprint',
+                        body=body,
+                        from_email=['PoliProyectos-noreply'],
+                        to=[tm.usuario.email],
+                    )
+                    email_msg.content_subtype = 'html'
+                    email_msg.send()
         if 'conf_terminar' in request.POST.keys():
             sprint = Sprint.objects.get(pk=request.POST['conf_terminar'])
             sprint.estado = 'Terminado'
@@ -568,7 +593,7 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             """
             team_members = TeamMember.objects.filter(proyecto=proyecto)
             for tm in team_members:
-                us_asignados = UserStory.objects.filter(team_member=tm.usuario)
+                us_asignados = UserStory.objects.filter(sprint=sprint.pk,team_member=tm.usuario)
                 if us_asignados:
                     body = render_to_string(
                         '../templates/notificaciones/finalizacion_sprint.html', {
@@ -619,7 +644,7 @@ class UpdateEjecucionView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 """
                 team_members = TeamMember.objects.filter(proyecto=proyecto)
                 for tm in team_members:
-                    us_asignados = UserStory.objects.filter(team_member=tm.usuario)
+                    us_asignados = UserStory.objects.filter(sprint=sprint.pk,team_member=tm.usuario)
                     if us_asignados:
                         body = render_to_string(
                             '../templates/notificaciones/inicio_sprint.html', {

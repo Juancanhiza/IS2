@@ -15,7 +15,9 @@
                     <th width="8%">Acciones</th>
                     <th width="3%">
                         {% if 'Crear Tipos de User Story' in permisos %}
+                        {% if project.estado == 'Activo' and project.estado == 'Pendiente' %}
                         <a href="./create/"><i class="fas fa-plus-square"></i> </a>
+                        {% endif %}
                         {% endif %}
                     </th>
                 </tr>
@@ -29,7 +31,9 @@
                         <td id="acciones" width="8%">
                             <a href="{% url 'ver_user_story_type' project.pk ust.pk %}"><i class="fas fa-eye"></i></a>
                             {% if 'Modificar Tipos de User Story' in permisos %}
-                            <a href="{% url 'update_user_story_type' project.pk ust.pk %}"><i class="fas fa-edit"></i></a>
+                            {% if project.estado == 'Activo' and project.estado == 'Pendiente' %}
+                                <a href="{% url 'update_user_story_type' project.pk ust.pk %}"><i class="fas fa-edit"></i></a>
+                            {% endif %}
                             {% endif %}
                         </td>
                         <td width="3%"></td>

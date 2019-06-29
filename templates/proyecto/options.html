@@ -24,9 +24,11 @@
             </li>
             {% endif %}
             {% if 'Asignar Roles' in permisos %}
-            <li>
-                <a href="{% url 'update_roles_proyecto' object.pk %}">Asignacion de Roles</a>
-            </li>
+                {% if object.estado != 'Cancelado' and object.estado != 'Terminado' %}
+                <li>
+                    <a href="{% url 'update_roles_proyecto' object.pk %}">Asignacion de Roles</a>
+                </li>
+                {% endif %}
             {% endif %}
         </div>
         <br><br><br>

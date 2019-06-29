@@ -29,7 +29,9 @@
                         <td id="acciones" width="8%">
                             <a href="{% url 'ver_project' project.pk %}"><i class="fas fa-eye"></i></a>
                             {% if 'Modificar Proyectos' in permisos  %}
-                            <a href="{% url 'update_project' project.pk %}"><i class="fas fa-edit"></i></a>
+                                {% if project.estado == 'Pendiente' or project.estado == 'Activo' %}
+                                <a href="{% url 'update_project' project.pk %}"><i class="fas fa-edit"></i></a>
+                                {% endif %}
                             {% endif %}
                         </td>
                         <td width="3%"></td>

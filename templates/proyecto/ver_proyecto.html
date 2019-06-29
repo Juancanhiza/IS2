@@ -13,11 +13,19 @@
             <li>Estado: {{ object.estado }}</li>
             <li>Fecha de Inicio:{% if object.fecha_inicio %} {{ object.fecha_inicio }}{% endif %}</li>
             <li>Fecha de Finalización:{% if object.fecha_fin %} {{ object.fecha_fin }}{% endif %}</li>
-            <li>Descripcion:{{ object.descripcion }}</li>
+            <li>Cliente: {% if object.cliente %}{{ object.cliente }}{% endif %}</li>
+            <li>Descripcion: {% if object.descripcion %}{{ object.descripcion }} {% endif %}</li>
+            <li>Team Members</li>
+            <div class="container" style="margin-left: 50px">
+                {% for tm in team_members %}
+                    <li>{{ tm.usuario }}: {{ tm.rol.nombre }} </li>
+                {% endfor %}
+            </div>
         </div>
         <br>
         <div class="row">
-            <a href="../../"><button type="button" class="btn submit-btn">Atras</button></a>
+            <a href="../../"><button type="button" class="btn submit-btn">
+                <i class="fas fa-arrow-left"></i> Atras</button></a>
         </div>
         <hr>
     </div>

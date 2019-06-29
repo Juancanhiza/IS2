@@ -104,6 +104,26 @@
                 </li>
                 <br>
                 <h4>El proyecto se encuentra suspendido, puede reiniciar el proyecto.</h4>
+                {% if 'Ver Sprints' in permisos %}
+                <li>
+                    <a href="{% url 'sprint_list' object.pk %}">Sprints</a>
+                </li>
+                {% endif %}
+                {% if 'Ver User Stories' in permisos %}
+                <li>
+                    <a href="{% url 'user_story_list' object.pk %}">Administrar User Stories</a>
+                </li>
+                {% endif %}
+                {% if 'Ver Product Backlog' in permisos %}
+                <li>
+                    <a href="{% url 'product_backlog' object.pk%}">Product Backlog</a>
+                </li>
+                {% endif %}
+                <li>
+                <a target="_blank" href="{% url 'horas_trabajadas' object.pk%}">
+                <i class="fas fa-file-pdf"></i> Horas Trabajadas</button>
+                </a>
+                </li>
                 <br><br>
                 <form method="POST">
                     {% csrf_token %}
@@ -119,12 +139,26 @@
             {% elif object.estado == "Terminado" %}
                 <h4>El proyecto se encuentra terminado.</h4>
                 <br>
+                {% if 'Ver Sprints' in permisos %}
+                <li>
+                    <a href="{% url 'sprint_list' object.pk %}">Sprints</a>
+                </li>
+                {% endif %}
+                {% if 'Ver User Stories' in permisos %}
+                <li>
+                    <a href="{% url 'user_story_list' object.pk %}">Administrar User Stories</a>
+                </li>
+                {% endif %}
                 {% if 'Ver Product Backlog' in permisos %}
                 <li>
                     <a href="{% url 'product_backlog' object.pk%}">Product Backlog</a>
                 </li>
                 {% endif %}
-                <br><br>
+                <li>
+                <a target="_blank" href="{% url 'horas_trabajadas' object.pk%}">
+                <i class="fas fa-file-pdf"></i> Horas Trabajadas</button>
+                </a>
+                </li>
             {% endif %}
         </div>
         <br><br><br>
